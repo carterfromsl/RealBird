@@ -1,31 +1,21 @@
-<div class="list-of-collections">
-  <h2 class="collections">collections</h2>
-  <ul>
-    {% for collection in collections %}
-      <a href="{{collection.url}}">
-        <li class="single-collection">
-          {% if collection.image %}
-            <img src="{{collection.image | img_url:'500x'}}" alt="">
-          {% else %}
-            {{ collection.title | escape }}
-          {% endif %}
-        </li>
-      </a>
-    {% endfor %}
-  </ul>
+<div class="container">
+  <div class="content">
+    <h2>collections</h2>
+    <div>
+      <a href="{{ routes.collections_url }}"> collection_list </a>
+    </div>
+    <br>
+    <div class="grid">
+      {% for collection in collections %}
+        <div class="grid-item">
+          <a href="{{collection.url}}">
+            <li>
+              {{ collection.title | escape }}
+            </li>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
 
-  <div class="center collection-list-view-all">
-    <a href="{{ routes.collections_url }}" class="button">
-      <h1>collection_list</h1>
-    </a>
   </div>
 </div>
-
-<style>
-  .collections {
-    text-align: center;
-    padding: 1em;
-    text-transform: capitalize;
-    color: #0005;
-  }
-</style>

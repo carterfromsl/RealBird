@@ -1,15 +1,20 @@
+<section class="hero">
+  {% comment %} <img src="{{'bg.jpeg' |  asset_url }}" alt="Hero Image"> {% endcomment %}
+</section>
+
 <div class="hero">
   <h3>hero section</h3>
 </div>
+{% comment %}
+  {%- style -%}
+    .hero{
+    		height: 450px;
+    		background: grey;
+    		background-image:url({{'bg.jpeg' |  asset_url }});
 
-{%- style -%}
-  .hero{
-  		height: 450px;
-  		background: grey;
-  		background-image:url({{'bg.jpeg' |  asset_url }});
-
-  		display: flex;
-  		align-items: center;
-  		justify-content: center;
-  	}
-{%- endstyle -%}
+    		display: flex;
+    		align-items: center;
+    		justify-content: center;
+    	}
+  {%- endstyle -%}
+{% endcomment %}
