@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="content">
+  <div>
     <h2>collections</h2>
     <div>
       <a href="{{ routes.collections_url }}"> collection_list </a>
@@ -16,6 +16,20 @@
         </div>
       {% endfor %}
     </div>
-
   </div>
 </div>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .grid-item {
+    background-color: #eaeaea;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+</style>

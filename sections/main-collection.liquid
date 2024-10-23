@@ -15,78 +15,550 @@
 {% endcomment %}
 
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
+<style>
 
-<div class="container">
-  <aside class="sidebar">
-    <h2>Filters</h2>
-    <div class="selected-filters">
-      <h3>Selected Filters:</h3>
-      <div class="badges">
-        <div class="badge">Category 1 <span class="remove">&times;</span></div>
-        <div class="badge">$0 - $50 <span class="remove">&times;</span></div>
+
+  .breadcrumb {
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .results-count {
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .filter {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .filter-close {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .filter-section {
+    margin-bottom: 20px;
+  }
+
+  .filter-section h3 {
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+  }
+
+  .filter-section input[type='range'] {
+    width: 100%;
+  }
+
+  .price-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .price-input {
+    width: 60px;
+  }
+
+  .product-grid-container {
+    width: 100%;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+
+  .product-card {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+
+  @media (min-width: 576px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .product-brand {
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .product-name {
+    font-weight: bold;
+    margin: 5px 0;
+  }
+
+  .product-price {
+    font-weight: bold;
+  }
+
+  .product-original-price {
+    text-decoration: line-through;
+    color: #666;
+    margin-right: 5px;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .pagination a {
+    color: #007bff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    border-radius: 4px;
+  }
+
+  .pagination a:hover {
+    background-color: #ddd;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .sort-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .sort-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .sort-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .sort-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .sort-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .sort-dropdown:hover .sort-content {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .main-content {
+      flex-direction: row;
+    }
+
+    .sidebar {
+      width: 250px;
+      margin-right: 20px;
+      flex-shrink: 0;
+    }
+
+    .product-grid {
+      flex: 1;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+</style>
+<div class="container" id="ProductGridContainer">
+  <h1>Women's Apparel</h1>
+  <div class="main-content">
+    <aside class="sidebar">
+      <div class="results-count">167 results</div>
+      <div class="filter-section">
+        <h3>Availability</h3>
+        <label><input type="checkbox" checked> In stock (167)</label><br>
+        <label><input type="checkbox"> Out of stock (23)</label>
       </div>
-    </div>
 
-    <div class="filter">
-      <h3 class="collapsible">Category</h3>
-      <ul class="content">
-        <li><input type="checkbox" id="category1"><label for="category1">Category 1</label></li>
-        <li><input type="checkbox" id="category2"><label for="category2">Category 2</label></li>
-        <li><input type="checkbox" id="category3"><label for="category3">Category 3</label></li>
-        <li><input type="checkbox" id="category1"><label for="category1">Category 1</label></li>
-        <li><input type="checkbox" id="category2"><label for="category2">Category 2</label></li>
-        <li><input type="checkbox" id="category3"><label for="category3">Category 3</label></li>
-      </ul>
-    </div>
-    <div class="filter">
-      <h3 class="collapsible">Price</h3>
-      <ul class="content">
-        <li><input type="checkbox" id="price1"><label for="price1">$0 - $50</label></li>
-        <li><input type="checkbox" id="price2"><label for="price2">$50 - $100</label></li>
-        <li><input type="checkbox" id="price3"><label for="price3">$100 - $200</label></li>
-      </ul>
-    </div>
-  </aside>
-  <div class="content">
-    <div class="controls">
-      <a href="#" class="remove-all-filters">Remove All Filters</a>
-      <div class="sort-dropdown">
-        <button class="sort-button">Sort By</button>
-        <div class="sort-content">
-          <a href="#">Price: Low to High</a>
-          <a href="#">Price: High to Low</a>
-          <a href="#">Newest Arrivals</a>
+      <div class="filter-section">
+        <h3>Price</h3>
+        <input type="range" min="0" max="300" value="300">
+        <div class="price-range">
+          <input type="text" class="price-input" value="$0"> to
+          <input type="text" class="price-input" value="$300">
         </div>
       </div>
-    </div>
 
-    <div class="grid">
-      <div class="grid-item">Item 1</div>
-      <div class="grid-item">Item 2</div>
-      <div class="grid-item">Item 3</div>
-      <div class="grid-item">Item 4</div>
-      <div class="grid-item">Item 5</div>
-      <div class="grid-item">Item 6</div>
-      <div class="grid-item">Item 1</div>
-      <div class="grid-item">Item 2</div>
-      <div class="grid-item">Item 3</div>
-      <div class="grid-item">Item 4</div>
-      <div class="grid-item">Item 5</div>
-      <div class="grid-item">Item 6</div>
-    </div>
-    <div class="pagination">
-      <a href="#">&laquo;</a>
-      <a href="#">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a href="#">5</a>
-      <a href="#">&raquo;</a>
+      <div class="filter-section">
+        <h3>Product type</h3>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label>
+      </div>
+
+      <div class="filter-section">
+        <h3>Color</h3>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label>
+      </div>
+
+      <div class="filter-section">
+        <h3>Size</h3>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label><br>
+        <label><input type="checkbox">Automotive</label><br>
+        <label><input type="checkbox">Baby</label>
+      </div>
+    </aside>
+
+    <div class="product-grid-container">
+      <div class="controls">
+        <div class="sort-dropdown">
+          <button class="sort-button">Sort By</button>
+          <div class="sort-content">
+            <a href="#">Price: Low to High</a>
+            <a href="#">Price: High to Low</a>
+            <a href="#">Newest Arrivals</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="filter">Clear all filters</div>
+        <div class="filter">Shoe <span class="filter-close">×</span></div>
+        <div class="filter">Sweatshirt <span class="filter-close">×</span></div>
+        <div class="filter">Top <span class="filter-close">×</span></div>
+        <div class="filter">In stock <span class="filter-close">×</span></div>
+        <div class="filter">$0-300 <span class="filter-close">×</span></div>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Women's+Wool+Runners"
+            alt="Women's Wool Runners"
+            class="product-image"
+          >
+          <div class="product-brand">Somebees • Shoe</div>
+          <div class="product-name">Women's Wool Runners</div>
+          <div>Natural Grey +8 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$135</span>
+            $120
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Victory+Wing+Evo"
+            alt="Victory Wing Evo"
+            class="product-image"
+          >
+          <div class="product-brand">Victory • Shoe</div>
+          <div class="product-name">Victory Wing Evo</div>
+          <div>White/Midnight/Hyper Blue/Tech Grey</div>
+          <div class="product-price">$260</div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Ramona+Sweatshirt"
+            alt="Ramona Sweatshirt"
+            class="product-image"
+          >
+          <div class="product-brand">Annie Mercury • Sweatshirt</div>
+          <div class="product-name">Ramona Sweatshirt Uni New York</div>
+          <div>Washed Black</div>
+          <div class="product-price">$220</div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+        <div class="product-card">
+          <img
+            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
+            alt="Cozy Lounge Top"
+            class="product-image"
+          >
+          <div class="product-brand">Comfy Co. • Top</div>
+          <div class="product-name">Cozy Lounge Top</div>
+          <div>Soft Pink +3 colors</div>
+          <div class="product-price">
+            <span class="product-original-price">$85</span>
+            $75
+          </div>
+        </div>
+      </div>
+      <div class="pagination">
+        <a href="#">&laquo;</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">&raquo;</a>
+      </div>
     </div>
   </div>
   {% comment %}
+    <aside class="sidebar">
+      <h2>Filters</h2>
+      <a href="#" class="remove-all-filters">Remove All Filters</a>
+      <div class="selected-filters">
+        <h3>Selected Filters:</h3>
+        <div class="badges">
+          <div class="badge">Category 1 <span class="remove">&times;</span></div>
+          <div class="badge">$0 - $50 <span class="remove">&times;</span></div>
+        </div>
+      </div>
+      {% for f in collection.filters %}
+        <div class="filter">
+          <h3 class="collapsible" onclick="onFilterCollapseChange(event)">
+            {{ f.label }}
+            {% if f.active_values.size > 0 %}
+              ({{ f.active_values.size }})
+              <a
+                onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
+                href="{{ f.url_to_remove }}"
+                >reset
+              </a>
+            {% endif %}
+          </h3>
+
+          <ul class="content">
+            <li><input type="checkbox" id="category1"><label for="category1">Category 1</label></li>
+            <li><input type="checkbox" id="category2"><label for="category2">Category 2</label></li>
+            <li><input type="checkbox" id="category3"><label for="category3">Category 3</label></li>
+            <li><input type="checkbox" id="category1"><label for="category1">Category 1</label></li>
+            <li><input type="checkbox" id="category2"><label for="category2">Category 2</label></li>
+            <li><input type="checkbox" id="category3"><label for="category3">Category 3</label></li>
+          </ul>
+        </div>
+      {% endfor %}
+      <div class="filter">
+        <h3 class="collapsible">Price</h3>
+        <ul class="content">
+          <li><input type="checkbox" id="price1"><label for="price1">$0 - $50</label></li>
+          <li><input type="checkbox" id="price2"><label for="price2">$50 - $100</label></li>
+          <li><input type="checkbox" id="price3"><label for="price3">$100 - $200</label></li>
+        </ul>
+      </div>
+    </aside>
     <div class="content">
-      <div id="ProductGridContainer">
+      <div class="controls">
+        <div class="sort-dropdown">
+          <button class="sort-button">Sort By</button>
+          <div class="sort-content">
+            <a href="#">Price: Low to High</a>
+            <a href="#">Price: High to Low</a>
+            <a href="#">Newest Arrivals</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+        <div class="grid-item">Item 5</div>
+        <div class="grid-item">Item 6</div>
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+        <div class="grid-item">Item 5</div>
+        <div class="grid-item">Item 6</div>
+      </div>
+      <div class="pagination">
+        <a href="#">&laquo;</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">&raquo;</a>
+      </div>
+    </div>
+  {% endcomment %}
+
+  {% comment %}
+    <div class="content">
+      <div>
         {%- paginate collection.products by section.settings.products_per_page -%}
           <h1>{{ section.id }}</h1>
 
@@ -221,23 +693,19 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var coll = document.getElementsByClassName('collapsible');
-    for (var i = 0; i < coll.length; i++) {
-      coll[i].addEventListener('click', function () {
-        this.classList.toggle('active');
-        var content = this.nextElementSibling;
-        if (content.style.display === 'block') {
-          content.style.display = 'none';
-        } else {
-          content.style.display = 'block';
-        }
-      });
+  function onFilterCollapseChange(event) {
+    console.log('clicked', event.target);
+    event.target.classList.toggle('active');
+    var content = event.target.nextElementSibling;
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+    } else {
+      content.style.display = 'block';
     }
-  });
+  }
 
   function getSection(url) {
-    fetch(url + '&section_id={{ section.id }}')
+    fetch(url) //+ '&section_id={{ section.id }}'
       .then((response) => response.text())
       .then((responseText) => {
         history.pushState({}, '', url);
