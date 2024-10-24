@@ -13,8 +13,6 @@
   }
 {%- endstyle -%}
 
-
-{% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 <style>
   .breadcrumb {
     margin-bottom: 20px;
@@ -219,48 +217,50 @@
     }
   }
 </style>
+
+{% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 <div class="container section-{{ section.id }}-padding" id="ProductGridContainer">
   <h1>{{ collection.title }}</h1>
   <div class="main-content">
     {%- paginate collection.products by section.settings.products_per_page -%}
-      <aside class="sidebar">
-
-        {% for f in collection.filters %}
-          <div class="filter-section">
-            <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
-              {{ f.label }}
-              {% if f.active_values.size > 0 %}
-                ({{ f.active_values.size }})
-                <a
-                  onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
-                  href="{{ f.url_to_remove }}"
-                  >reset
-                </a>
-              {% endif %}
-            </h3>
-            <div style="display: block">
-              {% for v in f.values %}
-                <label>
-                  <input
-                    type="checkbox"
-                    {% if v.active %}
-                      checked
-                      onclick="getSection('{{ v.url_to_remove }}')"
-                    {% else %}
-                      onclick="getSection('{{ v.url_to_add }}')"
-                    {% endif -%}
-                    {% if v.count == 0 and v.active == false %}
-                      disabled
-                    {% endif -%}
-                  >
-                  {{- v.label }} ({{ v.count }})</label
-                ><br>
-              {% endfor %}
+      {%- if section.settings.enable_filtering -%}
+        <aside class="sidebar">
+          {% for f in collection.filters %}
+            <div class="filter-section">
+              <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
+                {{ f.label }}
+                {% if f.active_values.size > 0 %}
+                  ({{ f.active_values.size }})
+                  <a
+                    onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
+                    href="{{ f.url_to_remove }}"
+                    >reset
+                  </a>
+                {% endif %}
+              </h3>
+              <div style="display: none">
+                {% for v in f.values %}
+                  <label>
+                    <input
+                      type="checkbox"
+                      {% if v.active %}
+                        checked
+                        onclick="getSection('{{ v.url_to_remove }}')"
+                      {% else %}
+                        onclick="getSection('{{ v.url_to_add }}')"
+                      {% endif -%}
+                      {% if v.count == 0 and v.active == false %}
+                        disabled
+                      {% endif -%}
+                    >
+                    {{- v.label }} ({{ v.count }})</label
+                  ><br>
+                {% endfor %}
+              </div>
             </div>
-          </div>
-        {% endfor %}
-      </aside>
-
+          {% endfor %}
+        </aside>
+      {% endif %}
       <div class="product-grid-container">
         {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
         <div class="controls">
