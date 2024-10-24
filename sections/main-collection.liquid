@@ -222,267 +222,133 @@
 <div class="container" id="ProductGridContainer">
   <h1>{{ collection.title }}</h1>
   <div class="main-content">
-    <aside class="sidebar">
-      <div class="results-count">
-        {%- if collection.products_count == collection.all_products_count -%}
-          {{ collection.products_count }} products
-        {% else %}
-          {{ collection.products_count }} of {{ collection.all_products_count }}
-        {% endif %}
-      </div>
-
-      <div class="filter-section">
-        <h3>Price</h3>
-        <input type="range" min="0" max="300" value="300">
-        <div class="price-range">
-          <input type="text" class="price-input" value="$0"> to
-          <input type="text" class="price-input" value="$300">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <aside class="sidebar">
+        <div class="results-count">
+          {%- if collection.products_count == collection.all_products_count -%}
+            {{ collection.products_count }} products
+          {% else %}
+            {{ collection.products_count }} of {{ collection.all_products_count }}
+          {% endif %}
         </div>
-      </div>
-      {% for f in collection.filters %}
-        <div class="filter-section">
-          <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
-            {{ f.label }}
-            {% if f.active_values.size > 0 %}
-              ({{ f.active_values.size }})
-              <a
-                onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
-                href="{{ f.url_to_remove }}"
-                >reset
-              </a>
-            {% endif %}
-          </h3>
-          <div style="display: block">
-            {% for v in f.values %}
-              <label
-                ><input
-                  type="checkbox"
-                  {% if v.active %}
-                    checked
-                    onclick="getSection('{{ v.url_to_remove }}')"
-                  {% else %}
-                    onclick="getSection('{{ v.url_to_add }}')"
-                  {% endif -%}
-                  {% if v.count == 0 and v.active == false %}
-                    disabled
-                  {% endif -%}
-                >
-                {{- v.label }} ({{ v.count }})</label
-              ><br>
-            {% endfor %}
-          </div>
-        </div>
-      {% endfor %}
-    </aside>
-
-    <div class="product-grid-container">
-      <div class="controls">
-        <div class="sort-dropdown">
-          <button class="sort-button">Sort By</button>
-          <div class="sort-content">
-            <a href="#">Price: Low to High</a>
-            <a href="#">Price: High to Low</a>
-            <a href="#">Newest Arrivals</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="filters">
-        <div class="filter" onclick="getSection('{{ collection.url }}')">
-          Clear all filters
-          <span
-            class="filter-close"
-            onclick="getSection('{{ collection.url }}')"
-            >×</span
-          >
-        </div>
-        {%- for f in collection.filters -%}
-          {% for v in f.active_values %}
-            <div class="filter">
-              {{ f.label | escape }}: {{ v.label | escape -}}
-              <span
-                class="filter-close"
-                onclick="getSection('{{ v.url_to_remove }}')"
-                >×</span
-              >
+        {% for f in collection.filters %}
+          <div class="filter-section">
+            <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
+              {{ f.label }}
+              {% if f.active_values.size > 0 %}
+                ({{ f.active_values.size }})
+                <a
+                  onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
+                  href="{{ f.url_to_remove }}"
+                  >reset
+                </a>
+              {% endif %}
+            </h3>
+            <div style="display: block">
+              {% for v in f.values %}
+                <label>
+                  <input
+                    type="checkbox"
+                    {% if v.active %}
+                      checked
+                      onclick="getSection('{{ v.url_to_remove }}')"
+                    {% else %}
+                      onclick="getSection('{{ v.url_to_add }}')"
+                    {% endif -%}
+                    {% if v.count == 0 and v.active == false %}
+                      disabled
+                    {% endif -%}
+                  >
+                  {{- v.label }} ({{ v.count }})</label
+                ><br>
+              {% endfor %}
             </div>
-          {% endfor %}
-        {%- endfor -%}
+          </div>
+        {% endfor %}
+      </aside>
+
+      <div class="product-grid-container">
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        <div class="controls">
+          <div class="sort-dropdown">
+            <button class="sort-button">Sort By</button>
+            <div class="sort-content">
+              {%- for option in collection.sort_options -%}
+                <a
+                  {% if option.value == sort_by %}
+                    style="font-weight: bold"
+                  {% endif %}
+                  href="#"
+                >
+                  {{- option.value | escape -}}
+                </a>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+
+        <div class="filters">
+          {% liquid
+            assign has_active_filters = false
+            for f in collection.filters
+              if f.active_values.size > 0
+                assign has_active_filters = true
+              endif
+            endfor
+          %}
+          {% if has_active_filters %}
+            <div class="filter" onclick="getSection('{{ collection.url }}')">
+              Clear all filters
+              <span class="filter-close" onclick="getSection('{{ collection.url }}')">×</span>
+            </div>
+          {% endif %}
+
+          {%- for f in collection.filters -%}
+            {% for v in f.active_values %}
+              <div class="filter">
+                {{ f.label | escape }}: {{ v.label | escape -}}
+                <span class="filter-close" onclick="getSection('{{ v.url_to_remove }}')">×</span>
+              </div>
+            {% endfor %}
+          {%- endfor -%}
+        </div>
+        <div class="product-grid">
+          {%- if collection.products.size == 0 -%}
+            <p>Nothing Here</p>
+          {%- else -%}
+            {%- for product in collection.products -%}
+              <div class="product-card">
+                <img
+                  src="{{ product.featured_image | image_url: width: 533 }}"
+                  alt="{{ product.title }}"
+                  class="product-image"
+                  width=""
+                  height=""
+                >
+                <div class="product-brand">{{ product.vendor }}</div>
+                <div class="product-name">{{ product.title }}</div>
+                <div class="product-price">
+                  <span class="product-original-price">{{ product.price_max | money }}</span>
+                  {{ product.compare_at_price | money }}
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          {% comment %} {% render 'pagination', paginate: paginate, anchor: '' %} {% endcomment %}
+          <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">&raquo;</a>
+          </div>
+        {%- endif -%}
       </div>
-      <div class="product-grid">
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Women's+Wool+Runners"
-            alt="Women's Wool Runners"
-            class="product-image"
-          >
-          <div class="product-brand">Somebees • Shoe</div>
-          <div class="product-name">Women's Wool Runners</div>
-          <div>Natural Grey +8 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$135</span>
-            $120
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Victory+Wing+Evo"
-            alt="Victory Wing Evo"
-            class="product-image"
-          >
-          <div class="product-brand">Victory • Shoe</div>
-          <div class="product-name">Victory Wing Evo</div>
-          <div>White/Midnight/Hyper Blue/Tech Grey</div>
-          <div class="product-price">$260</div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Ramona+Sweatshirt"
-            alt="Ramona Sweatshirt"
-            class="product-image"
-          >
-          <div class="product-brand">Annie Mercury • Sweatshirt</div>
-          <div class="product-name">Ramona Sweatshirt Uni New York</div>
-          <div>Washed Black</div>
-          <div class="product-price">$220</div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-        <div class="product-card">
-          <img
-            src="https://placehold.co/350x450/e0e0e0/808080?text=Cozy+Lounge+Top"
-            alt="Cozy Lounge Top"
-            class="product-image"
-          >
-          <div class="product-brand">Comfy Co. • Top</div>
-          <div class="product-name">Cozy Lounge Top</div>
-          <div>Soft Pink +3 colors</div>
-          <div class="product-price">
-            <span class="product-original-price">$85</span>
-            $75
-          </div>
-        </div>
-      </div>
-      <div class="pagination">
-        <a href="#">&laquo;</a>
-        <a href="#">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">&raquo;</a>
-      </div>
-    </div>
+    {%- endpaginate -%}
   </div>
   {% comment %}
     <aside class="sidebar">
