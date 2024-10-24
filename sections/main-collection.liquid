@@ -1,18 +1,18 @@
-{% comment %}
-  {%- style -%}
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    }
 
-    @media screen and (min-width: 750px) {
-      .section-{{ section.id }}-padding {
-        padding-top: {{ section.settings.padding_top }}px;
-        padding-bottom: {{ section.settings.padding_bottom }}px;
-      }
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
     }
-  {%- endstyle -%}
-{% endcomment %}
+  }
+{%- endstyle -%}
+
 
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 <style>
@@ -219,18 +219,12 @@
     }
   }
 </style>
-<div class="container" id="ProductGridContainer">
+<div class="container section-{{ section.id }}-padding" id="ProductGridContainer">
   <h1>{{ collection.title }}</h1>
   <div class="main-content">
     {%- paginate collection.products by section.settings.products_per_page -%}
       <aside class="sidebar">
-        <div class="results-count">
-          {%- if collection.products_count == collection.all_products_count -%}
-            {{ collection.products_count }} products
-          {% else %}
-            {{ collection.products_count }} of {{ collection.all_products_count }}
-          {% endif %}
-        </div>
+
         {% for f in collection.filters %}
           <div class="filter-section">
             <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
@@ -311,6 +305,13 @@
               </div>
             {% endfor %}
           {%- endfor -%}
+        </div>
+        <div class="results-count">
+          {%- if collection.products_count == collection.all_products_count -%}
+            {{ collection.products_count }} products
+          {% else %}
+            {{ collection.products_count }} of {{ collection.all_products_count }}
+          {% endif %}
         </div>
         <div class="product-grid">
           {%- if collection.products.size == 0 -%}
