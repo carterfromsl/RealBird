@@ -322,8 +322,8 @@
                   src="{{ product.featured_image | image_url: width: 533 }}"
                   alt="{{ product.title }}"
                   class="product-image"
-                  width=""
-                  height=""
+                  width="{{ product.featured_image.width }}"
+                  height="{{ product.featured_image.height }}"
                 >
                 <div class="product-brand">{{ product.vendor }}</div>
                 <div class="product-name">{{ product.title }}</div>
