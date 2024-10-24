@@ -338,13 +338,51 @@
         {%- if paginate.pages > 1 -%}
           {% comment %} {% render 'pagination', paginate: paginate, anchor: '' %} {% endcomment %}
           <div class="pagination">
-            <a href="#">&laquo;</a>
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">&raquo;</a>
+            {%- if paginate.parts.size > 0 -%}
+              {%- if paginate.previous -%}
+                <a onclick="event.preventDefault(); getSection('{{ paginate.previous.url }}');"
+                   href="{{ paginate.previous.url }}{{ anchor }}"
+                   aria-label="{{ 'general.pagination.previous' | t }}">
+                  <span><<</span>
+                </a>
+              {%- endif -%}
+
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a
+                    href="{{ part.url }}{{ anchor }}"
+                    onclick="event.preventDefault(); getSection('{{ part.url }}');"
+                    aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                  >
+                    {{- part.title -}}
+                  </a>
+                {%- else -%}
+                  {%- if part.title == paginate.current_page -%}
+                    <a
+                      role="link"
+                      aria-disabled="true"
+                      style="font-weight: bold; color: red"
+                      aria-current="page"
+                      aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
+                    >
+                      {{- part.title -}}
+                    </a>
+                  {%- else -%}
+                    <span>{{ part.title }}</span>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if paginate.next -%}
+                <a
+                  href="{{ paginate.next.url }}{{ anchor }}"
+                  onclick="event.preventDefault(); getSection('{{ paginate.next.url }}');"
+                  aria-label="{{ 'general.pagination.next' | t }}"
+                >
+                  <span>>></span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
           </div>
         {%- endif -%}
       </div>
