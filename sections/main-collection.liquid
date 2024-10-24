@@ -16,8 +16,6 @@
 
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 <style>
-
-
   .breadcrumb {
     margin-bottom: 20px;
   }
@@ -220,17 +218,17 @@
       grid-template-columns: repeat(4, 1fr);
     }
   }
-
 </style>
 <div class="container" id="ProductGridContainer">
-  <h1>Women's Apparel</h1>
+  <h1>{{ collection.title }}</h1>
   <div class="main-content">
     <aside class="sidebar">
-      <div class="results-count">167 results</div>
-      <div class="filter-section">
-        <h3>Availability</h3>
-        <label><input type="checkbox" checked> In stock (167)</label><br>
-        <label><input type="checkbox"> Out of stock (23)</label>
+      <div class="results-count">
+        {%- if collection.products_count == collection.all_products_count -%}
+          {{ collection.products_count }} products
+        {% else %}
+          {{ collection.products_count }} of {{ collection.all_products_count }}
+        {% endif %}
       </div>
 
       <div class="filter-section">
@@ -241,42 +239,40 @@
           <input type="text" class="price-input" value="$300">
         </div>
       </div>
-
-      <div class="filter-section">
-        <h3>Product type</h3>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label>
-      </div>
-
-      <div class="filter-section">
-        <h3>Color</h3>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label>
-      </div>
-
-      <div class="filter-section">
-        <h3>Size</h3>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label><br>
-        <label><input type="checkbox">Automotive</label><br>
-        <label><input type="checkbox">Baby</label>
-      </div>
+      {% for f in collection.filters %}
+        <div class="filter-section">
+          <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
+            {{ f.label }}
+            {% if f.active_values.size > 0 %}
+              ({{ f.active_values.size }})
+              <a
+                onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
+                href="{{ f.url_to_remove }}"
+                >reset
+              </a>
+            {% endif %}
+          </h3>
+          <div style="display: block">
+            {% for v in f.values %}
+              <label
+                ><input
+                  type="checkbox"
+                  {% if v.active %}
+                    checked
+                    onclick="getSection('{{ v.url_to_remove }}')"
+                  {% else %}
+                    onclick="getSection('{{ v.url_to_add }}')"
+                  {% endif -%}
+                  {% if v.count == 0 and v.active == false %}
+                    disabled
+                  {% endif -%}
+                >
+                {{- v.label }} ({{ v.count }})</label
+              ><br>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
     </aside>
 
     <div class="product-grid-container">
@@ -292,12 +288,26 @@
       </div>
 
       <div class="filters">
-        <div class="filter">Clear all filters</div>
-        <div class="filter">Shoe <span class="filter-close">×</span></div>
-        <div class="filter">Sweatshirt <span class="filter-close">×</span></div>
-        <div class="filter">Top <span class="filter-close">×</span></div>
-        <div class="filter">In stock <span class="filter-close">×</span></div>
-        <div class="filter">$0-300 <span class="filter-close">×</span></div>
+        <div class="filter" onclick="getSection('{{ collection.url }}')">
+          Clear all filters
+          <span
+            class="filter-close"
+            onclick="getSection('{{ collection.url }}')"
+            >×</span
+          >
+        </div>
+        {%- for f in collection.filters -%}
+          {% for v in f.active_values %}
+            <div class="filter">
+              {{ f.label | escape }}: {{ v.label | escape -}}
+              <span
+                class="filter-close"
+                onclick="getSection('{{ v.url_to_remove }}')"
+                >×</span
+              >
+            </div>
+          {% endfor %}
+        {%- endfor -%}
       </div>
       <div class="product-grid">
         <div class="product-card">
