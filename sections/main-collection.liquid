@@ -236,7 +236,7 @@
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
                   <a
-                    onclick="event.preventDefault(); getSection('{{ f.url_to_remove }}');"
+                    onclick="event.preventDefault(); renderSection('{{ f.url_to_remove }}');"
                     href="{{ f.url_to_remove }}"
                     >reset
                   </a>
@@ -249,9 +249,9 @@
                       type="checkbox"
                       {% if v.active %}
                         checked
-                        onclick="getSection('{{ v.url_to_remove }}')"
+                        onclick="renderSection('{{ v.url_to_remove }}')"
                       {% else %}
-                        onclick="getSection('{{ v.url_to_add }}')"
+                        onclick="renderSection('{{ v.url_to_add }}')"
                       {% endif -%}
                       {% if v.count == 0 and v.active == false %}
                         disabled
@@ -298,9 +298,9 @@
             endfor
           %}
           {% if has_active_filters %}
-            <div class="filter" onclick="getSection('{{ collection.url }}')">
+            <div class="filter" onclick="renderSection('{{ collection.url }}')">
               Clear all filters
-              <span class="filter-close" onclick="getSection('{{ collection.url }}')">×</span>
+              <span class="filter-close" onclick="renderSection('{{ collection.url }}')">×</span>
             </div>
           {% endif %}
 
@@ -308,7 +308,7 @@
             {% for v in f.active_values %}
               <div class="filter">
                 {{ f.label | escape }}: {{ v.label | escape -}}
-                <span class="filter-close" onclick="getSection('{{ v.url_to_remove }}')">×</span>
+                <span class="filter-close" onclick="renderSection('{{ v.url_to_remove }}')">×</span>
               </div>
             {% endfor %}
           {%- endfor -%}
@@ -351,7 +351,7 @@
           <div class="pagination">
             {%- if paginate.parts.size > 0 -%}
               {%- if paginate.previous -%}
-                <a onclick="event.preventDefault(); getSection('{{ paginate.previous.url }}');"
+                <a onclick="event.preventDefault(); renderSection('{{ paginate.previous.url }}');"
                    href="{{ paginate.previous.url }}{{ anchor }}"
                    aria-label="{{ 'general.pagination.previous' | t }}">
                   <span><<</span>
@@ -362,7 +362,7 @@
                 {%- if part.is_link -%}
                   <a
                     href="{{ part.url }}{{ anchor }}"
-                    onclick="event.preventDefault(); getSection('{{ part.url }}');"
+                    onclick="event.preventDefault(); renderSection('{{ part.url }}');"
                     aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
                   >
                     {{- part.title -}}
@@ -387,7 +387,7 @@
               {%- if paginate.next -%}
                 <a
                   href="{{ paginate.next.url }}{{ anchor }}"
-                  onclick="event.preventDefault(); getSection('{{ paginate.next.url }}');"
+                  onclick="event.preventDefault(); renderSection('{{ paginate.next.url }}');"
                   aria-label="{{ 'general.pagination.next' | t }}"
                 >
                   <span>>></span>
@@ -418,7 +418,7 @@
 
     let state = new FiltersState();
 
-    function toggleFilterCollapse(event) {
+    toggleFilterCollapse = (event) => {
       event.target.classList.toggle('active');
       var content = event.target.nextElementSibling;
       if (content) {
@@ -436,15 +436,15 @@
   {% endif %}
 
   {% if section.settings.enable_sorting %}
-    function sortBy(sortBy) {
+    sortBy = (sortBy) => {
       var url = new URL(window.location.href);
       url.searchParams.set('sort_by', sortBy);
       url.searchParams.delete('page');
-      getSection(url.href);
+      renderSection(url.href);
     }
   {% endif %}
 
-  function getSection(url) {
+  renderSection = (url) => {
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => {
