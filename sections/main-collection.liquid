@@ -218,6 +218,9 @@
   }
 </style>
 
+{% liquid
+  assign collapse_filters = section.settings.collapse_filters
+%}
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 <div class="container section-{{ section.id }}-padding" id="ProductGridContainer">
   <h1>{{ collection.title }}</h1>
@@ -227,7 +230,9 @@
         <aside class="sidebar">
           {% for f in collection.filters %}
             <div class="filter-section">
-              <h3 class="collapsible" id="{{ f.param_name }}" onclick="toggleFilterCollapse(event)">
+              <h3 class="collapsible {% if collapse_filters %}active{% endif %}" 
+                  id="{{ f.param_name }}" 
+                  onclick="toggleFilterCollapse(event)">
                 {{ f.label }}
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
@@ -238,7 +243,7 @@
                   </a>
                 {% endif %}
               </h3>
-              <div style="display: none">
+              <div style="{% if collapse_filters %}display: none{% else %}display: block{% endif %}">
                 {% for v in f.values %}
                   <label>
                     <input
@@ -850,6 +855,12 @@
       "default": "horizontal",
       "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
       "info": "t:sections.main-collection-product-grid.settings.filter_type.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "collapse_filters",
+      "default": true,
+      "label": "Collapse filters by default"
     },
     {
       "type": "checkbox",
