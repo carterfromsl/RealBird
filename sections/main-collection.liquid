@@ -264,21 +264,24 @@
       <div class="product-grid-container">
         {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
         <div class="controls">
-          <div class="sort-dropdown">
-            <button class="sort-button">Sort By</button>
-            <div class="sort-content">
-              {%- for option in collection.sort_options -%}
-                <a
-                  {% if option.value == sort_by %}
-                    style="font-weight: bold"
-                  {% endif %}
-                  href="#"
-                >
-                  {{- option.value | escape -}}
-                </a>
-              {%- endfor -%}
+          {%- if section.settings.enable_sorting -%}
+            <div class="sort-dropdown">
+              <button class="sort-button">Sort By</button>
+              <div class="sort-content">
+                {%- for option in collection.sort_options -%}
+                  <a
+                    {% if option.value == sort_by %}
+                      style="font-weight: bold"
+                    {% endif %}
+                    href="#"
+                    onclick="event.preventDefault(); sortBy('{{ option.value }}');"
+                  >
+                    {{- option.name | escape -}}
+                  </a>
+                {%- endfor -%}
+              </div>
             </div>
-          </div>
+          {%- endif -%}
         </div>
 
         <div class="filters">
@@ -615,15 +618,24 @@
     console.log('clicked', event.target);
     event.target.classList.toggle('active');
     var content = event.target.nextElementSibling;
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-    } else {
-      content.style.display = 'block';
+    if  (content) {
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+      } else {
+        content.style.display = 'block';
+      }
     }
   }
 
+  function sortBy(sortBy) {
+    var url = new URL(window.location.href);
+    url.searchParams.set('sort_by', sortBy);
+    url.searchParams.delete('page');
+    getSection(url.href);
+  }
+
   function getSection(url) {
-    fetch(url) //+ '&section_id={{ section.id }}'
+    fetch(url)
       .then((response) => response.text())
       .then((responseText) => {
         history.pushState({}, '', url);
