@@ -227,7 +227,7 @@
         <aside class="sidebar">
           {% for f in collection.filters %}
             <div class="filter-section">
-              <h3 class="collapsible active" id="{{ f.param_name }}" onclick="toggleFilterCollapse(event)">
+              <h3 class="collapsible" id="{{ f.param_name }}" onclick="toggleFilterCollapse(event)">
                 {{ f.label }}
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
@@ -683,6 +683,7 @@
       });
   }
 </script>
+
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
