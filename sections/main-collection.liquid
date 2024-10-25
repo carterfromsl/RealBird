@@ -227,7 +227,7 @@
         <aside class="sidebar">
           {% for f in collection.filters %}
             <div class="filter-section">
-              <h3 class="collapsible active" onclick="onFilterCollapseChange(event)">
+              <h3 class="collapsible active" id="{{ f.param_name }}" onclick="toggleFilterCollapse(event)">
                 {{ f.label }}
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
@@ -408,7 +408,7 @@
       </div>
       {% for f in collection.filters %}
         <div class="filter">
-          <h3 class="collapsible" onclick="onFilterCollapseChange(event)">
+          <h3 class="collapsible" onclick="toggleFilterCollapse(event)">
             {{ f.label }}
             {% if f.active_values.size > 0 %}
               ({{ f.active_values.size }})
@@ -614,34 +614,72 @@
 </div>
 
 <script>
-  function onFilterCollapseChange(event) {
-    console.log('clicked', event.target);
-    event.target.classList.toggle('active');
-    var content = event.target.nextElementSibling;
-    if  (content) {
-      if (content.style.display === 'block') {
-        content.style.display = 'none';
-      } else {
-        content.style.display = 'block';
+  {% if section.settings.enable_filtering %}
+
+    class FiltersState {
+      filters = [];
+      update = (open, id) => {
+        let filter = this.filters.find(f => f.id === id);
+        if (filter) {
+          filter.open = open;
+        } else {  
+          this.filters.push({ id: id, open: open });
+        }
       }
     }
-  }
 
-  function sortBy(sortBy) {
-    var url = new URL(window.location.href);
-    url.searchParams.set('sort_by', sortBy);
-    url.searchParams.delete('page');
-    getSection(url.href);
-  }
+    let state = new FiltersState();
+
+    function toggleFilterCollapse(event) {
+      event.target.classList.toggle('active');
+      var content = event.target.nextElementSibling;
+      if (content) {
+
+        if (content.style.display === 'block') {
+          state.update(false, event.target.id);
+          content.style.display = 'none';
+        } else {
+          state.update(true, event.target.id);
+          content.style.display = 'block';
+        }
+      }
+    }
+
+  {% endif %}
+
+  {% if section.settings.enable_sorting %}
+    function sortBy(sortBy) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort_by', sortBy);
+      url.searchParams.delete('page');
+      getSection(url.href);
+    }
+  {% endif %}
 
   function getSection(url) {
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => {
         history.pushState({}, '', url);
-        document.getElementById('ProductGridContainer').innerHTML = new DOMParser()
-          .parseFromString(responseText, 'text/html')
-          .getElementById('ProductGridContainer').innerHTML;
+        let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
+        
+        {% if section.settings.enable_filtering %}
+          state.filters.forEach(f => {
+            let element = responseHtml.getElementById(f.id);
+            if (element) {
+              if (f.open) {
+                element.nextElementSibling.style.display = 'block';
+                element.classList.add('active');
+              } else {
+                element.nextElementSibling.style.display = 'none';
+                element.classList.remove('active');
+              }
+            }
+          });
+        {% endif %}
+
+        let html = responseHtml.getElementById('ProductGridContainer').innerHTML;
+        document.getElementById('ProductGridContainer').innerHTML = html;
       });
   }
 </script>
