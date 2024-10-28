@@ -216,7 +216,20 @@
     }
   }
 </style>
+<style>
+  .color-swatches {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+  }
 
+  .color-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+  }
+</style>
 {% liquid
   assign collapse_filters = section.settings.collapse_filters
 %}
@@ -325,6 +338,9 @@
             <p>Nothing Here</p>
           {%- else -%}
             {%- for product in collection.products -%}
+              <script>
+                console.log({{ product | json}})
+              </script>
               <div class="product-card">
                 <img
                   src="{{ product.featured_image | image_url: width: 533 }}"
@@ -338,6 +354,11 @@
                 {% endif %}
                   
                 <div class="product-name">{{ product.title }}</div>
+                <div class="color-swatches">
+                  {%- for variant in product.variants -%}
+                    <span id="{{ variant.id }}" class="color-swatch" style="background-color: {{ variant.title | handleize }}"></span>
+                  {%- endfor -%}
+                </div>
                 <div class="product-price">
                   <span class="product-original-price">{{ product.price_max | money }}</span>
                   {{ product.compare_at_price | money }}
@@ -419,6 +440,7 @@
     let state = new FiltersState();
 
     toggleFilterCollapse = (event) => {
+      
       event.target.classList.toggle('active');
       var content = event.target.nextElementSibling;
       if (content) {
@@ -471,7 +493,7 @@
       });
   }
 </script>
-
+++
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
