@@ -249,9 +249,8 @@
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
                   <a
-                    data-url="{{ f.url_to_remove }}"
+                    data-render-section-url="{{ f.url_to_remove }}"
                     href="{{ f.url_to_remove }}"
-                    class="render-section-link"
                     >reset
                   </a>
                 {% endif %}
@@ -261,12 +260,11 @@
                   <label>
                     <input
                       type="checkbox"
-                      class="render-section-checkbox"
                       {% if v.active %}
                         checked
-                        data-url="{{ v.url_to_remove }}"
+                        data-render-section-checkbox-url="{{ v.url_to_remove }}"
                       {% else %}
-                        data-url="{{ v.url_to_add }}"
+                        data-render-section-checkbox-url="{{ v.url_to_add }}"
                       {% endif -%}
                       {% if v.count == 0 and v.active == false %}
                         disabled
@@ -315,7 +313,7 @@
           {% if has_active_filters %}
             <div class="filter">
               Clear all filters
-              <span class="filter-close render-section-link" data-url="{{ collection.url }}"  >×</span>
+              <span class="filter-close" data-render-section-url="{{ collection.url }}"  >×</span>
             </div>
           {% endif %}
 
@@ -323,8 +321,8 @@
             {% for v in f.active_values %}
               <div class="filter">
                 {{ f.label | escape }}: {{ v.label | escape -}}
-                <span class="filter-close render-section-link" 
-                      data-url="{{ v.url_to_remove }}">×
+                <span class="filter-close" 
+                      data-render-section-url="{{ v.url_to_remove }}">×
                 </span>
               </div>
             {% endfor %}
@@ -375,8 +373,7 @@
               {%- if paginate.previous -%}
                 <a
                   href="{{ paginate.previous.url }}{{ anchor }}"
-                  data-url="{{ paginate.previous.url }}"
-                  class="render-section-link"
+                  data-render-section-url="{{ paginate.previous.url }}"
                   aria-label="{{ 'general.pagination.previous' | t }}">
                   <span><<</span>
                 </a>
@@ -386,8 +383,7 @@
                 {%- if part.is_link -%}
                   <a
                     href="{{ part.url }}{{ anchor }}"
-                    data-url="{{ part.url }}"
-                    class="render-section-link"
+                    data-render-section-url="{{ part.url }}"
                     aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
                   >
                     {{- part.title -}}
@@ -412,8 +408,7 @@
               {%- if paginate.next -%}
                 <a
                   href="{{ paginate.next.url }}{{ anchor }}"
-                  data-url="{{ paginate.next.url }}"
-                  class="render-section-link"
+                  data-render-section-url="{{ paginate.next.url }}"
                   aria-label="{{ 'general.pagination.next' | t }}"
                 >
                   <span>>></span>
@@ -431,15 +426,15 @@
   window.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("ProductGridContainer");
     container.addEventListener("change", (event) => {
-      if (event.target.matches('.render-section-checkbox[data-url]')) {
-        renderSection(event.target.dataset.url);
+      if (event.target.matches('[data-render-section-checkbox-url]')) {
+        renderSection(event.target.dataset.renderSectionCheckboxUrl);
       }
     });
     
     container.addEventListener("click", (event) => {
-      if (event.target.matches('.render-section-link[data-url]')) {
+      if (event.target.matches('[data-render-section-url]')) {
         event.preventDefault();
-        renderSection(event.target.dataset.url);
+        renderSection(event.target.dataset.renderSectionUrl);
       }
     });
   })
