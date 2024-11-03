@@ -243,8 +243,8 @@
           {% for f in collection.filters %}
             <div class="filter-section">
               <h3 class="collapsible {% if collapse_filters %}active{% endif %}" 
-                  id="{{ f.param_name }}" 
-                  onclick="toggleFilterCollapse(event)">
+                  id="{{ f.param_name }}"
+                  data-toggle-collapse>
                 {{ f.label }}
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
@@ -423,27 +423,6 @@
 </div>
 
 <script>
-  window.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("ProductGridContainer");
-    container.addEventListener("change", (event) => {
-      if (event.target.matches('[data-render-section-checkbox-url]')) {
-        renderSection(event.target.dataset.renderSectionCheckboxUrl);
-      }
-    });
-    
-    container.addEventListener("click", (event) => {
-      if (event.target.matches('[data-render-section-url]')) {
-        event.preventDefault();
-        renderSection(event.target.dataset.renderSectionUrl);
-      }
-
-      if (event.target.matches('[data-sort-by]')) {
-        event.preventDefault();
-        sortBy(event.target.dataset.sortBy);
-      }
-    });
-  })
-  
 
   {% if section.settings.enable_filtering %}
 
@@ -479,15 +458,6 @@
 
   {% endif %}
 
-  {% if section.settings.enable_sorting %}
-    sortBy = (sortBy) => {
-      var url = new URL(window.location.href);
-      url.searchParams.set('sort_by', sortBy);
-      url.searchParams.delete('page');
-      renderSection(url.href);
-    }
-  {% endif %}
-
   renderSection = (url) => {
     fetch(url)
       .then((response) => response.text())
@@ -514,6 +484,41 @@
         document.getElementById('ProductGridContainer').innerHTML = html;
       });
   }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("ProductGridContainer");
+    
+    {% if section.settings.enable_filtering %}
+      container.addEventListener("change", (event) => {
+        if (event.target.matches('[data-render-section-checkbox-url]')) {
+          renderSection(event.target.dataset.renderSectionCheckboxUrl);
+        }
+      });
+    {% endif %}
+
+    container.addEventListener("click", (event) => {
+      if (event.target.matches('[data-render-section-url]')) {
+        event.preventDefault();
+        renderSection(event.target.dataset.renderSectionUrl);
+      }
+
+      {% if section.settings.enable_sorting %}
+        if (event.target.matches('[data-sort-by]')) {
+          event.preventDefault();
+          var url = new URL(window.location.href);
+          url.searchParams.set('sort_by', event.target.dataset.sortBy);
+          url.searchParams.delete('page');
+          renderSection(url.href);
+        }
+      {% endif %}
+
+      {% if section.settings.enable_filtering %}
+        if (event.target.matches('[data-toggle-collapse]')) {
+          toggleFilterCollapse(event);
+        }
+      {% endif %}
+    });
+  })
 </script>
 
 
