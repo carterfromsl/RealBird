@@ -249,8 +249,10 @@
                 {% if f.active_values.size > 0 %}
                   ({{ f.active_values.size }})
                   <a
-                    onclick="event.preventDefault(); renderSection('{{ f.url_to_remove }}');"
+                    {% comment %} onclick="event.preventDefault(); renderSection('{{ f.url_to_remove }}');" {% endcomment %}
+                    data-url="{{ f.url_to_remove }}"
                     href="{{ f.url_to_remove }}"
+                    class="render-section-link"
                     >reset
                   </a>
                 {% endif %}
@@ -260,6 +262,7 @@
                   <label>
                     <input
                       type="checkbox"
+                      class="render-section-checkbox"
                       {% if v.active %}
                         checked
                         data-url="{{ v.url_to_remove }}"
@@ -371,9 +374,12 @@
           <div class="pagination">
             {%- if paginate.parts.size > 0 -%}
               {%- if paginate.previous -%}
-                <a onclick="event.preventDefault(); renderSection('{{ paginate.previous.url }}');"
-                   href="{{ paginate.previous.url }}{{ anchor }}"
-                   aria-label="{{ 'general.pagination.previous' | t }}">
+                <a 
+                  {% comment %} onclick="event.preventDefault(); renderSection('{{ paginate.previous.url }}');" {% endcomment %}
+                  href="{{ paginate.previous.url }}{{ anchor }}"
+                  data-url="{{ paginate.previous.url }}"
+                  class="render-section-link"
+                  aria-label="{{ 'general.pagination.previous' | t }}">
                   <span><<</span>
                 </a>
               {%- endif -%}
@@ -382,7 +388,9 @@
                 {%- if part.is_link -%}
                   <a
                     href="{{ part.url }}{{ anchor }}"
-                    onclick="event.preventDefault(); renderSection('{{ part.url }}');"
+                    data-url="{{ part.url }}"
+                    class="render-section-link"
+                    {% comment %} onclick="event.preventDefault(); renderSection('{{ part.url }}');" {% endcomment %}
                     aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
                   >
                     {{- part.title -}}
@@ -407,7 +415,9 @@
               {%- if paginate.next -%}
                 <a
                   href="{{ paginate.next.url }}{{ anchor }}"
-                  onclick="event.preventDefault(); renderSection('{{ paginate.next.url }}');"
+                  data-url="{{ paginate.next.url }}"
+                  class="render-section-link"
+                  {% comment %} onclick="event.preventDefault(); renderSection('{{ paginate.next.url }}');" {% endcomment %}
                   aria-label="{{ 'general.pagination.next' | t }}"
                 >
                   <span>>></span>
@@ -422,12 +432,21 @@
 </div>
 
 <script>
-  window.addEventListener("DOMContentLoaded", function () {
+  window.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("ProductGridContainer");
     container.addEventListener("change", (event) => {
-      //console.log("TARGET",event.target.dataset.url);
-      renderSection(event.target.dataset.url);
-    })
+      if (event.target.matches('.render-section-checkbox[data-url]')) {
+        renderSection(event.target.dataset.url);
+      }
+    });
+    
+    container.addEventListener("click", (event) => {
+      if (event.target.matches('.render-section-link[data-url]')) {
+        event.preventDefault();
+        renderSection(event.target.dataset.url);
+      }
+    });
+    
   })
   
 
