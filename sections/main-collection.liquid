@@ -234,7 +234,9 @@
   assign collapse_filters = section.settings.collapse_filters
 %}
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
-<div class="container section-{{ section.id }}-padding" id="ProductGridContainer">
+<div class="container section-{{ section.id }}-padding" 
+     id="ProductGridContainer"
+     data-section-id="{{ section.id }}">
   <h1>{{ collection.title }}</h1>
   <div class="main-content">
     {%- paginate collection.products by section.settings.products_per_page -%}
@@ -487,7 +489,7 @@
 
   window.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("ProductGridContainer");
-    
+
     {% if section.settings.enable_filtering %}
       container.addEventListener("change", (event) => {
         if (event.target.matches('[data-render-section-checkbox-url]')) {
