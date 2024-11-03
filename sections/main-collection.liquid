@@ -291,7 +291,7 @@
                       style="font-weight: bold"
                     {% endif %}
                     href="#"
-                    onclick="event.preventDefault(); sortBy('{{ option.value }}');"
+                    data-sort-by="{{ option.value }}"
                   >
                     {{- option.name | escape -}}
                   </a>
@@ -436,6 +436,11 @@
         event.preventDefault();
         renderSection(event.target.dataset.renderSectionUrl);
       }
+
+      if (event.target.matches('[data-sort-by]')) {
+        event.preventDefault();
+        sortBy(event.target.dataset.sortBy);
+      }
     });
   })
   
@@ -510,7 +515,8 @@
       });
   }
 </script>
-++
+
+
 {% schema %}
 {
   "name": "t:sections.main-collection-product-grid.name",
