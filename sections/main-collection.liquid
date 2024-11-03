@@ -262,9 +262,11 @@
                       type="checkbox"
                       {% if v.active %}
                         checked
-                        onclick="renderSection('{{ v.url_to_remove }}')"
+                        data-url="{{ v.url_to_remove }}"
+                        {% comment %} onclick="renderSection('{{ v.url_to_remove }}')" {% endcomment %}
                       {% else %}
-                        onclick="renderSection('{{ v.url_to_add }}')"
+                        data-url="{{ v.url_to_add }}"
+                        {% comment %} onclick="renderSection('{{ v.url_to_add }}')" {% endcomment %}
                       {% endif -%}
                       {% if v.count == 0 and v.active == false %}
                         disabled
@@ -338,9 +340,6 @@
             <p>Nothing Here</p>
           {%- else -%}
             {%- for product in collection.products -%}
-              <script>
-                console.log({{ product | json}})
-              </script>
               <div class="product-card">
                 <img
                   src="{{ product.featured_image | image_url: width: 533 }}"
@@ -354,11 +353,11 @@
                 {% endif %}
                   
                 <div class="product-name">{{ product.title }}</div>
-                <div class="color-swatches">
+                {% comment %} <div class="color-swatches">
                   {%- for variant in product.variants -%}
                     <span id="{{ variant.id }}" class="color-swatch" style="background-color: {{ variant.title | handleize }}"></span>
                   {%- endfor -%}
-                </div>
+                </div> {% endcomment %}
                 <div class="product-price">
                   <span class="product-original-price">{{ product.price_max | money }}</span>
                   {{ product.compare_at_price | money }}
@@ -423,6 +422,15 @@
 </div>
 
 <script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("ProductGridContainer");
+    container.addEventListener("change", (event) => {
+      //console.log("TARGET",event.target.dataset.url);
+      renderSection(event.target.dataset.url);
+    })
+  })
+  
+
   {% if section.settings.enable_filtering %}
 
     class FiltersState {
