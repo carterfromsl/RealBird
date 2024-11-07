@@ -129,24 +129,7 @@
     margin-right: 5px;
   }
 
-  .pagination {
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-  }
-
-  .pagination a {
-    color: #007bff;
-    padding: 8px 16px;
-    text-decoration: none;
-    border: 1px solid #ddd;
-    margin: 0 4px;
-    border-radius: 4px;
-  }
-
-  .pagination a:hover {
-    background-color: #ddd;
-  }
+  
 
   .controls {
     display: flex;
@@ -370,55 +353,7 @@
           {%- endif -%}
         </div>
         {%- if paginate.pages > 1 -%}
-          {% comment %} {% render 'pagination', paginate: paginate, anchor: '' %} {% endcomment %}
-          <div class="pagination">
-            {%- if paginate.parts.size > 0 -%}
-              {%- if paginate.previous -%}
-                <a
-                  href="{{ paginate.previous.url }}{{ anchor }}"
-                  data-render-section-url="{{ paginate.previous.url }}"
-                  aria-label="{{ 'general.pagination.previous' | t }}">
-                  <span><<</span>
-                </a>
-              {%- endif -%}
-
-              {%- for part in paginate.parts -%}
-                {%- if part.is_link -%}
-                  <a
-                    href="{{ part.url }}{{ anchor }}"
-                    data-render-section-url="{{ part.url }}"
-                    aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
-                  >
-                    {{- part.title -}}
-                  </a>
-                {%- else -%}
-                  {%- if part.title == paginate.current_page -%}
-                    <a
-                      role="link"
-                      aria-disabled="true"
-                      style="font-weight: bold; color: red"
-                      aria-current="page"
-                      aria-label="{{ 'general.pagination.page' | t: number: part.title }}"
-                    >
-                      {{- part.title -}}
-                    </a>
-                  {%- else -%}
-                    <span>{{ part.title }}</span>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-
-              {%- if paginate.next -%}
-                <a
-                  href="{{ paginate.next.url }}{{ anchor }}"
-                  data-render-section-url="{{ paginate.next.url }}"
-                  aria-label="{{ 'general.pagination.next' | t }}"
-                >
-                  <span>>></span>
-                </a>
-              {%- endif -%}
-            {%- endif -%}
-          </div>
+          {% render 'pagination', paginate: paginate, anchor: '' %}
         {%- endif -%}
       </div>
     {%- endpaginate -%}
