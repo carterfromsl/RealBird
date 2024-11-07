@@ -326,29 +326,7 @@
             <p>Nothing Here</p>
           {%- else -%}
             {%- for product in collection.products -%}
-              <div class="product-card">
-                <img
-                  src="{{ product.featured_image | image_url: width: 533 }}"
-                  alt="{{ product.title }}"
-                  class="product-image"
-                  width="{{ product.featured_image.width }}"
-                  height="{{ product.featured_image.height }}"
-                >
-                {% if section.settings.show_vendor %}
-                  <div class="product-brand">{{ product.vendor }}</div>
-                {% endif %}
-                  
-                <div class="product-name">{{ product.title }}</div>
-                {% comment %} <div class="color-swatches">
-                  {%- for variant in product.variants -%}
-                    <span id="{{ variant.id }}" class="color-swatch" style="background-color: {{ variant.title | handleize }}"></span>
-                  {%- endfor -%}
-                </div> {% endcomment %}
-                <div class="product-price">
-                  <span class="product-original-price">{{ product.price_max | money }}</span>
-                  {{ product.compare_at_price | money }}
-                </div>
-              </div>
+              {% render 'card-product', card_product: product, show_vendor: section.settings.show_vendor,  %}
             {%- endfor -%}
           {%- endif -%}
         </div>
