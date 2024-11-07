@@ -312,6 +312,7 @@
               endif
             endfor
           %}
+          
           {% if has_active_filters %}
             <div class="filter">
               Clear all filters
@@ -427,40 +428,61 @@
 <script>
 
   {% if section.settings.enable_filtering %}
-
-    class FiltersState {
-      filters = [];
-      update = (open, id) => {
-        let filter = this.filters.find(f => f.id === id);
-        if (filter) {
-          filter.open = open;
-        } else {  
-          this.filters.push({ id: id, open: open });
-        }
+  class FiltersState {
+    constructor() {
+      this.filters = [];
+    }
+    update = (open, id) => {
+      let filter = this.filters.find(f => f.id === id);
+      if (filter) {
+        filter.open = open;
+      } else {  
+        this.filters.push({ id: id, open: open });
       }
     }
+  }
 
-    let state = new FiltersState();
+  const state = new FiltersState();
 
-    toggleFilterCollapse = (event) => {
-      
-      event.target.classList.toggle('active');
-      var content = event.target.nextElementSibling;
-      if (content) {
+  const toggleFilterCollapse = (event) => {
+    
+    event.target.classList.toggle('active');
+    var content = event.target.nextElementSibling;
+    if (content) {
 
-        if (content.style.display === 'block') {
-          state.update(false, event.target.id);
-          content.style.display = 'none';
-        } else {
-          state.update(true, event.target.id);
+      if (content.style.display === 'block') {
+        state.update(false, event.target.id);
+        content.style.display = 'none';
+      } else {
+        state.update(true, event.target.id);
+        content.style.display = 'block';
+      }
+    }
+  }
+
+  const updateFiltersState = (responseHtml) => {
+    state.filters.forEach(f => {
+      const element = responseHtml.getElementById(f.id);
+      if (element) {
+        const content = element.nextElementSibling;
+        if (f.open) {
           content.style.display = 'block';
+          element.classList.add('active');
+        } else {
+          content.style.display = 'none';
+          element.classList.remove('active');
         }
       }
-    }
-
+    });
+  };
   {% endif %}
 
-  renderSection = (url) => {
+  const updateProductGrid = (responseHtml) => {
+    const html = responseHtml.getElementById('ProductGridContainer').innerHTML;
+    document.getElementById('ProductGridContainer').innerHTML = html;
+  };
+
+  const renderSection = (url) => {
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => {
@@ -468,34 +490,21 @@
         let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
         
         {% if section.settings.enable_filtering %}
-          state.filters.forEach(f => {
-            let element = responseHtml.getElementById(f.id);
-            if (element) {
-              if (f.open) {
-                element.nextElementSibling.style.display = 'block';
-                element.classList.add('active');
-              } else {
-                element.nextElementSibling.style.display = 'none';
-                element.classList.remove('active');
-              }
-            }
-          });
+        updateFiltersState(responseHtml);
         {% endif %}
-
-        let html = responseHtml.getElementById('ProductGridContainer').innerHTML;
-        document.getElementById('ProductGridContainer').innerHTML = html;
+        updateProductGrid(responseHtml);
       });
   }
 
-  window.addEventListener("DOMContentLoaded", () => {
+  const setupEventListeners = () => {
     const container = document.getElementById("ProductGridContainer");
 
     {% if section.settings.enable_filtering %}
-      container.addEventListener("change", (event) => {
-        if (event.target.matches('[data-render-section-checkbox-url]')) {
-          renderSection(event.target.dataset.renderSectionCheckboxUrl);
-        }
-      });
+    container.addEventListener("change", (event) => {
+      if (event.target.matches('[data-render-section-checkbox-url]')) {
+        renderSection(event.target.dataset.renderSectionCheckboxUrl);
+      }
+    });
     {% endif %}
 
     container.addEventListener("click", (event) => {
@@ -505,22 +514,24 @@
       }
 
       {% if section.settings.enable_sorting %}
-        if (event.target.matches('[data-sort-by]')) {
-          event.preventDefault();
-          var url = new URL(window.location.href);
-          url.searchParams.set('sort_by', event.target.dataset.sortBy);
-          url.searchParams.delete('page');
-          renderSection(url.href);
-        }
+      if (event.target.matches('[data-sort-by]')) {
+        event.preventDefault();
+        var url = new URL(window.location.href);
+        url.searchParams.set('sort_by', event.target.dataset.sortBy);
+        url.searchParams.delete('page');
+        renderSection(url.href);
+      }
       {% endif %}
 
       {% if section.settings.enable_filtering %}
-        if (event.target.matches('[data-toggle-collapse]')) {
-          toggleFilterCollapse(event);
-        }
+      if (event.target.matches('[data-toggle-collapse]')) {
+        toggleFilterCollapse(event);
+      }
       {% endif %}
     });
-  })
+  }
+
+  window.addEventListener("DOMContentLoaded", setupEventListeners);
 </script>
 
 
