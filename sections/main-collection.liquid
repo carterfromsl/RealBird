@@ -368,41 +368,14 @@
 
   const toggleFilterCollapse = (event) => {
     const details = event.target.closest('details');
-
-    console.log(event.target);
-    //console.log(.open);
     state.update(!details.open, details.id);
-    console.log(state.filters);
-
-    {% comment %} event.target.classList.toggle('active');
-    var content = event.target.nextElementSibling;
-    if (content) {
-
-      if (content.style.display === 'block') {
-        state.update(false, event.target.id);
-        content.style.display = 'none';
-      } else {
-        state.update(true, event.target.id);
-        content.style.display = 'block';
-      }
-    } {% endcomment %}
   }
 
   const updateFiltersState = (responseHtml) => {
     state.filters.forEach(f => {
       const element = responseHtml.getElementById(f.id);
       if (element) {
-
         element.open = f.open;
-
-        {% comment %} const content = element.nextElementSibling;
-        if (f.open) {
-          content.style.display = 'block';
-          element.classList.add('active');
-        } else {
-          content.style.display = 'none';
-          element.classList.remove('active');
-        } {% endcomment %}
       }
     });
   };
