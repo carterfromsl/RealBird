@@ -1,0 +1,45 @@
+<aside class="sidebar">
+  {% for f in results.filters %}
+    <div class="filter-section">
+      <details
+        id="{{ f.param_name }}"
+        {% if collapse_filters == false %}
+          open
+        {% endif %}
+      >
+        <summary data-toggle-collapse>
+          <span data-toggle-collapse>
+            {{ f.label }}
+            {% if f.active_values.size > 0 %}
+              ({{ f.active_values.size }})
+              <a
+                data-render-section-url="{{ f.url_to_remove }}"
+                href="{{ f.url_to_remove }}"
+                >reset
+              </a>
+            {% endif %}
+          </span>
+        </summary>
+        <div>
+          {% for v in f.values %}
+            <label>
+              <input
+                type="checkbox"
+                {% if v.active %}
+                  checked
+                  data-render-section-checkbox-url="{{ v.url_to_remove }}"
+                {% else %}
+                  data-render-section-checkbox-url="{{ v.url_to_add }}"
+                {% endif -%}
+                {% if v.count == 0 and v.active == false %}
+                  disabled
+                {% endif -%}
+              >
+              {{- v.label }} ({{ v.count }})</label
+            ><br>
+          {% endfor %}
+        </div>
+      </details>
+    </div>
+  {% endfor %}
+</aside>
