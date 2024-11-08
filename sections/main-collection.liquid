@@ -229,7 +229,6 @@
             <div class="filter-section">
               <details
                 id="{{ f.param_name }}"
-
                 {% if collapse_filters == false %}
                   open
                 {% endif %}
@@ -412,7 +411,6 @@
     {% endif %}
 
     container.addEventListener("click", (event) => {
-      //console.log(event.target);
       if (event.target.matches('[data-render-section-url]')) {
         event.preventDefault();
         renderSection(event.target.dataset.renderSectionUrl);
