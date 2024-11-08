@@ -224,9 +224,9 @@
         {% render 'filters', results: collection, collapse_filters: section.settings.collapse_filters %}
       {% endif %}
       <div class="product-grid-container">
-        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-        <div class="controls">
-          {%- if section.settings.enable_sorting -%}
+        {%- if section.settings.enable_sorting -%}
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          <div class="controls">
             <div class="sort-dropdown">
               <button class="sort-button">Sort By</button>
               <div class="sort-content">
@@ -243,39 +243,41 @@
                 {%- endfor -%}
               </div>
             </div>
-          {%- endif -%}
-        </div>
+          </div>
+        {%- endif -%}
+        {%- if section.settings.enable_filtering -%}
+          <div class="filters">
+            {% liquid
+              assign has_active_filters = false
+              for f in collection.filters
+                if f.active_values.size > 0
+                  assign has_active_filters = true
+                endif
+              endfor
+            %}
 
-        <div class="filters">
-          {% liquid
-            assign has_active_filters = false
-            for f in collection.filters
-              if f.active_values.size > 0
-                assign has_active_filters = true
-              endif
-            endfor
-          %}
-
-          {% if has_active_filters %}
-            <div class="filter">
-              Clear all filters
-              <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
-            </div>
-          {% endif %}
-
-          {%- for f in collection.filters -%}
-            {% for v in f.active_values %}
+            {% if has_active_filters %}
               <div class="filter">
-                {{ f.label | escape }}: {{ v.label | escape -}}
-                <span
-                  class="filter-close"
-                  data-render-section-url="{{ v.url_to_remove }}"
-                  >×
-                </span>
+                Clear all filters
+                <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
               </div>
-            {% endfor %}
-          {%- endfor -%}
-        </div>
+            {% endif %}
+
+            {%- for f in collection.filters -%}
+              {% for v in f.active_values %}
+                <div class="filter">
+                  {{ f.label | escape }}: {{ v.label | escape -}}
+                  <span
+                    class="filter-close"
+                    data-render-section-url="{{ v.url_to_remove }}"
+                    >×
+                  </span>
+                </div>
+              {% endfor %}
+            {%- endfor -%}
+          </div>
+        {% endif %}
+
         <div class="results-count">
           {%- if collection.products_count == collection.all_products_count -%}
             {{ collection.products_count }} products
