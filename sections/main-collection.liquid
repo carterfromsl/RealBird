@@ -48,7 +48,13 @@
 
   .main-content {
     display: flex;
-    flex-direction: column;
+    {%- if section.settings.enable_filtering and section.settings.filter_type == "vertical" -%}
+      flex-direction: row;
+    {%- elsif section.settings.enable_filtering and section.settings.filter_type == "horizontal" -%}
+      flex-direction: column;
+    {% else %}
+      flex-direction: column;
+    {%- endif -%}
   }
 
   .sidebar {
@@ -87,7 +93,7 @@
 
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
 
@@ -103,11 +109,11 @@
     margin-bottom: 10px;
   }
 
-  @media (min-width: 576px) {
+  {% comment %} @media (min-width: 576px) {
     .product-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-  }
+  } {% endcomment %}
 
   .product-brand {
     font-size: 0.9em;
@@ -175,25 +181,11 @@
   }
 
   @media (min-width: 768px) {
-    .main-content {
-      flex-direction: row;
-    }
 
     .sidebar {
       width: 250px;
       margin-right: 20px;
       flex-shrink: 0;
-    }
-
-    .product-grid {
-      flex: 1;
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .product-grid {
-      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>
@@ -211,6 +203,52 @@
     border: 1px solid #ccc;
   }
 </style>
+<style>
+  .filter-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .filter-button {
+    background-color: #f9f9f9;
+    color: black;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .filter-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    max-height: 400px; /* Set maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .filter-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .filter-content ul li {
+    padding: 8px 16px;
+  }
+
+  .filter-content ul li a {
+    color: black;
+    text-decoration: none;
+    display: block;
+  }
+
+  .filter-content ul li a:hover {
+    background-color: #ddd;
+  }
+</style>
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 <div
   class="container section-{{ section.id }}-padding"
@@ -221,7 +259,11 @@
   <div class="main-content">
     {%- paginate collection.products by section.settings.products_per_page -%}
       {%- if section.settings.enable_filtering -%}
-        {% render 'filters', results: collection, collapse_filters: section.settings.collapse_filters %}
+        {% render 'filters',
+          results: collection,
+          collapse_filters: section.settings.collapse_filters,
+          filter_type: section.settings.filter_type
+        %}
       {% endif %}
       <div class="product-grid-container">
         {%- if section.settings.enable_sorting -%}
@@ -301,7 +343,21 @@
     {%- endpaginate -%}
   </div>
 </div>
-
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-button');
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filterContent = button.nextElementSibling;
+        if (filterContent.style.display === 'block') {
+          filterContent.style.display = 'none';
+        } else {
+          filterContent.style.display = 'block';
+        }
+      });
+    });
+  });
+</script>
 <script>
   {% if section.settings.enable_filtering %}
   class FiltersState {
