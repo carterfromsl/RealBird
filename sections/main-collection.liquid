@@ -341,21 +341,7 @@
     {%- endpaginate -%}
   </div>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const filterButtons = document.querySelectorAll('.filter-button');
-    filterButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const filterContent = button.nextElementSibling;
-        if (filterContent.style.display === 'block') {
-          filterContent.style.display = 'none';
-        } else {
-          filterContent.style.display = 'block';
-        }
-      });
-    });
-  });
-</script>
+
 <script>
   {% if section.settings.enable_filtering %}
   class FiltersState {
