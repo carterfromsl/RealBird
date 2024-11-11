@@ -1,7 +1,7 @@
 {% if filter_type == 'vertical' %}
   <aside class="sidebar">
     {% for f in results.filters %}
-      <div class="filter-section" x-data="{ open: $persist(false).as('x-{{ f.param_name }}') }">
+      <div class="filter-section" x-data="{ open: $persist({{ collapse_filters }}).as('x-{{ f.param_name }}') }">
         <details
           id="{{ f.param_name }}"
           x-bind:open="open"

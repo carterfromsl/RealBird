@@ -343,37 +343,6 @@
 </div>
 
 <script>
-  {% if section.settings.enable_filtering %}
-  class FiltersState {
-    constructor() {
-      this.filters = [];
-    }
-    update = (open, id) => {
-      let filter = this.filters.find(f => f.id === id);
-      if (filter) {
-        filter.open = open;
-      } else {
-        this.filters.push({ id: id, open: open });
-      }
-    }
-  }
-
-  const state = new FiltersState();
-
-  const toggleFilterCollapse = (event) => {
-    const details = event.target.closest('details');
-    state.update(!details.open, details.id);
-  }
-
-  const updateFiltersState = (responseHtml) => {
-    state.filters.forEach(f => {
-      const element = responseHtml.getElementById(f.id);
-      if (element) {
-        element.open = f.open;
-      }
-    });
-  };
-  {% endif %}
 
   const updateProductGrid = (responseHtml) => {
     const html = responseHtml.getElementById('ProductGridContainer').innerHTML;
@@ -386,10 +355,6 @@
       .then((responseText) => {
         history.pushState({}, '', url);
         let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
-
-        {% if section.settings.enable_filtering %}
-        //updateFiltersState(responseHtml);
-        {% endif %}
         updateProductGrid(responseHtml);
       });
   }
@@ -420,12 +385,6 @@
         renderSection(url.href);
       }
       {% endif %}
-
-      {% comment %} {% if section.settings.enable_filtering %}
-      if (event.target.matches('[data-toggle-collapse]')) {
-        toggleFilterCollapse(event);
-      }
-      {% endif %} {% endcomment %}
     });
   };
 
