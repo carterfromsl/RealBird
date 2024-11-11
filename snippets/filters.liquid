@@ -47,7 +47,7 @@
 {% elsif filter_type == 'horizontal' %}
   <div>
     {%- for f in results.filters -%}
-      <div class="filter-dropdown" x-data="{ open: $persist(false).as('{{ f.param_name }}') }">
+      <div class="filter-dropdown" x-data="{ open: $persist(false).as('x-{{ f.param_name }}') }">
         <button x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
         <div x-cloak x-show="open" @click.away="open = false" x-transition class="filter-content">
           <span>
