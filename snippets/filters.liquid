@@ -6,9 +6,9 @@
           id="{{ f.param_name }}"
           x-bind:open="open"
           @toggle="open = $event.target.open"
-          {% comment %} {% if collapse_filters == false %}
+          {% if collapse_filters == false %}
             open
-          {% endif %} {% endcomment %}
+          {% endif %} 
         >
           <summary>
             <span >
