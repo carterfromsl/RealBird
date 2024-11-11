@@ -8,9 +8,14 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     {{ content_for_header }}
-
+    <!-- Alpine Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- -----styles ----- -->
     <link rel="stylesheet" href=" {{'global.css' | asset_url }} ">
+    <style>
+      [x-cloak] { display: none !important; }
+    </style>
     <!-- -----styles ------ -->
   </head>
 

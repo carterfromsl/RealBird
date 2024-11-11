@@ -47,15 +47,37 @@
 {% elsif filter_type == 'horizontal' %}
   <div>
     {%- for f in results.filters -%}
-      <div class="filter-dropdown">
-        <button class="filter-button">{{ f.label | escape }}</button>
-        <div class="filter-content">
+      <div class="filter-dropdown" x-data="{ open: $persist(false).as('{{ f.param_name }}') }">
+        <button x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
+        <div x-cloak x-show="open" @click.away="open = false" x-transition class="filter-content">
+          <span>
+            {{ f.label }}
+            {% if f.active_values.size > 0 %}
+              ({{ f.active_values.size }})
+              <a
+                data-render-section-url="{{ f.url_to_remove }}"
+                href="{{ f.url_to_remove }}"
+                >reset
+              </a>
+            {% endif %}
+          </span>
           <ul>
             {%- for v in f.values -%}
               <li>
-                <a href="#" data-render-section-url="{{ v.url }}">
-                  {{ v.label | escape }}
-                </a>
+                <label>
+                  <input
+                    type="checkbox"
+                    {% if v.active %}
+                      checked
+                      data-render-section-checkbox-url="{{ v.url_to_remove }}"
+                    {% else %}
+                      data-render-section-checkbox-url="{{ v.url_to_add }}"
+                    {% endif -%}
+                    {% if v.count == 0 and v.active == false %}
+                      disabled
+                    {% endif -%}
+                  >
+                  {{- v.label }} ({{ v.count }})</label
               </li>
             {%- endfor -%}
           </ul>
