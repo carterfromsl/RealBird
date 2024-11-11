@@ -388,7 +388,7 @@
         let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
 
         {% if section.settings.enable_filtering %}
-        updateFiltersState(responseHtml);
+        //updateFiltersState(responseHtml);
         {% endif %}
         updateProductGrid(responseHtml);
       });
@@ -421,11 +421,11 @@
       }
       {% endif %}
 
-      {% if section.settings.enable_filtering %}
+      {% comment %} {% if section.settings.enable_filtering %}
       if (event.target.matches('[data-toggle-collapse]')) {
         toggleFilterCollapse(event);
       }
-      {% endif %}
+      {% endif %} {% endcomment %}
     });
   };
 
