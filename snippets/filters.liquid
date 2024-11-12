@@ -1,28 +1,33 @@
 {% if filter_type == 'vertical' %}
   <aside class="sidebar">
-
     {% liquid
       assign open = true
-      if collapse_filters 
+      if collapse_filters
         assign open = false
       endif
     %}
-      
+
     {% for f in results.filters %}
-      <div class="filter-section" x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }">
+      <div
+        class="filter-section"
+        {% if request.design_mode == false %}
+          x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }"
+        {% endif %}
+      >
         <details
           id="{{ f.param_name }}"
-          x-bind:open="open"
-          @toggle="open = $event.target.open"
+
           {% if request.design_mode %}
             {% if collapse_filters == false %}
               open
-            {% endif %} 
+            {% endif %}
+          {% else %}
+            x-bind:open="open"
+            @toggle="open = $event.target.open"
           {% endif %}
-           
         >
           <summary>
-            <span >
+            <span>
               {{ f.label }}
               {% if f.active_values.size > 0 %}
                 ({{ f.active_values.size }})
