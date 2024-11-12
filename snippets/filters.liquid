@@ -9,7 +9,7 @@
     %}
       
     {% for f in results.filters %}
-      <div class="filter-section" x-data="{ open: $persist({{ open }}).as('x-{{ f.param_name }}') }">
+      <div class="filter-section" x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }">
         <details
           id="{{ f.param_name }}"
           x-bind:open="open"
@@ -59,7 +59,7 @@
     {%- for f in results.filters -%}
       <div
         class="filter-dropdown"
-        x-data="{ open: $persist(false).as('x-{{ f.param_name }}') }"
+        x-data="{ open: $persist(false).as('xh-{{ f.param_name }}') }"
       >
         <button x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
         <div
