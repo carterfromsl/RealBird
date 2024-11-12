@@ -16,12 +16,11 @@
       >
         <details
           id="{{ f.param_name }}"
+          {% if collapse_filters == false %}
+            open
+          {% endif %}
 
-          {% if request.design_mode %}
-            {% if collapse_filters == false %}
-              open
-            {% endif %}
-          {% else %}
+          {% if request.design_mode == false %}
             x-bind:open="open"
             @toggle="open = $event.target.open"
           {% endif %}
