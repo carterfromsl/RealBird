@@ -21,13 +21,15 @@
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
 {% endcomment %}
 <div class="product-card">
-  <img
-    src="{{ card_product.featured_image | image_url: width: 533 }}"
-    alt="{{ card_product.title }}"
-    class="product-image"
-    width="{{ card_product.featured_image.width }}"
-    height="{{ card_product.featured_image.height }}"
-  >
+  <a href="/products/{{ card_product.handle }}">
+    <img
+      src="{{ card_product.featured_image | image_url: width: 533 }}"
+      alt="{{ card_product.title }}"
+      class="product-image"
+      width="{{ card_product.featured_image.width }}"
+      height="{{ card_product.featured_image.height }}"
+    >
+  </a>
   {% if show_vendor %}
     <div class="product-brand">{{ card_product.vendor }}</div>
   {% endif %}
