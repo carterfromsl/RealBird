@@ -110,18 +110,19 @@
                 {%- for value in option.values -%}
                   <input
                     type="radio"
-                    id="{{ option.name }}-{{ option.position }}-{{ forloop.index0 -}}"
+                    id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
                     name="{{ option.name }}-{{ option.position }}"
                     value="{{ value | escape }}"
                     class="pill-radio {% unless value.available %}disabled{% endunless %}"
                     {% if value.selected %}
                       checked
                     {% endif %}
+                    data-product-url="{{ value.product_url }}"
                     data-option-value-id="{{ value.id }}"
                   >
                   <label
                     class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
-                    for="{{ option.name }}-{{ option.position }}-{{ forloop.index0 -}}"
+                    for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
                   >
                     {{ value }}
                   </label>
@@ -153,11 +154,13 @@
           id="AddToCart-{{ section.id }}"
           type="submit"
           name="add"
-          {% if selected_variant.available == false %}
+          {% if selected_variant == null or selected_variant.available == false %}
             disabled
           {% endif %}
         >
-          {% if selected_variant.available == false %}
+          {% if selected_variant == null %}
+            Unavailable
+          {% elsif selected_variant.available == false %}
             Sold out
           {% else %}
             Add to cart
@@ -181,14 +184,17 @@
 
       if (this.currentVariant) {
         this.updateFormID();
-        this.updatePrice();
       }
+      this.updatePrice();
     }
 
     getSelectedOptions() {
       //this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
       this.options = Array.from(this.querySelectorAll('fieldset input:checked')).map((element) => element.value);
-      console.log('this.options', this.options);
+      this.selectedOptionValues = Array.from(this.querySelectorAll('fieldset input:checked'))
+        .map((element) => element.dataset.optionValueId)
+        .join(',');
+      console.log('this.selectedOptionValues', this.selectedOptionValues);
     }
 
     getVariantJSON() {
@@ -223,7 +229,7 @@
     }
 
     updatePrice() {
-      fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+      fetch(`${this.dataset.url}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`)
         .then((response) => response.text())
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
