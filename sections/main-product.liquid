@@ -1,6 +1,35 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 
+<style>
+  .pill-radio {
+    display: none;
+  }
+
+  .pill-label {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 25px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .pill-radio:checked + .pill-label {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .pill-label:hover {
+    background-color: #e0e0e0;
+  }
+
+  .pill-label.pill-disabled {
+    background-color: #d3d3d3;
+    text-decoration: line-through;
+  }
+</style>
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
 <div class="container">
@@ -84,14 +113,16 @@
                     id="{{ option.name }}-{{ option.position }}-{{ forloop.index0 -}}"
                     name="{{ option.name }}-{{ option.position }}"
                     value="{{ value | escape }}"
+                    class="pill-radio {% unless value.available %}disabled{% endunless %}"
                     {% if value.selected %}
                       checked
                     {% endif %}
-                    {% unless value.available %}
-                      disabled
-                    {% endunless %}
+                    data-option-value-id="{{ value.id }}"
                   >
-                  <label for="{{ option.name }}-{{ option.position }}-{{ forloop.index0 -}}">
+                  <label
+                    class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
+                    for="{{ option.name }}-{{ option.position }}-{{ forloop.index0 -}}"
+                  >
                     {{ value }}
                   </label>
                 {%- endfor -%}
@@ -119,6 +150,7 @@
 
       <div>
         <button
+          id="AddToCart-{{ section.id }}"
           type="submit"
           name="add"
           {% if selected_variant.available == false %}
@@ -143,28 +175,25 @@
     }
 
     onVariantChange(e) {
-      console.log('onVariantChange', e);
       this.getSelectedOptions();
       this.getSelectedVariant();
+      this.updateURL();
 
       if (this.currentVariant) {
-        this.updateURL();
         this.updateFormID();
         this.updatePrice();
       }
     }
 
     getSelectedOptions() {
-      this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
-      console.log(this.options);
+      //this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
+      this.options = Array.from(this.querySelectorAll('fieldset input:checked')).map((element) => element.value);
+      console.log('this.options', this.options);
     }
 
     getVariantJSON() {
       this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
-      console.log('variantData', this.variantData);
-      console.log('variantData', {{ product | json }});
-
-      
+      console.log('Variants: ', this.variantData);
       return this.variantData;
     }
 
@@ -178,13 +207,14 @@
 
         if (findings) return variant;
       });
-
-      console.log(this.currentVariant);
     }
 
     updateURL() {
-      if (!this.currentVariant) return;
-      window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+      if (this.currentVariant) {
+        window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+      } else {
+        window.history.replaceState({}, '', `${this.dataset.url}`);
+      }
     }
 
     updateFormID() {
@@ -196,13 +226,22 @@
       fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
         .then((response) => response.text())
         .then((responseText) => {
-          const id = `price-${this.dataset.section}`;
           const html = new DOMParser().parseFromString(responseText, 'text/html');
 
-          const oldPrice = document.getElementById(id);
-          const newPrice = html.getElementById(id);
+          const oldPrice = document.getElementById(`price-${this.dataset.section}`);
+          const newPrice = html.getElementById(`price-${this.dataset.section}`);
 
           if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+
+          const oldVariantSelector = document.querySelector('variant-selector');
+          const newVariantSelector = html.querySelector('variant-selector');
+
+          if (oldVariantSelector && newVariantSelector) oldVariantSelector.innerHTML = newVariantSelector.innerHTML;
+
+          const oldSubmitButton = document.getElementById(`AddToCart-${this.dataset.section}`);
+          const newSubmitButton = html.getElementById(`AddToCart-${this.dataset.section}`);
+
+          if (oldSubmitButton && newSubmitButton) oldSubmitButton.replaceWith(newSubmitButton);
         });
     }
   }
