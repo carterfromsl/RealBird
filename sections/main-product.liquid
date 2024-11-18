@@ -32,7 +32,7 @@
 </style>
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
-<div class="container">
+<product-info class="container" data-url="{{ product.url}}" data-section="{{ section.id }}">
   <div class="swiper">
     <div class="swiper-wrapper">
       {% for media in product.media %}
@@ -70,7 +70,7 @@
 
       <div>
         {% unless product.has_only_default_variant %}
-          <variant-selector data-url="{{ product.url}}" data-section="{{ section.id }}">
+          <variant-selector>
             {% for option in product.options_with_values %}
               <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
 
@@ -83,11 +83,12 @@
                   {% for value in option.values %}
                     <option
                       value="{{ value | escape }}"
-                      {% if option.selected_value == value %}
+                      data-option-value-id="{{ value.id }}"
+                      {% if value.selected %}
                         selected="selected"
                       {% endif %}
                       {% unless value.available %}
-                        disabled
+                        style="color: red; text-decoration: line-through;"
                       {% endunless %}
                     >
                       {{ value }}
@@ -130,17 +131,17 @@
               </fieldset>
             {%- endfor -%}
 
-            <script type="application/json">
+            <script type="application/json" data-variants>
               {{ product.variants | json }}
             </script>
           </variant-selector>
         {% endunless %}
       </div>
 
-      <div class="my-3">
+      <div>
         <label for="Quantity-{{ section.id }}">Quantity</label>
 
-        <div class="my-2">
+        <div>
           <input type="number" name="quantity" id="Quantity-{{ section.id }}" value="1" min="1">
         </div>
       </div>
@@ -169,42 +170,50 @@
       </div>
     {% endform %}
   </div>
-</div>
+</product-info>
 <script>
-  class VariantSelector extends HTMLElement {
+  class ProductInfo extends HTMLElement {
     constructor() {
       super();
-      this.addEventListener('change', this.onVariantChange);
+      this.variantSelector.addEventListener('change', this.onVariantChange.bind(this));
+    }
+
+    get variantSelector() {
+      return this.querySelector('variant-selector');
     }
 
     onVariantChange(e) {
-      this.getSelectedOptions();
-      this.getSelectedVariant();
-      this.updateURL();
-
-      if (this.currentVariant) {
-        this.updateFormID();
-      }
-      this.updatePrice();
+      this.updateSelectedOptions(e.target.tagName);
+      this.updateCurrentVariant();
+      this.updateUrl();
+      this.updateFormID();
+      this.renderSection();
     }
 
-    getSelectedOptions() {
-      //this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
-      this.options = Array.from(this.querySelectorAll('fieldset input:checked')).map((element) => element.value);
-      this.selectedOptionValues = Array.from(this.querySelectorAll('fieldset input:checked'))
-        .map((element) => element.dataset.optionValueId)
-        .join(',');
+    updateSelectedOptions(tagName) {
+      if (tagName === 'SELECT') {
+        this.options = Array.from(this.variantSelector.querySelectorAll('select'), (select) => select.value);
+        this.selectedOptionValues = Array.from(this.variantSelector.querySelectorAll('select'))
+                                    .map((select) => select.options[select.selectedIndex].dataset.optionValueId)
+                                    .join(',');
+      } else {
+        this.options = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked'))
+                            .map((element) => element.value);
+        this.selectedOptionValues = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked'))
+                                    .map((element) => element.dataset.optionValueId)
+                                    .join(',');
+      }
+
       console.log('this.selectedOptionValues', this.selectedOptionValues);
     }
 
-    getVariantJSON() {
-      this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
-      console.log('Variants: ', this.variantData);
+    getVariants() {
+      this.variantData = this.variantData || JSON.parse(this.variantSelector.querySelector('[data-variants]').textContent);
       return this.variantData;
     }
 
-    getSelectedVariant() {
-      this.currentVariant = this.getVariantJSON().find((variant) => {
+    updateCurrentVariant() {
+      this.currentVariant = this.getVariants().find((variant) => {
         const findings = !variant.options
           .map((option, index) => {
             return this.options[index] === option;
@@ -215,7 +224,7 @@
       });
     }
 
-    updateURL() {
+    updateUrl() {
       if (this.currentVariant) {
         window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
       } else {
@@ -224,11 +233,11 @@
     }
 
     updateFormID() {
-      const form_input = document.querySelector('#product-form').querySelector('input[name="id"]');
-      form_input.value = this.currentVariant.id;
+      const form_input = this.querySelector('#product-form').querySelector('input[name="id"]');
+      form_input.value = this.currentVariant ? this.currentVariant.id : '';
     }
 
-    updatePrice() {
+    renderSection() {
       fetch(`${this.dataset.url}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`)
         .then((response) => response.text())
         .then((responseText) => {
@@ -252,7 +261,7 @@
     }
   }
 
-  customElements.define('variant-selector', VariantSelector);
+  customElements.define('product-info', ProductInfo);
 </script>
 <script>
   const swiper = new Swiper('.swiper', {
