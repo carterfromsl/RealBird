@@ -92,6 +92,9 @@
                       {% endunless %}
                     >
                       {{ value }}
+                      {% unless value.available %}
+                        Unavailable
+                      {% endunless %}
                     </option>
                   {% endfor %}
                 </select>
@@ -140,10 +143,22 @@
 
       <div>
         <label for="Quantity-{{ section.id }}">Quantity</label>
-
-        <div>
-          <input type="number" name="quantity" id="Quantity-{{ section.id }}" value="1" min="1">
-        </div>
+        <quantity-selector>
+          <button name="minus" type="button">-</button>
+          <input
+            id="Quantity-{{ section.id }}"
+            type="number"
+            name="quantity"
+            data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
+            min="{{ selected_variant.quantity_rule.min }}"
+            {% if selected_variant.quantity_rule.max != null %}
+              max="{{ selected_variant.quantity_rule.max }}"
+            {% endif %}
+            step="{{ selected_variant.quantity_rule.increment }}"
+            value="1"
+          >
+          <button name="plus" type="button">+</button>
+        </quantity-selector>
       </div>
 
       <div>
@@ -175,11 +190,20 @@
   class ProductInfo extends HTMLElement {
     constructor() {
       super();
+      console.log('ProductInfo', {{ product | json }});
       this.variantSelector.addEventListener('change', this.onVariantChange.bind(this));
+      this.quantitySelector.addEventListener('change', this.onQuantitySelectorEvent.bind(this));
+      this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
+      this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
+
     }
 
     get variantSelector() {
       return this.querySelector('variant-selector');
+    }
+
+    get quantitySelector() {
+      return this.querySelector('quantity-selector');
     }
 
     onVariantChange(e) {
@@ -190,18 +214,36 @@
       this.renderSection();
     }
 
+    onQuantitySelectorEvent(e) {
+      const quantityInput = this.quantitySelector.querySelector('input[type="number"]');
+      let currentValue = parseInt(quantityInput.value);
+      const minValue = parseInt(quantityInput.getAttribute('min')) || 0;
+      const maxValue = parseInt(quantityInput.getAttribute('max')) || Infinity;
+    
+      if (event.target.name === 'minus' && currentValue > minValue) {
+        quantityInput.value = currentValue - 1;
+      } else if (event.target.name === 'plus' && currentValue < maxValue) {
+        quantityInput.value = currentValue + 1;
+      } else if (event.type === 'change') {
+        if (currentValue < minValue) {
+          quantityInput.value = minValue;
+        } else if (currentValue > maxValue) {
+          quantityInput.value = maxValue;
+        }
+      }
+    }
+
     updateSelectedOptions(tagName) {
       if (tagName === 'SELECT') {
         this.options = Array.from(this.variantSelector.querySelectorAll('select'), (select) => select.value);
         this.selectedOptionValues = Array.from(this.variantSelector.querySelectorAll('select'))
-                                    .map((select) => select.options[select.selectedIndex].dataset.optionValueId)
-                                    .join(',');
+          .map((select) => select.options[select.selectedIndex].dataset.optionValueId)
+          .join(',');
       } else {
-        this.options = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked'))
-                            .map((element) => element.value);
+        this.options = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked')).map((element) => element.value);
         this.selectedOptionValues = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked'))
-                                    .map((element) => element.dataset.optionValueId)
-                                    .join(',');
+          .map((element) => element.dataset.optionValueId)
+          .join(',');
       }
 
       console.log('this.selectedOptionValues', this.selectedOptionValues);
