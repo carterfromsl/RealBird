@@ -1,3 +1,7 @@
+:root {
+  --page-width: 1400px;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;

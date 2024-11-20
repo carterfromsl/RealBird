@@ -1,45 +1,178 @@
 <style>
+  #shopify-section-{{ section.id }} {
+    border-bottom: 1px solid #ddd;
+  }
   header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: var(--page-width);
+    margin-inline: auto;
+    padding: 5px 20px;
   }
-
-  header h1 {
-    margin: 5;
+  .header-logo {
+    width: auto;
+    height: 60px;
   }
-
-  header nav ul {
+  nav ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
   }
-
-  header nav ul li {
-    margin: 0 15px;
-  }
-
-  header nav ul li a {
-    color: #fff;
+  header a {
     text-decoration: none;
+    color: #000;
+  }
+  #header-cart-bubble {
+    position: relative;
+    margin-right: 6px;
+  }
+  [data-cart-count] {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    top: -4px;
+    right: -6px;
+    width: 16px;
+    height: 16px;
+    color: #fff;
+    background: #000;
+    font-size: 12px;
+    border-radius: 10rem;
+  }
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  #header-search-trigger {
+    cursor: pointer;
+  }
+  #header-search {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  #header-search.active {
+    display: flex;
+  }
+  #header-search form {
+    position: relative;
+    border: 1px solid #ddd;
+    width: min(600px, 100%);
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 10px;
+  }
+  #header-search form input {
+    width: 100%;
+    border: 0;
+    font-size: 15px;
+  }
+  #header-search button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+  #header-search svg {
+    width: 20px;
   }
 </style>
+
 <header>
-  <h1>{{ shop.name }}</h1>
+  {%- if request.page_type == 'index' -%}<h1 style="margin: 0">{%- endif -%}
+    <a href="{{ routes.root_url }}" style="display: flex">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 900 | image_tag: class: "header-logo" }}
+      {%- else -%}
+        <span>{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+  {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
+
   <nav>
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/collections/all">Catalog</a></li>
-      <li><a href="/contact">Contact</a></li>
+      {%- for link in section.settings.menu.links -%}
+      <li>
+        <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+          {{- link.title | escape -}}
+        </a>
+      </li>
+      {%- endfor -%}
     </ul>
   </nav>
+
+  <div class="header-actions">
+    <div id="header-search-trigger">
+      {{'icon-search.svg' | inline_asset_content }}
+    </div>
+
+    {%- if shop.customer_accounts_enabled -%}
+      <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" rel="nofollow">
+        {{'icon-account.svg' | inline_asset_content }}
+      </a>
+    {%- endif -%}
+
+    <a href="{{ routes.cart_url }}" id="header-cart-bubble">
+      {{'icon-cart.svg' | inline_asset_content }}
+      <div data-cart-count>{{ cart.item_count }}</div>
+    </a>
+  </div>
+
+  <div id="header-search">
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search">
+      <button aria-label="Search">
+        {{- 'icon-search.svg' | inline_asset_content -}}
+      </button>
+    </form>
+    <button id="close-header-search">
+      {{- 'icon-close.svg' | inline_asset_content -}}
+    </button>
+  </div>
 </header>
 
-{% comment %}
-  <header class="main-header">
-  	header
-  </header>
-{% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const headerSearch = document.getElementById('header-search');
+  
+    document.getElementById('header-search-trigger').addEventListener('click', () => {
+      headerSearch.classList.add('active');
+    });
+  
+    document.getElementById('close-header-search').addEventListener('click', () => {
+      headerSearch.classList.remove('active');
+    });
+  });
+</script>  
+
+{% schema %}
+{
+  "name": "Main Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu"
+    }
+  ]
+}
+{% endschema %}
