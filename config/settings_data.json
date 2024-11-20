@@ -10,7 +10,7 @@
 {
   "current": {
     "logo": "shopify://shop_images/design-graphic.png",
-    "logo_width": 90,
+    "logo_width": 70,
     "type_header_font": "assistant_n4",
     "heading_scale": 100,
     "type_body_font": "assistant_n4",
@@ -143,8 +143,8 @@
           "enable_customer_avatar": true,
           "mobile_logo_position": "center",
           "margin_bottom": 0,
-          "padding_top": 20,
-          "padding_bottom": 20
+          "padding_top": 4,
+          "padding_bottom": 4
         }
       },
       "main-footer": {
