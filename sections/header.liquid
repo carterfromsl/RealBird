@@ -95,40 +95,45 @@
 
 <header>
   {%- if request.page_type == 'index' -%}<h1 style="margin: 0">{%- endif -%}
-    <a href="{{ routes.root_url }}" style="display: flex">
-      {%- if settings.logo != blank -%}
-        {{ settings.logo | image_url: width: 900 | image_tag: class: "header-logo" }}
-      {%- else -%}
-        <span>{{ shop.name }}</span>
-      {%- endif -%}
-    </a>
+  <a href="{{ routes.root_url }}" style="display: flex">
+    {%- if settings.logo != blank -%}
+      {{ settings.logo | image_url: width: 900 | image_tag: class: 'header-logo' }}
+    {%- else -%}
+      <span>{{ shop.name }}</span>
+    {%- endif -%}
+  </a>
   {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
 
   <nav>
     <ul>
       {%- for link in section.settings.menu.links -%}
-      <li>
-        <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
-          {{- link.title | escape -}}
-        </a>
-      </li>
+        <li>
+          <a
+            href="{{ link.url }}"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            {{- link.title | escape -}}
+          </a>
+        </li>
       {%- endfor -%}
     </ul>
   </nav>
 
   <div class="header-actions">
     <div id="header-search-trigger">
-      {{'icon-search.svg' | inline_asset_content }}
+      {{ 'icon-search.svg' | inline_asset_content }}
     </div>
 
     {%- if shop.customer_accounts_enabled and section.settings.enable_customer_avatar -%}
       <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" rel="nofollow">
-        {{'icon-account.svg' | inline_asset_content }}
+        {{ 'icon-account.svg' | inline_asset_content }}
       </a>
     {%- endif -%}
 
     <a href="{{ routes.cart_url }}" id="header-cart-bubble">
-      {{'icon-cart.svg' | inline_asset_content }}
+      {{ 'icon-cart.svg' | inline_asset_content }}
       <div data-cart-count>{{ cart.item_count }}</div>
     </a>
   </div>
@@ -149,21 +154,22 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const headerSearch = document.getElementById('header-search');
-  
+
     document.getElementById('header-search-trigger').addEventListener('click', () => {
       headerSearch.classList.add('active');
     });
-  
+
     document.getElementById('close-header-search').addEventListener('click', () => {
       headerSearch.classList.remove('active');
     });
   });
-</script>  
+</script>
 
 {% schema %}
 {
-  "name": "Main Header",
+  "name": "t:sections.header.name",
   "class": "section-header",
+  "max_blocks": 3,
   "settings": [
     {
       "type": "select",
@@ -194,7 +200,7 @@
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
-      "label": "Menu"
+      "label": "t:sections.header.settings.menu.label"
     },
     {
       "type": "select",
@@ -354,6 +360,11 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
     }
   ]
 }
