@@ -1,6 +1,18 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script defer src="https://unpkg.com/swiper@7/swiper-bundle.min.js" id="swiper-script"></script>
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
 
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 <style>
   .pill-radio {
     display: none;
@@ -31,193 +43,194 @@
   }
 </style>
 {% assign selected_variant = product.selected_or_first_available_variant %}
-
-<product-info class="container" data-url="{{ product.url}}" data-section="{{ section.id }}">
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      {% assign selected_media_index = 0 %}
-      {% for media in product.media %}
-        {% liquid
-          if selected_variant.featured_media.id == media.id
-            assign selected_media_index = forloop.index0
-          endif
-        %}
-        <div
-          class="swiper-slide"
-          data-media-id="{{ media.id }}"
-          data-media-index="{{ forloop.index0 }}"
-        >
-          {% render 'product-media', media: media %}
-        </div>
-      {% endfor %}
+<div class="container section-{{ section.id }}-padding">
+  <product-info
+    data-url="{{ product.url}}"
+    data-section="{{ section.id }}"
+  >
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% assign selected_media_index = 0 %}
+        {% for media in product.media %}
+          {% liquid
+            if selected_variant.featured_media.id == media.id
+              assign selected_media_index = forloop.index0
+            endif
+          %}
+          <div
+            class="swiper-slide"
+            data-media-id="{{ media.id }}"
+            data-media-index="{{ forloop.index0 }}"
+          >
+            {% render 'product-media', media: media %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
     </div>
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
-  </div>
 
-  <div class="product--information sticky top-5 p-2">
-    {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
-      <input type="hidden" name="id" value="{{ selected_variant.id }}">
-      <div>
-        <span>{{ product.vendor }}</span>
-      </div>
+    <div>
+      {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
+        <input type="hidden" name="id" value="{{ selected_variant.id }}">
+        <div>
+          <span>{{ product.vendor }}</span>
+        </div>
 
-      <div>
-        <h1>{{ product.title }}</h1>
-      </div>
+        <div>
+          <h1>{{ product.title }}</h1>
+        </div>
 
-      <div id="price-{{ section.id }}">
-        <span>{{ selected_variant.compare_at_price | money }}</span>
-        <span>{{ selected_variant.price | money }}</span>
+        <div id="price-{{ section.id }}">
+          <span>{{ selected_variant.compare_at_price | money }}</span>
+          <span>{{ selected_variant.price | money }}</span>
 
-        {% if selected_variant.price < selected_variant.compare_at_price %}
-          <span>Sale</span>
-        {% endif %}
-      </div>
+          {% if selected_variant.price < selected_variant.compare_at_price %}
+            <span>Sale</span>
+          {% endif %}
+        </div>
 
-      <div>
-        {% unless product.has_only_default_variant %}
-          <variant-selector>
-            {% for option in product.options_with_values %}
-              <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+        <div>
+          {% unless product.has_only_default_variant %}
+            <variant-selector>
+              {% for option in product.options_with_values %}
+                <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
 
-              <fieldset>
-                <select
-                  style="width: 200px; height: 30px;"
-                  name="options[{{ option.name | escape }}]"
-                  id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                >
-                  {% for value in option.values %}
-                    <option
+                <fieldset>
+                  <select
+                    style="width: 200px; height: 30px;"
+                    name="options[{{ option.name | escape }}]"
+                    id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                  >
+                    {% for value in option.values %}
+                      <option
+                        value="{{ value | escape }}"
+                        data-option-value-id="{{ value.id }}"
+                        {% if value.selected %}
+                          selected="selected"
+                        {% endif %}
+                        {% unless value.available %}
+                          style="color: red; text-decoration: line-through;"
+                        {% endunless %}
+                      >
+                        {{ value }}
+                        {% unless value.available %}
+                          Unavailable
+                        {% endunless %}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </fieldset>
+              {% endfor %}
+
+              <br>
+              <br>
+              <br>
+
+              {%- for option in product.options_with_values -%}
+                <fieldset>
+                  <legend>{{ option.name }}</legend>
+                  {%- for value in option.values -%}
+                    <input
+                      type="radio"
+                      id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                      name="{{ option.name }}-{{ option.position }}"
                       value="{{ value | escape }}"
-                      data-option-value-id="{{ value.id }}"
+                      class="pill-radio {% unless value.available %}disabled{% endunless %}"
                       {% if value.selected %}
-                        selected="selected"
+                        checked
                       {% endif %}
-                      {% unless value.available %}
-                        style="color: red; text-decoration: line-through;"
-                      {% endunless %}
+                      data-product-url="{{ value.product_url }}"
+                      data-option-value-id="{{ value.id }}"
+                    >
+                    <label
+                      class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
+                      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
                     >
                       {{ value }}
-                      {% unless value.available %}
-                        Unavailable
-                      {% endunless %}
-                    </option>
-                  {% endfor %}
-                </select>
-              </fieldset>
-            {% endfor %}
+                    </label>
+                  {%- endfor -%}
+                </fieldset>
+              {%- endfor -%}
 
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+              <script type="application/json" data-variants>
+                {{ product.variants | json }}
+              </script>
+            </variant-selector>
+          {% endunless %}
+        </div>
 
-            {%- for option in product.options_with_values -%}
-              <fieldset>
-                <legend>{{ option.name }}</legend>
-                {%- for value in option.values -%}
-                  <input
-                    type="radio"
-                    id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                    name="{{ option.name }}-{{ option.position }}"
-                    value="{{ value | escape }}"
-                    class="pill-radio {% unless value.available %}disabled{% endunless %}"
-                    {% if value.selected %}
-                      checked
-                    {% endif %}
-                    data-product-url="{{ value.product_url }}"
-                    data-option-value-id="{{ value.id }}"
-                  >
-                  <label
-                    class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
-                    for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                  >
-                    {{ value }}
-                  </label>
-                {%- endfor -%}
-              </fieldset>
-            {%- endfor -%}
+        <div>
+          <label for="Quantity-{{ section.id }}">Quantity</label>
+          <quantity-selector>
+            <button name="minus" type="button">-</button>
+            <input
+              id="Quantity-{{ section.id }}"
+              type="number"
+              name="quantity"
+              data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
+              min="{{ selected_variant.quantity_rule.min }}"
+              {% if selected_variant.quantity_rule.max != null %}
+                max="{{ selected_variant.quantity_rule.max }}"
+              {% endif %}
+              step="{{ selected_variant.quantity_rule.increment }}"
+              value="1"
+            >
+            <button name="plus" type="button">+</button>
+          </quantity-selector>
+        </div>
 
-            <script type="application/json" data-variants>
-              {{ product.variants | json }}
-            </script>
-          </variant-selector>
-        {% endunless %}
-      </div>
+        <div>
+          <p>{{ product.description }}</p>
+        </div>
 
-      <div>
-        <label for="Quantity-{{ section.id }}">Quantity</label>
-        <quantity-selector>
-          <button name="minus" type="button">-</button>
-          <input
-            id="Quantity-{{ section.id }}"
-            type="number"
-            name="quantity"
-            data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
-            min="{{ selected_variant.quantity_rule.min }}"
-            {% if selected_variant.quantity_rule.max != null %}
-              max="{{ selected_variant.quantity_rule.max }}"
+        <div>
+          <button
+            id="AddToCart-{{ section.id }}"
+            type="submit"
+            name="add"
+            {% if selected_variant == null or selected_variant.available == false %}
+              disabled
             {% endif %}
-            step="{{ selected_variant.quantity_rule.increment }}"
-            value="1"
           >
-          <button name="plus" type="button">+</button>
-        </quantity-selector>
-      </div>
-
-      <div>
-        <p>{{ product.description }}</p>
-      </div>
-
-      <div>
-        <button
-          id="AddToCart-{{ section.id }}"
-          type="submit"
-          name="add"
-          {% if selected_variant == null or selected_variant.available == false %}
-            disabled
-          {% endif %}
-        >
-          {% if selected_variant == null %}
-            Unavailable
-          {% elsif selected_variant.available == false %}
-            Sold out
-          {% else %}
-            Add to cart
-          {% endif %}
-        </button>
-      </div>
-    {% endform %}
-  </div>
-</product-info>
-<script>
-  const swiper = new Swiper('.swiper', {
-    direction: 'horizontal',
-    initialSlide: {{ selected_media_index }},
-    pagination: {
-      el: '.swiper-pagination',
-    },
-    navigation: {
-      prevEl: '.swiper-button-prev',
-      nextEl: '.swiper-button-next',
-    },
-  });
-</script>
+            {% if selected_variant == null %}
+              Unavailable
+            {% elsif selected_variant.available == false %}
+              Sold out
+            {% else %}
+              Add to cart
+            {% endif %}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </product-info>
+</div>
 
 <script>
   class ProductInfo extends HTMLElement {
     constructor() {
       super();
-      console.log('ProductInfo', {{ product | json }});
       this.variantSelector.addEventListener('change', this.onVariantChange.bind(this));
       this.quantitySelector.addEventListener('change', this.onQuantitySelectorEvent.bind(this));
       this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
       this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
+      document.getElementById('swiper-script').addEventListener('load', this.initSwiper.bind(this));
+    }
 
+    initSwiper() {
+      this.swiper = new Swiper('.swiper', {
+        direction: 'horizontal',
+        initialSlide: {{ selected_media_index }},
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        navigation: {
+          prevEl: '.swiper-button-prev',
+          nextEl: '.swiper-button-next',
+        },
+      });
     }
 
     get variantSelector() {
@@ -241,7 +254,7 @@
       if (this.currentVariant) {
         var media = this.currentVariant.featured_media?.id;
         var index = this.querySelector(`.swiper-slide[data-media-id="${media}"]`).dataset.mediaIndex;
-        swiper.slideTo(index);
+        this.swiper.slideTo(index);
       }
     }
 
