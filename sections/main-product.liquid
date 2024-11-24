@@ -50,20 +50,29 @@
   >
     <div class="swiper">
       <div class="swiper-wrapper">
-        {% assign selected_media_index = 0 %}
-        {% for media in product.media %}
-          {% liquid
-            if selected_variant.featured_media.id == media.id
-              assign selected_media_index = forloop.index0
-            endif
-          %}
+        {% assign media_index = 0 %}
+        {% if selected_variant.featured_image != null %}
           <div
             class="swiper-slide"
-            data-media-id="{{ media.id }}"
-            data-media-index="{{ forloop.index0 }}"
+            data-media-id="{{ selected_variant.featured_media.id }}"
+            data-media-index="{{ media_index }}"
           >
-            {% render 'product-media', media: media %}
+            {% render 'product-media', media: selected_variant.featured_media %}
           </div>
+          {% assign media_index = media_index | plus: 1 %}
+        {% endif %}
+
+        {% for media in product.media %}
+          {% unless selected_variant.featured_media.id == media.id %}
+            <div
+              class="swiper-slide"
+              data-media-id="{{ media.id }}"
+              data-media-index="{{ media_index }}"
+            >
+              {% render 'product-media', media: media %}
+            </div>
+            {% assign media_index = media_index | plus: 1 %}
+          {% endunless %}
         {% endfor %}
       </div>
       <div class="swiper-pagination"></div>
@@ -222,7 +231,6 @@
     initSwiper() {
       this.swiper = new Swiper('.swiper', {
         direction: 'horizontal',
-        initialSlide: {{ selected_media_index }},
         pagination: {
           el: '.swiper-pagination',
         },
@@ -253,6 +261,7 @@
     updateSwiperSlide() {
       if (this.currentVariant) {
         var media = this.currentVariant.featured_media?.id;
+        if (!media) return;
         var index = this.querySelector(`.swiper-slide[data-media-id="${media}"]`).dataset.mediaIndex;
         this.swiper.slideTo(index);
       }
