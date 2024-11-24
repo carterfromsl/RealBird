@@ -35,8 +35,18 @@
 <product-info class="container" data-url="{{ product.url}}" data-section="{{ section.id }}">
   <div class="swiper">
     <div class="swiper-wrapper">
+      {% assign selected_media_index = 0 %}
       {% for media in product.media %}
-        <div class="swiper-slide" data-media-id="{{ media.id }}" data-media-index="{{ forloop.index0 }}">
+        {% liquid
+          if selected_variant.featured_media.id == media.id
+            assign selected_media_index = forloop.index0
+          endif
+        %}
+        <div
+          class="swiper-slide"
+          data-media-id="{{ media.id }}"
+          data-media-index="{{ forloop.index0 }}"
+        >
           {% render 'product-media', media: media %}
         </div>
       {% endfor %}
@@ -187,11 +197,10 @@
 <script>
   const swiper = new Swiper('.swiper', {
     direction: 'horizontal',
-
+    initialSlide: {{ selected_media_index }},
     pagination: {
       el: '.swiper-pagination',
     },
-
     navigation: {
       prevEl: '.swiper-button-prev',
       nextEl: '.swiper-button-next',
