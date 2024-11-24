@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
-<script defer src="https://unpkg.com/swiper@7/swiper-bundle.min.js" id="swiper-script"></script>
+<link rel="stylesheet" href="{{ "swiper7.4.1.min.css" | asset_url }}">
+<script defer src="{{ "swiper7.4.1.min.js" | asset_url }}" id="swiper-script"></script>
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -103,10 +103,6 @@
                 </fieldset>
               {% endfor %}
 
-              <br>
-              <br>
-              <br>
-
               {%- for option in product.options_with_values -%}
                 <fieldset>
                   <legend>{{ option.name }}</legend>
@@ -190,7 +186,7 @@
   class ProductInfo extends HTMLElement {
     constructor() {
       super();
-      this.variantSelector.addEventListener('change', this.onVariantChange.bind(this));
+      this.variantSelector?.addEventListener('change', this.onVariantChange.bind(this));
       this.quantitySelector.addEventListener('change', this.onQuantitySelectorEvent.bind(this));
       this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
       this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
