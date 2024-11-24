@@ -48,39 +48,8 @@
     data-url="{{ product.url}}"
     data-section="{{ section.id }}"
   >
-    <media-gallery>
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          {% assign media_index = 0 %}
-          {% if selected_variant.featured_image != null %}
-            <div
-              class="swiper-slide"
-              data-media-id="{{ selected_variant.featured_media.id }}"
-              data-media-index="{{ media_index }}"
-            >
-              {% render 'product-media', media: selected_variant.featured_media %}
-            </div>
-            {% assign media_index = media_index | plus: 1 %}
-          {% endif %}
+    {% render 'product-media-gallery', product_media: product.media, selected_variant: selected_variant %}
 
-          {% for media in product.media %}
-            {% unless selected_variant.featured_media.id == media.id %}
-              <div
-                class="swiper-slide"
-                data-media-id="{{ media.id }}"
-                data-media-index="{{ media_index }}"
-              >
-                {% render 'product-media', media: media %}
-              </div>
-              {% assign media_index = media_index | plus: 1 %}
-            {% endunless %}
-          {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
-    </media-gallery>
     <div>
       {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
         <input type="hidden" name="id" value="{{ selected_variant.id }}">
@@ -217,7 +186,6 @@
     </div>
   </product-info>
 </div>
-
 <script>
   class ProductInfo extends HTMLElement {
     constructor() {
@@ -264,7 +232,7 @@
         var media = this.currentVariant.featured_media?.id;
         if (!media) return;
         var index = this.querySelector(`.swiper-slide[data-media-id="${media}"]`).dataset.mediaIndex;
-        this.swiper.slideTo(index);
+        this.swiper?.slideTo(index);
       }
     }
 
