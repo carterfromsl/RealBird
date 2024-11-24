@@ -48,38 +48,39 @@
     data-url="{{ product.url}}"
     data-section="{{ section.id }}"
   >
-    <div class="swiper">
-      <div class="swiper-wrapper">
-        {% assign media_index = 0 %}
-        {% if selected_variant.featured_image != null %}
-          <div
-            class="swiper-slide"
-            data-media-id="{{ selected_variant.featured_media.id }}"
-            data-media-index="{{ media_index }}"
-          >
-            {% render 'product-media', media: selected_variant.featured_media %}
-          </div>
-          {% assign media_index = media_index | plus: 1 %}
-        {% endif %}
-
-        {% for media in product.media %}
-          {% unless selected_variant.featured_media.id == media.id %}
+    <media-gallery>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          {% assign media_index = 0 %}
+          {% if selected_variant.featured_image != null %}
             <div
               class="swiper-slide"
-              data-media-id="{{ media.id }}"
+              data-media-id="{{ selected_variant.featured_media.id }}"
               data-media-index="{{ media_index }}"
             >
-              {% render 'product-media', media: media %}
+              {% render 'product-media', media: selected_variant.featured_media %}
             </div>
             {% assign media_index = media_index | plus: 1 %}
-          {% endunless %}
-        {% endfor %}
-      </div>
-      <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-button-next"></div>
-    </div>
+          {% endif %}
 
+          {% for media in product.media %}
+            {% unless selected_variant.featured_media.id == media.id %}
+              <div
+                class="swiper-slide"
+                data-media-id="{{ media.id }}"
+                data-media-index="{{ media_index }}"
+              >
+                {% render 'product-media', media: media %}
+              </div>
+              {% assign media_index = media_index | plus: 1 %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </media-gallery>
     <div>
       {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
         <input type="hidden" name="id" value="{{ selected_variant.id }}">
@@ -272,7 +273,7 @@
       let currentValue = parseInt(quantityInput.value);
       const minValue = parseInt(quantityInput.getAttribute('min')) || 0;
       const maxValue = parseInt(quantityInput.getAttribute('max')) || Infinity;
-    
+
       if (event.target.name === 'minus' && currentValue > minValue) {
         quantityInput.value = currentValue - 1;
       } else if (event.target.name === 'plus' && currentValue < maxValue) {
