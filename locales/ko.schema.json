@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "로고"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "데스크톱 로고 너비",
           "info": "로고 너비는 자동으로 모바일에 최적화됩니다."
         },

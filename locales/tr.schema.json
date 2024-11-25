@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Masaüstü logo genişliği",
           "info": "Logo genişliği, mobil için otomatik olarak optimize edilir."
         },

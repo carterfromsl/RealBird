@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Larghezza logo su desktop",
           "info": "Larghezza del logo automaticamente ottimizzata per i dispositivi mobili."
         },

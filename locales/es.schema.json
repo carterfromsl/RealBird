@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Ancho del logo de escritorio",
           "info": "El ancho del logo se optimiza automáticamente para dispositivos móviles."
         },

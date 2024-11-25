@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Työpöytälogon leveys",
           "info": "Logon leveys optimoidaan automaattisesti mobiililaitteille."
         },

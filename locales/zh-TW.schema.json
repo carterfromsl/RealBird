@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "標誌"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "電腦版標誌寬度",
           "info": "標誌會自動調整為手機最佳寬度。"
         },

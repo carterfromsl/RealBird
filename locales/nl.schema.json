@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Breedte van logo op desktop",
           "info": "De breedte van het logo wordt automatisch geoptimaliseerd voor mobiele weergave."
         },

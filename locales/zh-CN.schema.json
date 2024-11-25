@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "台式电脑 logo 宽度",
           "info": "logo 宽度会针对移动设备进行自动优化。"
         },

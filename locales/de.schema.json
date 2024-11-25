@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Desktop-Logobreite",
           "info": "Die Logobreite wird automatisch für Mobilgeräte optimiert."
         },

@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "ロゴ"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "デスクトップ用ロゴの幅",
           "info": "ロゴの幅はモバイル用に自動で最適化されます。"
         },

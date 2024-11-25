@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logótipo"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Largura do logótipo em computador",
           "info": "A largura do logótipo é automaticamente otimizada para dispositivos móveis."
         },

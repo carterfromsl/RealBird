@@ -1,0 +1,89 @@
+<style>
+  .nav-dropdown, .nav-dropdown_child {
+    position: absolute;
+    top: 100%;
+    gap: 0;
+    align-items: stretch;
+    flex-direction: column;
+    background: #fff;
+    margin-top: 1px;
+  }
+  .nav-dropdown_child {
+    position: static;
+    background: #f1f1f1;
+  }
+  .nav-dropdown a, .nav-dropdown summary {
+    display: flex;
+    width: 20ch;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 12px 18px;
+    border-bottom: 1px solid #ddd;
+  }
+</style>
+<ul>
+  {% for link in section.settings.menu.links %}
+    <li>
+      {% if link.links != blank %}
+        <details>
+          <summary>
+            {{- link.title | escape -}}
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </summary>
+          <ul class="nav-dropdown color-{{ section.settings.menu_color_scheme }} gradient" role="list">
+            {%- for childlink in link.links -%}
+              <li>
+                {%- if childlink.links == blank -%}
+                  <a
+                    href="{{ childlink.url }}"
+                    class="header__menu-item"
+                    {% if childlink.current %}
+                      aria-current="page"
+                    {% endif %}
+                  >
+                    {{ childlink.title | escape }}
+                  </a>
+                {%- else -%}
+                  <details
+                    {% if menu_type == 'megamenu' %}
+                      open
+                    {% endif %}
+                  >
+                    <summary>
+                      {{- childlink.title | escape -}}
+                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </summary>
+                    <ul class="nav-dropdown_child color-{{ section.settings.menu_color_scheme }} gradient" role="list">
+                      {%- for grandchildlink in childlink.links -%}
+                        <li>
+                          <a
+                            href="{{ grandchildlink.url }}"
+                            class="header__menu-item"
+                            {% if grandchildlink.current %}
+                              aria-current="page"
+                            {% endif %}
+                          >
+                            {{ grandchildlink.title | escape }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </details>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </details>
+      {% else %}
+        <a
+          href="{{ link.url }}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title | escape -}}
+        </a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

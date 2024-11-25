@@ -318,7 +318,7 @@
         "logo_image": {
           "label": "Logotyp"
         },
-        "logo_width": {
+        "logo_height": {
           "label": "Logotypbredd för dator",
           "info": "Logotypbredd optimeras automatiskt för mobilen."
         },
