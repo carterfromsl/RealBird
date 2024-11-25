@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="{{ "swiper7.4.1.min.css" | asset_url }}">
 <script defer src="{{ "swiper7.4.1.min.js" | asset_url }}" id="swiper-script"></script>
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -184,6 +185,8 @@
 </div>
 <script>
   class ProductInfo extends HTMLElement {
+    abortController = undefined;
+
     constructor() {
       super();
       this.variantSelector?.addEventListener('change', this.onVariantChange.bind(this));
@@ -299,7 +302,12 @@
     }
 
     renderSection() {
-      fetch(`${this.dataset.url}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`)
+      this.abortController?.abort();
+      this.abortController = new AbortController();
+
+      fetch(`${this.dataset.url}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`, {
+        signal: this.abortController.signal,
+      })
         .then((response) => response.text())
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
@@ -318,6 +326,13 @@
           const newSubmitButton = html.getElementById(`AddToCart-${this.dataset.section}`);
 
           if (oldSubmitButton && newSubmitButton) oldSubmitButton.replaceWith(newSubmitButton);
+        })
+        .catch((error) => {
+          if (error.name === 'AbortError') {
+            console.log('Fetch aborted by user');
+          } else {
+            console.error(error);
+          }
         });
     }
   }
