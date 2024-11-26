@@ -158,6 +158,10 @@
 {% endcapture %}
 
 <header>
+  {% if section.settings.menu_type_desktop == 'drawer' %}
+    {{- 'icon-menu.svg' | inline_asset_content -}}
+  {% endif %}
+
   {% if section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
     {{ header_search }}
   {% endif %}
@@ -172,7 +176,7 @@
   </a>
   {% if request.page_type == 'index' %}</h1>{% endif %}
 
-  {% if section.settings.menu != blank %}
+  {% if section.settings.menu != blank and section.settings.menu_type_desktop != 'drawer' %}
     <nav>
       {% if section.settings.menu_type_desktop == 'dropdown' %}
         {% render 'nav-dropdown' %}
