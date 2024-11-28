@@ -1,0 +1,76 @@
+<style>
+  #menu-drawer {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    width: min(500px, 100%);
+    height: calc(100vh - var(--header-height));
+    background: #fff;
+    transform: translateX(-100%);
+    z-index: -1;
+    transition: 300ms ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #header-drawer details[open] #menu-drawer {
+    transform: translateX(0);
+  }
+  #main-header summary.header-drawer_icons svg {
+    width: 20px;
+  }
+  #header-drawer details[open] svg.icon-menu, 
+  #header-drawer details:not([open]) svg.icon-close {
+    display: none;
+  }
+  #menu-drawer ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  #menu-drawer li {
+    width: 100%;
+  }
+  #menu-drawer .nav-drawer {
+    background: #f3f4f5;
+  }
+  #menu-drawer a,
+  #menu-drawer summary {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 12px 18px;
+    border-bottom: 1px solid #ddd;
+  }
+  .menu-drawer_action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid #ddd;
+    padding-block: 1rem;
+  }
+  .menu-drawer_action a {
+    border: 0 !important;
+  }
+</style>
+<div id="header-drawer">
+  <details>
+    <summary class="header-drawer_icons">
+      {{- 'icon-menu.svg' | inline_asset_content -}}
+      {{- 'icon-close.svg' | inline_asset_content -}}
+    </summary>
+    <div id="menu-drawer">
+      {% render 'nav-dropdown', nav_style: 'drawer' %}
+
+      <div class="menu-drawer_action">
+        {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
+          <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
+            {{ 'icon-account.svg' | inline_asset_content }}
+            <span>Account</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </details>
+</div>

@@ -17,7 +17,7 @@
     }
   {% endif %}
 
-  header {
+  #main-header {
     display: grid;
     grid-template-columns:
     {% if section.settings.logo_position == 'middle-center' or section.settings.logo_position == 'top-center' %}
@@ -31,17 +31,23 @@
     margin-inline: auto;
     padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
   }
+  #main-header .header-shop_name {
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0;
+    line-height: 1;
+  }
   {% if section.settings.logo_position == 'middle-center' %}
-    nav {
+    #main-header nav {
         grid-area: 1 / 1;
     }
   {% elsif section.settings.logo_position == 'top-left' or section.settings.logo_position == 'top-center' %}
-    nav {
+    #main-header nav {
       grid-area: 2 / span 3;
       padding-block: {{ section.settings.padding_bottom }}px;
     }
   {% endif %}
-  nav ul {
+  #main-header ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -53,22 +59,22 @@
     {% endif %}
     gap: 1rem;
   }
-  nav summary {
+  #main-header summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
     cursor: pointer;
   }
-  nav summary svg {
+  #main-header summary svg {
     width: 12px;
     height: auto;
     transition: 300ms ease;
   }
-  nav summary::marker {
+  #main-header summary::marker {
     content: none;
   }
-  nav details[open] > summary svg {
+  #main-header details[open] > summary svg {
     transform: scaleY(-1);
   }
   .header-logo {
@@ -81,7 +87,7 @@
       height: {{ settings.logo_height | minus: 10 | append: 'px' }};
     }
   {% endif %}
-  header a {
+  #main-header a {
     text-decoration: none;
     color: #000;
   }
@@ -111,7 +117,7 @@
     {% endif %}
   }
 
-  #header-search-trigger {
+  #header-actions_search {
     cursor: pointer;
   }
   #header-search {
@@ -149,18 +155,29 @@
   #header-search svg {
     width: 20px;
   }
+
+  @media (min-width: 768px) {
+    {% unless section.settings.menu_type_desktop == 'drawer' %}
+      #header-drawer {
+        display: none;
+      }
+    {% endunless %}
+  }
+  @media (max-width: 768px) {
+    #main-header > nav, .header-actions_account {
+      display: none;
+    }
+  }
 </style>
 
 {% capture header_search %}
-  <div id="header-search-trigger">
+  <div id="header-actions_search">
     {{ 'icon-search.svg' | inline_asset_content }}
   </div>
 {% endcapture %}
 
-<header>
-  {% if section.settings.menu_type_desktop == 'drawer' %}
-    {{- 'icon-menu.svg' | inline_asset_content -}}
-  {% endif %}
+<header id="main-header">
+  {% render 'nav-drawer' %}
 
   {% if section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
     {{ header_search }}
@@ -171,7 +188,7 @@
     {% if settings.logo != blank %}
       {{ settings.logo | image_url: width: 900 | image_tag: class: 'header-logo' }}
     {% else %}
-      <span>{{ shop.name }}</span>
+      <span class="header-shop_name">{{ shop.name }}</span>
     {% endif %}
   </a>
   {% if request.page_type == 'index' %}</h1>{% endif %}
@@ -179,7 +196,7 @@
   {% if section.settings.menu != blank and section.settings.menu_type_desktop != 'drawer' %}
     <nav>
       {% if section.settings.menu_type_desktop == 'dropdown' %}
-        {% render 'nav-dropdown' %}
+        {% render 'nav-dropdown', nav_style: 'dropdown' %}
       {% elsif section.settings.menu_type_desktop != 'drawer' %}
         {% render 'nav-megamenu' %}
       {% endif %}
@@ -192,7 +209,7 @@
     {% endunless %}
 
     {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
-      <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
+      <a class="header-actions_account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
         {{ 'icon-account.svg' | inline_asset_content }}
       </a>
     {% endif %}
@@ -220,7 +237,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const headerSearch = document.getElementById('header-search');
 
-    document.getElementById('header-search-trigger').addEventListener('click', () => {
+    document.getElementById('header-actions_search').addEventListener('click', () => {
       headerSearch.classList.add('active');
     });
 
@@ -231,7 +248,7 @@
 </script>
 
 <script>
-  const header = document.getElementById('shopify-section-header');
+  const header = document.getElementById('shopify-section-{{ section.id }}');
   let lastScrollTop = 0;
 
   function updateHeaderHeight() {

@@ -1,27 +1,29 @@
-<style>
-  .nav-dropdown, .nav-dropdown_child {
-    position: absolute;
-    top: 100%;
-    gap: 0;
-    align-items: stretch;
-    flex-direction: column;
-    background: #fff;
-    margin-top: 1px;
-  }
-  .nav-dropdown_child {
-    position: static;
-    background: #f1f1f1;
-  }
-  .nav-dropdown a, .nav-dropdown summary {
-    display: flex;
-    width: 20ch;
-    font-size: 15px;
-    line-height: 1.5;
-    padding: 12px 18px;
-    border-bottom: 1px solid #ddd;
-  }
-</style>
-<ul>
+{% unless nav_style == 'drawer' %}
+  <style>
+    #main-header .nav-dropdown, #main-header .nav-dropdown_child {
+      position: absolute;
+      top: 100%;
+      gap: 0;
+      align-items: stretch;
+      flex-direction: column;
+      background: #fff;
+      margin-top: 1px;
+    }
+    #main-header .nav-dropdown_child {
+      position: static;
+      background: #f1f1f1;
+    }
+    #main-header .nav-dropdown a, #main-header .nav-dropdown summary {
+      display: flex;
+      width: 20ch;
+      font-size: 15px;
+      line-height: 1.5;
+      padding: 12px 18px;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+{% endunless %}
+<ul {% if nav_style == 'drawer' %}class="menu-drawer_navigation"{% endif %}>
   {% for link in section.settings.menu.links %}
     <li>
       {% if link.links != blank %}
@@ -30,7 +32,7 @@
             {{- link.title | escape -}}
             {{- 'icon-caret.svg' | inline_asset_content -}}
           </summary>
-          <ul class="nav-dropdown color-{{ section.settings.menu_color_scheme }} gradient" role="list">
+          <ul class="nav-{{ nav_style }}" role="list">
             {%- for childlink in link.links -%}
               <li>
                 {%- if childlink.links == blank -%}
