@@ -43,6 +43,8 @@
               <label>
                 <input
                   type="checkbox"
+                  name="{{ v.param_name }}"
+                  value="{{ v.value }}"
                   {% if v.active %}
                     checked
                     data-render-section-checkbox-url="{{ v.url_to_remove }}"
@@ -93,6 +95,8 @@
                 <label>
                   <input
                     type="checkbox"
+                    name="{{ v.param_name }}"
+                    value="{{ v.value }}"
                     {% if v.active %}
                       checked
                       data-render-section-checkbox-url="{{ v.url_to_remove }}"
