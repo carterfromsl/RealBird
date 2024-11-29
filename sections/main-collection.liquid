@@ -384,7 +384,7 @@
   }
 
   const setupEventListeners = () => {
-    const container = document.getElementById("ProductGridContainer");
+    {% comment %} const container = document.getElementById("ProductGridContainer");
 
     {% if section.settings.enable_filtering %}
     container.addEventListener("change", (event) => {
@@ -409,7 +409,7 @@
         renderSection(url.href);
       }
       {% endif %}
-    });
+    }); {% endcomment %}
   };
 
   window.addEventListener("DOMContentLoaded", setupEventListeners);
