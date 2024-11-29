@@ -36,7 +36,7 @@
   }
 </style>
 
-{% if localization.available_countries.size > 1 %}
+{% if enable_country_selector and localization.available_countries.size > 1 %}
   <localization-form>
     {% form 'localization' %}
       <div class="localization-wrapper">
@@ -44,7 +44,7 @@
           <span>
             {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
             {{ localization.country.currency.symbol }}) </span
-          >?
+          >
           {{- 'icon-caret.svg' | inline_asset_content -}}
         </button>
 
@@ -71,7 +71,7 @@
   </localization-form>
 {% endif %}
 
-{% if localization.available_languages.size > 1 %}
+{% if enable_language_selector and localization.available_languages.size > 1 %}
   <localization-form>
     {% form 'localization' %}
       <div class="localization-wrapper">

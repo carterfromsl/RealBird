@@ -24,9 +24,9 @@
     display: none;
   }
   #menu-drawer ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
   #menu-drawer li {
     width: 100%;
@@ -46,12 +46,30 @@
   .menu-drawer_action {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
     border-top: 1px solid #ddd;
-    padding-block: 1rem;
+    padding: 15px 20px;
   }
   .menu-drawer_action a {
     border: 0 !important;
+  }
+  .menu-drawer_localization {
+    display: flex;
+  }
+  .localization-wrapper {
+    position: relative;
+    padding: 12px 6px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+  }
+  .menu-drawer_localization .localization-list {
+    top: unset;
+    left: -1px;
+    bottom: 100%;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #ddd;
   }
 </style>
 <div id="header-drawer">
@@ -64,10 +82,18 @@
       {% render 'nav-dropdown', nav_style: 'drawer' %}
 
       <div class="menu-drawer_action">
+        {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
+          <div class="menu-drawer_localization">
+            {%- render 'localization-form', 
+              enable_country_selector: section.settings.enable_country_selector,
+              enable_language_selector: section.settings.enable_language_selector
+            -%}
+          </div>
+        {% endif %}
+
         {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
           <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
             {{ 'icon-account.svg' | inline_asset_content }}
-            <span>Account</span>
           </a>
         {% endif %}
       </div>

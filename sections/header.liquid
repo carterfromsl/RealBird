@@ -164,7 +164,7 @@
     {% endunless %}
   }
   @media (max-width: 768px) {
-    #main-header > nav, .header-actions_account {
+    #main-header > nav, .header-actions_account, .header-actions_localization {
       display: none;
     }
   }
@@ -204,9 +204,14 @@
   {% endif %}
 
   <div class="header-actions">
-    <div class="header-actions_localization">
-      {%- render 'localization-form', localPosition: 'HeaderCountry' -%}
-    </div>
+    {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
+      <div class="header-actions_localization">
+        {%- render 'localization-form', 
+          enable_country_selector: section.settings.enable_country_selector,
+          enable_language_selector: section.settings.enable_language_selector
+        -%}
+      </div>
+    {% endif %}
 
     {% unless section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
       {{ header_search }}
