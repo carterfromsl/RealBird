@@ -47,7 +47,7 @@
       padding-block: {{ section.settings.padding_bottom }}px;
     }
   {% endif %}
-  #main-header ul {
+  #main-header nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -204,6 +204,10 @@
   {% endif %}
 
   <div class="header-actions">
+    <div class="header-actions_localization">
+      {%- render 'localization-form', localPosition: 'HeaderCountry' -%}
+    </div>
+
     {% unless section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
       {{ header_search }}
     {% endunless %}

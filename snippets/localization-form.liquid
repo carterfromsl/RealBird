@@ -1,0 +1,157 @@
+<style>
+  localization-form {
+    display: grid;
+    place-items: center;
+  }
+  .localization-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .localization-button svg {
+    width: 12px;
+    height: auto;
+  }
+  .localization-list {
+    position: absolute;
+    top: calc(100% + 1px);
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 60vh;
+    overflow: auto;
+  }
+  .localization-list a {
+    display: block;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 12px 18px;
+    border-bottom: 1px solid #ddd;
+  }
+</style>
+
+{% if localization.available_countries.size > 1 %}
+  <localization-form>
+    {% form 'localization' %}
+      <div class="localization-wrapper">
+        <button type="button" class="localization-button" aria-expanded="false" aria-controls="CountryList">
+          <span>
+            {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+            {{ localization.country.currency.symbol }}) </span
+          >?
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </button>
+
+        <ul id="CountryList" role="list" class="localization-list" hidden>
+          {% for country in localization.available_countries %}
+            <li class="localization-item" tabindex="-1">
+              <a
+                href="#"
+                {% if country.iso_code == localization.country.iso_code %}
+                  aria-current="true"
+                {% endif %}
+                data-value="{{ country.iso_code }}"
+              >
+                {{ country.name }} ({{ country.currency.iso_code }}
+                {{ country.currency.symbol }})
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}
+
+{% if localization.available_languages.size > 1 %}
+  <localization-form>
+    {% form 'localization' %}
+      <div class="localization-wrapper">
+        <button type="button" class="localization-button" aria-expanded="false" aria-controls="LanguageList">
+          {{ localization.language.endonym_name | capitalize }}
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </button>
+
+        <ul id="LanguageList" role="list" class="localization-list" hidden>
+          {% for language in localization.available_languages %}
+            <li class="localization-item" tabindex="-1">
+              <a
+                href="#"
+                {% if language.iso_code == localization.language.iso_code %}
+                  aria-current="true"
+                {% endif %}
+                hreflang="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                data-value="{{ language.iso_code }}"
+              >
+                {{ language.endonym_name | capitalize }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}
+
+<script>
+  class LocalizationForm extends HTMLElement {
+    constructor() {
+      super();
+      this.elements = {
+        input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
+        button: this.querySelector('button'),
+        panel: this.querySelector('ul'),
+      };
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+      this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+      this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+    }
+
+    hidePanel() {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+      this.elements.panel.setAttribute('hidden', true);
+    }
+
+    onContainerKeyUp(event) {
+      if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+      this.hidePanel();
+      this.elements.button.focus();
+    }
+
+    onItemClick(event) {
+      event.preventDefault();
+      const form = this.querySelector('form');
+      this.elements.input.value = event.currentTarget.dataset.value;
+      if (form) form.submit();
+    }
+
+    openSelector() {
+      this.elements.button.focus();
+      this.elements.panel.toggleAttribute('hidden');
+      this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+    }
+
+    closeSelector(event) {
+      const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+      if (event.relatedTarget === null || shouldClose) {
+        this.hidePanel();
+      }
+    }
+  }
+
+  customElements.define('localization-form', LocalizationForm);
+</script>
