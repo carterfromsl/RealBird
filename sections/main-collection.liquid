@@ -256,9 +256,9 @@
     data-section="{{ section.id }}"
   >
     <h1>{{ collection.title }}</h1>
-    <div class="main-content">
+    <div>
       {%- paginate collection.products by section.settings.products_per_page -%}
-        <form id="collection-form">
+        <form id="collection-form" class="main-content">
           {%- if section.settings.enable_filtering -%}
             {% render 'filters',
               results: collection,
@@ -301,24 +301,22 @@
             {% endif %}
             {%- if section.settings.enable_sorting -%}
               {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-              <div class="controls">
-                <div class="sort-dropdown">
-                  <button class="sort-button">Sort By</button>
-                  <div class="sort-content">
-                    {%- for option in collection.sort_options -%}
-                      <a
-                        {% if option.value == sort_by %}
-                          style="font-weight: bold"
-                        {% endif %}
-                        href="#"
-                        data-sort-by="{{ option.value }}"
-                      >
-                        {{- option.name | escape -}}
-                      </a>
-                    {%- endfor -%}
-                  </div>
-                </div>
-              </div>
+              <select
+                data-render-section
+                name="sort_by"
+                id="SortBy"
+              >
+                {%- for option in collection.sort_options -%}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
             {%- endif -%}
             <div class="results-count">
               {%- if collection.products_count == collection.all_products_count -%}
@@ -357,14 +355,25 @@
   class CollectionInfo extends HTMLElement {
     constructor() {
       super();
-      this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 1000);
+      this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 800);
       this.addEventListener("change", this.debounceOnChange.bind(this));
+      this.addEventListener("click", this.onClickHandler.bind(this));
+    }
+
+    onClickHandler = (event) => {
+      if (!event.target.matches('[data-render-section-url]')) return;
+      event.preventDefault();
+      const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split("?")[1]).toString();
+      this.fetchSection(searchParams);
     }
 
     onChangeHandler = (event) => {
+      if (!event.target.matches('[data-render-section]')) return;
+
       const formData = new FormData(this.form);
       const searchParams = new URLSearchParams(formData).toString();
-      this.fetchSection(searchParams);
+      this.fetchSection(searchParams);       
+      
     }
 
     get form() {

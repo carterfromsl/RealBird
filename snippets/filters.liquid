@@ -45,11 +45,9 @@
                   type="checkbox"
                   name="{{ v.param_name }}"
                   value="{{ v.value }}"
+                  data-render-section
                   {% if v.active %}
                     checked
-                    data-render-section-checkbox-url="{{ v.url_to_remove }}"
-                  {% else %}
-                    data-render-section-checkbox-url="{{ v.url_to_add }}"
                   {% endif -%}
                   {% if v.count == 0 and v.active == false %}
                     disabled
@@ -97,11 +95,9 @@
                     type="checkbox"
                     name="{{ v.param_name }}"
                     value="{{ v.value }}"
+                    data-render-section
                     {% if v.active %}
                       checked
-                      data-render-section-checkbox-url="{{ v.url_to_remove }}"
-                    {% else %}
-                      data-render-section-checkbox-url="{{ v.url_to_add }}"
                     {% endif -%}
                     {% if v.count == 0 and v.active == false %}
                       disabled
