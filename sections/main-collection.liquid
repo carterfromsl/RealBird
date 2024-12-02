@@ -352,52 +352,54 @@
     };
   }
 
-  class CollectionInfo extends HTMLElement {
-    constructor() {
-      super();
-      this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 800);
-      this.addEventListener("change", this.debounceOnChange.bind(this));
-      this.addEventListener("click", this.onClickHandler.bind(this));
-    }
+  if (!customElements.get('collection-info')) {
+    customElements.define(
+      'collection-info',
+      class CollectionInfo extends HTMLElement {
+        constructor() {
+          super();
+          this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 800);
+          this.addEventListener('change', this.debounceOnChange.bind(this));
+          this.addEventListener('click', this.onClickHandler.bind(this));
+        }
 
-    onClickHandler = (event) => {
-      if (!event.target.matches('[data-render-section-url]')) return;
-      event.preventDefault();
-      const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split("?")[1]).toString();
-      this.fetchSection(searchParams);
-    }
+        onClickHandler = (event) => {
+          if (!event.target.matches('[data-render-section-url]')) return;
+          event.preventDefault();
+          const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split('?')[1]).toString();
+          this.fetchSection(searchParams);
+        };
 
-    onChangeHandler = (event) => {
-      if (!event.target.matches('[data-render-section]')) return;
+        onChangeHandler = (event) => {
+          if (!event.target.matches('[data-render-section]')) return;
 
-      const formData = new FormData(this.form);
-      const searchParams = new URLSearchParams(formData).toString();
-      this.fetchSection(searchParams);       
-      
-    }
+          const formData = new FormData(this.form);
+          const searchParams = new URLSearchParams(formData).toString();
+          this.fetchSection(searchParams);
+        };
 
-    get form() {
-      return this.querySelector('collection-info form');
-    }
+        get form() {
+          return this.querySelector('collection-info form');
+        }
 
-    updateSection = (responseHtml) => {
-      const html = responseHtml.getElementById('ProductGridContainer').innerHTML;
-      this.innerHTML = html;
-    };
+        updateSection = (responseHtml) => {
+          const html = responseHtml.getElementById('ProductGridContainer').innerHTML;
+          this.innerHTML = html;
+        };
 
-    fetchSection = (searchParams) => {
-      console.log(searchParams.split('&'));
-      fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
-        .then((response) => response.text())
-        .then((responseText) => {
-          history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
-          let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
-          this.updateSection(responseHtml);
-        });
-    }
+        fetchSection = (searchParams) => {
+          console.log(searchParams.split('&'));
+          fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
+            .then((response) => response.text())
+            .then((responseText) => {
+              history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
+              let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
+              this.updateSection(responseHtml);
+            });
+        };
+      }
+    );
   }
-
-  customElements.define('collection-info', CollectionInfo);
 </script>
 
 {% schema %}
