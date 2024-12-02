@@ -16,9 +16,6 @@
       >
         <details
           id="{{ f.param_name }}"
-          {% if collapse_filters == false %}
-            open
-          {% endif %}
           x-bind:open="open"
           @toggle="open = $event.target.open"
         >
