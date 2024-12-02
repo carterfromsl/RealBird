@@ -1,4 +1,6 @@
 {% if filter_type == 'vertical' %}
+  {% assign show_more_number = 10 %}
+
   <aside class="sidebar">
     {% liquid
       assign open = true
@@ -38,9 +40,17 @@
               {% endif %}
             </span>
           </summary>
-          <div>
+          <div
+            style="display: flex; flex-direction: column"
+            x-data="{ showMore : $persist(false).as('sm-{{ f.param_name }}') }"
+          >
             {% for v in f.values %}
-              <label>
+              <label
+                {% if forloop.index > show_more_number %}
+                  x-show="showMore"
+                  x-transition
+                {% endif %}
+              >
                 <input
                   type="checkbox"
                   name="{{ v.param_name }}"
@@ -53,9 +63,12 @@
                     disabled
                   {% endif -%}
                 >
-                {{- v.label }} ({{ v.count }})</label
-              ><br>
+                {{- v.label }} ({{ v.count }})
+              </label>
             {% endfor %}
+            {%- if f.values.size > show_more_number -%}
+              <button type="button" class="show-more" x-on:click="showMore = !showMore" x-text="showMore ? 'Show less' : 'Show more'">Show more</button>
+            {%- endif %}
           </div>
         </details>
       </div>
