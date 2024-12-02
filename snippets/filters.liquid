@@ -75,7 +75,7 @@
         class="filter-dropdown"
         x-data="{ open: $persist(false).as('xh-{{ f.param_name }}') }"
       >
-        <button x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
+        <button type="button" x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
         <div
           x-cloak
           x-show="open"
