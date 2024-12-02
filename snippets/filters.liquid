@@ -12,11 +12,7 @@
     {% for f in results.filters %}
       <div
         class="filter-section"
-        {% if request.design_mode %}
-          x-data="{ open: {{ open }} }"
-        {% else %}
-          x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }"
-        {% endif %}
+        x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }"
       >
         <details
           id="{{ f.param_name }}"
