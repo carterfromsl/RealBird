@@ -12,7 +12,9 @@
     {% for f in results.filters %}
       <div
         class="filter-section"
-        {% if request.design_mode == false %}
+        {% if request.design_mode %}
+          x-data="{ open: {{ open }} }"
+        {% else %}
           x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }"
         {% endif %}
       >
@@ -21,11 +23,8 @@
           {% if collapse_filters == false %}
             open
           {% endif %}
-
-          {% if request.design_mode == false %}
-            x-bind:open="open"
-            @toggle="open = $event.target.open"
-          {% endif %}
+          x-bind:open="open"
+          @toggle="open = $event.target.open"
         >
           <summary>
             <span>
@@ -67,7 +66,9 @@
               </label>
             {% endfor %}
             {%- if f.values.size > show_more_number -%}
-              <button type="button" class="show-more" x-on:click="showMore = !showMore" x-text="showMore ? 'Show less' : 'Show more'">Show more</button>
+              <button type="button" class="show-more" x-on:click="showMore = !showMore" x-text="showMore ? 'Show less' : 'Show more'">
+                Show more
+              </button>
             {%- endif %}
           </div>
         </details>
