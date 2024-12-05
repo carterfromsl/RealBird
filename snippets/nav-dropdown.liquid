@@ -1,6 +1,7 @@
 {% unless nav_style == 'drawer' %}
   <style>
-    #main-header .nav-dropdown, #main-header .nav-dropdown_child {
+    #main-header .nav-dropdown,
+    #main-header .nav-dropdown_child {
       position: absolute;
       top: 100%;
       gap: 0;
@@ -13,9 +14,11 @@
       position: static;
       background: #f1f1f1;
     }
-    #main-header .nav-dropdown a, #main-header .nav-dropdown summary {
+    #main-header .nav-dropdown a,
+    #main-header .nav-dropdown .menu-toggle {
       display: flex;
-      width: 20ch;
+      min-width: 20ch;
+      width: 100%;
       font-size: 15px;
       line-height: 1.5;
       padding: 12px 18px;
@@ -23,66 +26,72 @@
     }
   </style>
 {% endunless %}
-<ul {% if nav_style == 'drawer' %}class="menu-drawer_navigation"{% endif %}>
+<ul
+  {% if nav_style == 'drawer' %}
+  class="menu-drawer_navigation"
+  {% endif %}>
   {% for link in section.settings.menu.links %}
-    <li>
+    <li x-data="{ menuOpen: false, activeSubMenu: null }" @click.outside="menuOpen = false; activeSubMenu = null">
       {% if link.links != blank %}
-        <details>
-          <summary>
-            {{- link.title | escape -}}
-            {{- 'icon-caret.svg' | inline_asset_content -}}
-          </summary>
-          <ul class="nav-{{ nav_style }}" role="list">
-            {%- for childlink in link.links -%}
-              <li>
-                {%- if childlink.links == blank -%}
-                  <a
-                    href="{{ childlink.url }}"
-                    class="header__menu-item"
-                    {% if childlink.current %}
-                      aria-current="page"
-                    {% endif %}
-                  >
-                    {{ childlink.title | escape }}
-                  </a>
-                {%- else -%}
-                  <details
-                    {% if menu_type == 'megamenu' %}
-                      open
-                    {% endif %}
-                  >
-                    <summary>
-                      {{- childlink.title | escape -}}
-                      {{- 'icon-caret.svg' | inline_asset_content -}}
-                    </summary>
-                    <ul class="nav-dropdown_child color-{{ section.settings.menu_color_scheme }} gradient" role="list">
-                      {%- for grandchildlink in childlink.links -%}
-                        <li>
-                          <a
-                            href="{{ grandchildlink.url }}"
-                            class="header__menu-item"
-                            {% if grandchildlink.current %}
-                              aria-current="page"
-                            {% endif %}
-                          >
-                            {{ grandchildlink.title | escape }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  </details>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-        </details>
+        <button
+          @click="menuOpen = !menuOpen"
+          :class="{ 'menu-open': menuOpen }"
+          class="menu-toggle">
+          {{- link.title | escape -}}
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </button>
+        <ul
+          x-show="menuOpen"
+          class="nav-{{ nav_style }}"
+          role="list"
+          style="display: none;">
+          {%- for childlink in link.links -%}
+            <li>
+              {% if childlink.links == blank %}
+                <a
+                  href="{{ childlink.url }}"
+                  class="header__menu-item"
+                  {% if childlink.current %}
+                  aria-current="page"
+                  {% endif %}>
+                  {{ childlink.title | escape }}
+                </a>
+              {% else %}
+                <button
+                  @click="activeSubMenu = (activeSubMenu === '{{ childlink.title | escape }}' ? null : '{{ childlink.title | escape }}')"
+                  :class="{ 'menu-open': activeSubMenu === '{{ childlink.title | escape }}' }"
+                  class="menu-toggle">
+                  {{- childlink.title | escape -}}
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </button>
+                <ul
+                  x-show="activeSubMenu === '{{ childlink.title | escape }}'"
+                  class="nav-dropdown_child color-{{ section.settings.menu_color_scheme }} gradient"
+                  role="list"
+                  style="display: none;">
+                  {%- for grandchildlink in childlink.links -%}
+                    <li>
+                      <a
+                        href="{{ grandchildlink.url }}"
+                        class="header__menu-item"
+                        {% if grandchildlink.current %}
+                        aria-current="page"
+                        {% endif %}>
+                        {{ grandchildlink.title | escape }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {% endif %}
+            </li>
+          {%- endfor -%}
+        </ul>
       {% else %}
         <a
           href="{{ link.url }}"
           {% if link.current %}
-            aria-current="page"
-          {% endif %}
-        >
+          aria-current="page"
+          {% endif %}>
           {{- link.title | escape -}}
         </a>
       {% endif %}

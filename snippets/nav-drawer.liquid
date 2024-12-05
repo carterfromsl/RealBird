@@ -13,14 +13,14 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  #header-drawer details[open] #menu-drawer {
+  #header-drawer #menu-drawer.drawer-open {
     transform: translateX(0);
   }
-  #main-header summary.header-drawer_icons svg {
+  #main-header .header-drawer_icons svg {
     width: 20px;
   }
-  #header-drawer details[open] svg.icon-menu, 
-  #header-drawer details:not([open]) svg.icon-close {
+  #header-drawer .header-drawer_icons.drawer-open svg.icon-menu,
+  #header-drawer .header-drawer_icons:not(.drawer-open) svg.icon-close {
     display: none;
   }
   #menu-drawer ul {
@@ -35,13 +35,14 @@
     background: #f3f4f5;
   }
   #menu-drawer a,
-  #menu-drawer summary {
+  #menu-drawer .menu-toggle {
     display: flex;
     gap: 10px;
     font-size: 15px;
     line-height: 1.5;
     padding: 12px 18px;
     border-bottom: 1px solid #ddd;
+    width: 100%;
   }
   .menu-drawer_action {
     display: flex;
@@ -53,6 +54,7 @@
   }
   .menu-drawer_action a {
     border: 0 !important;
+    justify-content: flex-end;
   }
   .menu-drawer_localization {
     display: flex;
@@ -72,31 +74,36 @@
     border: 1px solid #ddd;
   }
 </style>
-<div id="header-drawer">
-  <details>
-    <summary class="header-drawer_icons">
-      {{- 'icon-menu.svg' | inline_asset_content -}}
-      {{- 'icon-close.svg' | inline_asset_content -}}
-    </summary>
-    <div id="menu-drawer">
-      {% render 'nav-dropdown', nav_style: 'drawer' %}
+<div
+  id="header-drawer"
+  x-data="{ drawerOpen: false }"
+  @click.outside="drawerOpen = false">
+  <button
+    class="header-drawer_icons"
+    @click="drawerOpen = !drawerOpen"
+    :class="{ 'drawer-open': drawerOpen }">
+    {{- 'icon-menu.svg' | inline_asset_content -}}
+    {{- 'icon-close.svg' | inline_asset_content -}}
+  </button>
+  <div id="menu-drawer" :class="{ 'drawer-open': drawerOpen }">
+    {% render 'nav-dropdown'
+      , nav_style: 'drawer' %}
 
-      <div class="menu-drawer_action">
-        {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
-          <div class="menu-drawer_localization">
-            {%- render 'localization-form', 
-              enable_country_selector: section.settings.enable_country_selector,
-              enable_language_selector: section.settings.enable_language_selector
-            -%}
-          </div>
-        {% endif %}
+    <div class="menu-drawer_action">
+      {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
+        <div class="menu-drawer_localization">
+          {%- render 'localization-form'
+            , enable_country_selector: section.settings.enable_country_selector
+            , enable_language_selector: section.settings.enable_language_selector
+          -%}
+        </div>
+      {% endif %}
 
-        {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
-          <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
-            {{ 'icon-account.svg' | inline_asset_content }}
-          </a>
-        {% endif %}
-      </div>
+      {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
+          {{ 'icon-account.svg' | inline_asset_content }}
+        </a>
+      {% endif %}
     </div>
-  </details>
+  </div>
 </div>

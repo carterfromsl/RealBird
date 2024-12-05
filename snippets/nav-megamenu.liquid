@@ -31,54 +31,52 @@
 </style>
 <ul>
   {% for link in section.settings.menu.links %}
-    <li>
+    <li x-data="{ menuOpen: false }" @click.outside="menuOpen = false">
       {% if link.links != blank %}
-        <details>
-          <summary>
-            {{- link.title | escape -}}
-            {{- 'icon-caret.svg' | inline_asset_content -}}
-          </summary>
-          <div class="nav-megamenu color-{{ section.settings.menu_color_scheme }} gradient">
-            <ul class="page-wrapper" role="list">
-              {%- for childlink in link.links -%}
-                <li>
-                  <a
-                    href="{{ childlink.url }}"
-                    class="nav-megamenu_heading"
-                    {% if childlink.current %}
-                      aria-current="page"
-                    {% endif %}
-                  >
-                    {{ childlink.title | escape }}
-                  </a>
-                  {%- if childlink.links != blank -%}
-                    <ul class="nav-megamenu_child" role="list">
-                      {%- for grandchildlink in childlink.links -%}
-                        <li>
-                          <a
-                            href="{{ grandchildlink.url }}"
-                            {% if grandchildlink.current %}
-                              aria-current="page"
-                            {% endif %}
-                          >
-                            {{ grandchildlink.title | escape }}
-                          </a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div>
-        </details>
+        <button
+          @click="menuOpen = !menuOpen"
+          :class="{ 'menu-open': menuOpen }"
+          class="menu-toggle">
+          {{- link.title | escape -}}
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </button>
+        <div x-show="menuOpen" class="nav-megamenu color-{{ section.settings.menu_color_scheme }} gradient">
+          <ul class="page-wrapper" role="list">
+            {%- for childlink in link.links -%}
+              <li>
+                <a
+                  href="{{ childlink.url }}"
+                  class="nav-megamenu_heading"
+                  {% if childlink.current %}
+                  aria-current="page"
+                  {% endif %}>
+                  {{ childlink.title | escape }}
+                </a>
+                {%- if childlink.links != blank -%}
+                  <ul class="nav-megamenu_child" role="list">
+                    {%- for grandchildlink in childlink.links -%}
+                      <li>
+                        <a
+                          href="{{ grandchildlink.url }}"
+                          {% if grandchildlink.current %}
+                          aria-current="page"
+                          {% endif %}>
+                          {{ grandchildlink.title | escape }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       {% else %}
         <a
           href="{{ link.url }}"
           {% if link.current %}
-            aria-current="page"
-          {% endif %}
-        >
+          aria-current="page"
+          {% endif %}>
           {{- link.title | escape -}}
         </a>
       {% endif %}
