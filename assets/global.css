@@ -1,3 +1,7 @@
+:root {
+  --page-width: 1400px;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -12,6 +16,10 @@ body {
   margin: 20px auto;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-wrapper {
+  max-width: var(--page-width);
 }
 
 /* 
