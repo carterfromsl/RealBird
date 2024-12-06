@@ -96,6 +96,7 @@
   .product__title {
     word-break: break-word;
     margin-bottom: 16px;
+    max-width: 400px;
   }
 
   .product__title h1,
@@ -287,16 +288,8 @@
   }
 
   @media screen and (min-width: 750px) {
-    .page-width {
+    product-info .page-width {
       padding: 0 50px;
-    }
-
-    .product__column-sticky {
-      display: flex;
-      position: sticky;
-      top: 3rem;
-      z-index: 2;
-      max-width: 400px;
     }
 
     .product__info-wrapper{
@@ -304,7 +297,10 @@
       padding-left: 40px;
       max-width: 50%;
       width: calc(50% - 40px / 2);
+      height: 100%;
       padding-top: 0px;
+      position: sticky;
+      top: 137px;
     }
 
     .product__info-wrapper form{
@@ -355,8 +351,7 @@
       </div>
 
       <div class="product__info-wrapper flex__item">
-        <div class="product__column-sticky">
-          {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
+        {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
 
           <p class="product__vendor">{{ product.vendor }}</p>
@@ -498,8 +493,7 @@
             </button>
             {{ form | payment_button }}
           </div>
-          {% endform %}
-        </div>
+        {% endform %}
       </div>
     </div>
   </div>
