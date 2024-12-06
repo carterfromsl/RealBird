@@ -1,4 +1,6 @@
 {% if filter_type == 'vertical' %}
+  {% assign show_more_number = 10 %}
+
   <aside class="sidebar">
     {% liquid
       assign open = true
@@ -10,20 +12,12 @@
     {% for f in results.filters %}
       <div
         class="filter-section"
-        {% if request.design_mode == false %}
-          x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }"
-        {% endif %}
+        x-data="{ open: $persist({{ open }}).as('xv-{{ f.param_name }}') }"
       >
         <details
           id="{{ f.param_name }}"
-          {% if collapse_filters == false %}
-            open
-          {% endif %}
-
-          {% if request.design_mode == false %}
-            x-bind:open="open"
-            @toggle="open = $event.target.open"
-          {% endif %}
+          x-bind:open="open"
+          @toggle="open = $event.target.open"
         >
           <summary>
             <span>
@@ -38,24 +32,37 @@
               {% endif %}
             </span>
           </summary>
-          <div>
+          <div
+            style="display: flex; flex-direction: column"
+            x-data="{ showMore : $persist(false).as('sm-{{ f.param_name }}') }"
+          >
             {% for v in f.values %}
-              <label>
+              <label
+                {% if forloop.index > show_more_number %}
+                  x-show="showMore"
+                  x-transition
+                {% endif %}
+              >
                 <input
                   type="checkbox"
+                  name="{{ v.param_name }}"
+                  value="{{ v.value }}"
+                  data-render-section
                   {% if v.active %}
                     checked
-                    data-render-section-checkbox-url="{{ v.url_to_remove }}"
-                  {% else %}
-                    data-render-section-checkbox-url="{{ v.url_to_add }}"
                   {% endif -%}
                   {% if v.count == 0 and v.active == false %}
                     disabled
                   {% endif -%}
                 >
-                {{- v.label }} ({{ v.count }})</label
-              ><br>
+                {{- v.label }} ({{ v.count }})
+              </label>
             {% endfor %}
+            {%- if f.values.size > show_more_number -%}
+              <button type="button" class="show-more" x-on:click="showMore = !showMore" x-text="showMore ? 'Show less' : 'Show more'">
+                Show more
+              </button>
+            {%- endif %}
           </div>
         </details>
       </div>
@@ -68,7 +75,7 @@
         class="filter-dropdown"
         x-data="{ open: $persist(false).as('xh-{{ f.param_name }}') }"
       >
-        <button x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
+        <button type="button" x-on:click="open = !open" class="filter-button">{{ f.label | escape }}</button>
         <div
           x-cloak
           x-show="open"
@@ -93,11 +100,11 @@
                 <label>
                   <input
                     type="checkbox"
+                    name="{{ v.param_name }}"
+                    value="{{ v.value }}"
+                    data-render-section
                     {% if v.active %}
                       checked
-                      data-render-section-checkbox-url="{{ v.url_to_remove }}"
-                    {% else %}
-                      data-render-section-checkbox-url="{{ v.url_to_add }}"
                     {% endif -%}
                     {% if v.count == 0 and v.active == false %}
                       disabled
