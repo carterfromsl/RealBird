@@ -114,10 +114,10 @@
 
         <ul
           x-show="localizationOpen"
+          x-cloak
           id="LanguageList"
           role="list"
           class="localization-list"
-          style="display: none;"
         >
           {% for language in localization.available_languages %}
             <li class="localization-item" tabindex="-1">
