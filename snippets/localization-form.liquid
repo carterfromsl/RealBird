@@ -62,10 +62,10 @@
 
         <ul
           x-show="localizationOpen"
+          x-cloak
           id="CountryList"
           role="list"
           class="localization-list"
-          style="display: none;"
         >
           {% for country in localization.available_countries %}
             <li class="localization-item" tabindex="-1">
