@@ -252,7 +252,6 @@
 
 <div class="container section-{{ section.id }}-padding">
   <collection-info
-    id="ProductGridContainer"
     data-section="{{ section.id }}"
   >
     <h1>{{ collection.title }}</h1>
@@ -266,7 +265,8 @@
               filter_type: section.settings.filter_type
             %}
           {% endif %}
-          <div class="product-grid-container">
+
+          <div id="ProductGridContainer" class="product-grid-container">
             {%- if section.settings.enable_filtering -%}
               <div class="filters">
                 {% liquid
@@ -383,8 +383,24 @@
         }
 
         updateSection = (responseHtml) => {
-          const html = responseHtml.getElementById('ProductGridContainer').innerHTML;
-          this.innerHTML = html;
+          const gridFromFetchInnerHtml = responseHtml.getElementById('ProductGridContainer').innerHTML;
+          const gridFromDom = this.querySelector('#ProductGridContainer');
+
+          gridFromDom.innerHTML = gridFromFetchInnerHtml;
+
+          const filtersFromFetch = responseHtml.querySelectorAll('#collection-form .js-filter');
+          const filtersFromDom = document.querySelectorAll('#collection-form .js-filter');
+
+          // Remove facets that are no longer returned from the server
+          Array.from(filtersFromDom).forEach((currentElement) => {
+            if (!Array.from(filtersFromFetch).some(({ id }) => currentElement.id === id)) {
+              currentElement.remove();
+            }
+          });
+
+          Array.from(filtersFromFetch).forEach((elementToRender, index) => {
+            document.getElementById(elementToRender.id).innerHTML = elementToRender.innerHTML;
+          });
         };
 
         fetchSection = (searchParams) => {
