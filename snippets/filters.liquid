@@ -16,7 +16,6 @@
         x-data="{ open: {{ open }} }"
       >
         <details
-          
           x-bind:open="open"
           @toggle="open = $event.target.open"
         >
@@ -75,7 +74,6 @@
   <div>
     {%- for f in results.filters -%}
       <div
-        
         class="filter-dropdown"
         x-data="{ open: false }"
       >
