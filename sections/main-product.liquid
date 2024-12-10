@@ -15,7 +15,7 @@
     }
   }
 
-  /* ===============================
+  /*===============================
   START PRODUCT INFO SECTION STYLING
   ==================================*/
   :root {
@@ -366,8 +366,10 @@
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when 'text' -%}
-                <p class="product__text {% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}">{{- block.settings.text -}}</p>
-              
+                <p class="product__text {% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}">
+                  {{- block.settings.text -}}
+                </p>
+
               {%- when 'title' -%}
                 <div class="product__title">
                   <h1>{{ product.title }}</h1>
@@ -385,10 +387,11 @@
                   {% endif %}
                 </div>
 
-                {%- when 'sku' -%}
+              {%- when 'sku' -%}
                 <p
                   class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
-                  id="Sku-{{ section.id }}">
+                  id="Sku-{{ section.id }}"
+                >
                   {{- product.selected_or_first_available_variant.sku -}}
                 </p>
 
@@ -398,62 +401,62 @@
                     <variant-selector>
                       {%- if block.settings.picker_type == 'dropdown' -%}
                         <div class="variant-block__dropdown">
-                        {% for option in product.options_with_values %}
-                          <label class="option__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
-                          <fieldset class="product-form__input">
-                            <select
-                              name="options[{{ option.name | escape }}]"
-                              id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                            >
-                              {% for value in option.values %}
-                                <option
-                                  value="{{ value | escape }}"
-                                  data-option-value-id="{{ value.id }}"
-                                  {% if value.selected %}
-                                    selected="selected"
-                                  {% endif %}
-                                  {% unless value.available %}
-                                    style="color: red; text-decoration: line-through;"
-                                  {% endunless %}
-                                >
-                                  {{ value }}
-                                  {% unless value.available %}
-                                    Unavailable
-                                  {% endunless %}
-                                </option>
-                              {% endfor %}
-                            </select>
-                          </fieldset>
-                        {% endfor %}
+                          {% for option in product.options_with_values %}
+                            <label class="option__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                            <fieldset class="product-form__input">
+                              <select
+                                name="options[{{ option.name | escape }}]"
+                                id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                              >
+                                {% for value in option.values %}
+                                  <option
+                                    value="{{ value | escape }}"
+                                    data-option-value-id="{{ value.id }}"
+                                    {% if value.selected %}
+                                      selected="selected"
+                                    {% endif %}
+                                    {% unless value.available %}
+                                      style="color: red; text-decoration: line-through;"
+                                    {% endunless %}
+                                  >
+                                    {{ value }}
+                                    {% unless value.available %}
+                                      Unavailable
+                                    {% endunless %}
+                                  </option>
+                                {% endfor %}
+                              </select>
+                            </fieldset>
+                          {% endfor %}
                         </div>
                       {%- endif -%}
                       {%- if block.settings.picker_type == 'button' -%}
                         <div class="variant-select__button">
-                        {%- for option in product.options_with_values -%}
-                          <fieldset class="product-form__input">
-                            <legend class="option__label">{{ option.name }}</legend>
-                            {%- for value in option.values -%}
-                              <input
-                                type="radio"
-                                id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                                name="{{ option.name }}-{{ option.position }}"
-                                value="{{ value | escape }}"
-                                class="pill-radio {% unless value.available %}disabled{% endunless %}"
-                                {% if value.selected %}
-                                  checked
-                                {% endif %}
-                                data-product-url="{{ value.product_url }}"
-                                data-option-value-id="{{ value.id }}"
-                              >
-                              <label
-                                class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
-                                for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                              >
-                                {{ value }}
-                              </label>
-                            {%- endfor -%}
-                          </fieldset>
-                        {%- endfor -%}
+                          {%- for option in product.options_with_values -%}
+                            <fieldset class="product-form__input">
+                              <legend class="option__label">{{ option.name }}</legend>
+                              {%- for value in option.values -%}
+                                <input
+                                  type="radio"
+                                  id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                                  name="{{ option.name }}-{{ option.position }}"
+                                  value="{{ value | escape }}"
+                                  class="pill-radio {% unless value.available %}disabled{% endunless %}"
+                                  {% if value.selected %}
+                                    checked
+                                  {% endif %}
+                                  data-product-url="{{ value.product_url }}"
+                                  data-option-value-id="{{ value.id }}"
+                                >
+                                <label
+                                  class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
+                                  for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                                >
+                                  {{ value }}
+                                </label>
+                              {%- endfor -%}
+                            </fieldset>
+                          {%- endfor -%}
                         </div>
                       {%- endif -%}
                       <script type="application/json" data-variants>
@@ -524,7 +527,6 @@
 
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
-                
             {%- endcase -%}
           {%- endfor -%}
         {% endform %}
