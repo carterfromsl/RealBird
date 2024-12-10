@@ -69,6 +69,10 @@
     margin: 0 auto;
   }
 
+  .product__info-wrapper{
+    padding-top: 20px;
+  }
+
   .product__info-wrapper form > *+*{
     margin: 15px 0;
   }
@@ -85,6 +89,14 @@
 
   .product__info-wrapper .product__title * {
     margin: 0px;
+  }
+
+  product-info .product__info-wrapper form > *:nth-child(4n){
+    margin-top: 0px;
+  }
+
+  product-info .product__info-wrapper form > *:last-child{
+    margin-bottom: 0px;
   }
 
   .product__info-wrapper .product__title {
@@ -250,7 +262,6 @@
     cursor: pointer;
     font-size: 15px;
     letter-spacing: 1px;
-    max-width: 343px;
   }
 
   .product-form__buttons button:hover {
@@ -281,17 +292,89 @@
     border: none;
   }
 
-  .product__info-wrapper{
-    padding-top: 20px;
+  .product__info-wrapper .product__accordion {
+    margin-top: 25px;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(18,18,18,.08);
+    border-bottom: 1px solid rgba(18,18,18,.08);
   }
 
-  .product__info-wrapper form{
-    max-width: 345px;
+  .product__accordion summary {
+    display: flex;
+    align-items: center;
+    position: relative;
+    line-height: 1;
+    padding: 15px 0;
+    cursor: pointer;
+    list-style: none;
   }
+
+  .product__accordion .svg-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    fill: rgb(18, 18, 18);
+    width: calc(1.0 * 20px);
+    height: calc(1.0 * 20px);
+    align-self: center;
+    margin-right: calc(1.0 * 10px);
+  }
+
+  .product__accordion .summary__title {
+    display: flex;
+    flex: 1;
+  }
+
+  .product__accordion .accordion__title {
+    display: flex;
+    align-items: center;
+    max-width: calc(100% - 96px);
+    min-height: 16px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .product__accordion svg.icon.icon-caret {
+    width: 10px;
+    height: 6px;
+    position: relative;
+    right: 15px;
+  }
+
+  .product__accordion details[open]>summary .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .product__accordion .accordion__content {
+    margin-bottom: 15px;
+    word-break: break-word;
+    overflow-x: auto;
+    padding: 0 10px;
+    line-height: calc(1 + 0.6 / 1.0);
+  }
+
+  .accordion__content>*:first-child {
+    margin-top: 0px;
+  }
+  
+  .accordion__content>*:last-child {
+    margin-bottom: 0px; 
+  }
+
+  .product__accordion+.product__accordion {
+    margin-top: 0;
+    border-top: none;
+  }
+
 
   @media screen and (min-width: 750px) {
     product-info .page-width {
       padding: 0 50px;
+    }
+
+    .product__info-wrapper form{
+      max-width: 345px;
     }
 
     .product__info-wrapper{
@@ -327,6 +410,10 @@
     .product__title h1,
     .product__title h2 {
       font-size: 40px;
+    }
+    
+    .product-form__buttons button {
+      max-width: 343px;
     }
   }
 
@@ -527,6 +614,28 @@
 
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
+
+              {%- when 'collapsible_tab' -%}
+                <div class="product__accordion accordion">
+                  <details>
+                    <summary>
+                      <div class="summary__title">
+                        {%- if block.settings.icon != 'none' -%}
+                          {%- assign file = block.settings.icon | replace: '_', '-' | prepend: 'icon-' | append: '.svg' -%}
+                          <span class="svg-wrapper">{{ file | inline_asset_content }}</span>
+                        {%- endif -%}
+                        <h2 class="accordion__title">
+                          {{ block.settings.heading | default: block.settings.page.title | escape }}
+                        </h2>
+                      </div>
+                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                    </summary>
+                    <div class="accordion__content">
+                      {{ block.settings.content }}
+                      {{ block.settings.page.content }}
+                    </div>
+                  </details>
+                </div>
             {%- endcase -%}
           {%- endfor -%}
         {% endform %}
