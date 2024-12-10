@@ -12,6 +12,13 @@
     "main-product": {
       "type": "main-product",
       "blocks": {
+        "text_UwzVCe": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "body"
+          }
+        },
         "title_c6iEAC": {
           "type": "title",
           "settings": {}
@@ -41,15 +48,36 @@
         "description_QqbmiK": {
           "type": "description",
           "settings": {}
+        },
+        "collapsible_tab_cDNEg9": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "About Lorem Ipsum?",
+            "icon": "check_mark",
+            "content": "<p><strong>Lorem Ipsum </strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_8wwjg9": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "What is Lorem Ipsum?",
+            "icon": "check_mark",
+            "content": "<p><strong>Lorem Ipsum </strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+            "page": ""
+          }
         }
       },
       "block_order": [
+        "text_UwzVCe",
         "title_c6iEAC",
         "price_MimJVT",
         "variant_picker_fhy4Ed",
         "quantity_selector_8PXhVh",
         "buy_buttons_jzAcyb",
-        "description_QqbmiK"
+        "description_QqbmiK",
+        "collapsible_tab_cDNEg9",
+        "collapsible_tab_8wwjg9"
       ],
       "settings": {
         "enable_sticky_info": true,
