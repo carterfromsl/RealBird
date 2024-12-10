@@ -91,10 +91,6 @@
     margin: 0px;
   }
 
-  product-info .product__info-wrapper form > *:nth-child(4n){
-    margin-top: 0px;
-  }
-
   product-info .product__info-wrapper form > *:last-child{
     margin-bottom: 0px;
   }
@@ -357,9 +353,9 @@
   .accordion__content>*:first-child {
     margin-top: 0px;
   }
-  
+
   .accordion__content>*:last-child {
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
   }
 
   .product__accordion+.product__accordion {
@@ -367,6 +363,25 @@
     border-top: none;
   }
 
+  .product__inventory {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 16px;
+    color: #121212BF;
+    letter-spacing: .5px;
+  }
+
+  .product__inventory .svg-wrapper, .product__inventory svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .product__inventory .svg-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   @media screen and (min-width: 750px) {
     product-info .page-width {
@@ -411,7 +426,7 @@
     .product__title h2 {
       font-size: 40px;
     }
-    
+
     .product-form__buttons button {
       max-width: 343px;
     }
@@ -636,6 +651,52 @@
                     </div>
                   </details>
                 </div>
+              {%- when 'inventory' -%}
+                <p class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}">
+                  {%- if product.selected_or_first_available_variant.inventory_management == 'shopify' -%}
+                    {%- if product.selected_or_first_available_variant.inventory_quantity > 0 -%}
+                      {%- if product.selected_or_first_available_variant.inventory_quantity
+                          <= block.settings.inventory_threshold
+                      -%}
+                        <span class="svg-wrapper" style="color: rgb(238, 148, 65)">
+                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                        </span>
+                        {%- if block.settings.show_inventory_quantity -%}
+                          {{-
+                            'products.product.inventory_low_stock_show_count'
+                            | t: quantity: product.selected_or_first_available_variant.inventory_quantity
+                          -}}
+                        {%- else -%}
+                          {{- 'products.product.inventory_low_stock' | t -}}
+                        {%- endif -%}
+                      {%- else -%}
+                        <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
+                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                        </span>
+                        {%- if block.settings.show_inventory_quantity -%}
+                          {{-
+                            'products.product.inventory_in_stock_show_count'
+                            | t: quantity: product.selected_or_first_available_variant.inventory_quantity
+                          -}}
+                        {%- else -%}
+                          {{- 'products.product.inventory_in_stock' | t -}}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- else -%}
+                      {%- if product.selected_or_first_available_variant.inventory_policy == 'continue' -%}
+                        <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
+                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                        </span>
+                        {{- 'products.product.inventory_out_of_stock_continue_selling' | t -}}
+                      {%- else -%}
+                        <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
+                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                        </span>
+                        {{- 'products.product.inventory_out_of_stock' | t -}}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                </p>
             {%- endcase -%}
           {%- endfor -%}
         {% endform %}
