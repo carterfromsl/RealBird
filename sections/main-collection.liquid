@@ -384,14 +384,14 @@
 
         updateSection = (responseHtml) => {
           const gridFromFetchInnerHtml = responseHtml.getElementById('ProductGridContainer').innerHTML;
-          const gridFromDom = this.querySelector('#ProductGridContainer');
+          const gridFromDom = document.getElementById('ProductGridContainer');
 
           gridFromDom.innerHTML = gridFromFetchInnerHtml;
 
           const filtersFromFetch = responseHtml.querySelectorAll('#collection-form .js-filter');
           const filtersFromDom = document.querySelectorAll('#collection-form .js-filter');
 
-          // Remove facets that are no longer returned from the server
+          // Remove filters that are no longer returned from the server
           Array.from(filtersFromDom).forEach((currentElement) => {
             if (!Array.from(filtersFromFetch).some(({ id }) => currentElement.id === id)) {
               currentElement.remove();
