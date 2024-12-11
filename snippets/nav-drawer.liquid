@@ -5,7 +5,6 @@
     left: 0;
     width: min(500px, 100%);
     height: calc(100vh - var(--header-height));
-    background: #fff;
     transform: translateX(-100%);
     z-index: -1;
     transition: 300ms ease;
@@ -31,9 +30,6 @@
   #menu-drawer li {
     width: 100%;
   }
-  #menu-drawer .nav-drawer {
-    background: #f3f4f5;
-  }
   #menu-drawer a,
   #menu-drawer .menu-toggle {
     display: flex;
@@ -41,7 +37,7 @@
     font-size: 15px;
     line-height: 1.5;
     padding: 12px 18px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgb(var(--color-foreground), 0.2);
     width: 100%;
   }
   .menu-drawer_action {
@@ -49,7 +45,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid rgb(var(--color-foreground), 0.2);
     padding: 15px 20px;
   }
   .menu-drawer_action a {
@@ -62,7 +58,7 @@
   .menu-drawer_localization .localization-wrapper {
     position: relative;
     padding: 12px 6px;
-    border: 1px solid #ddd;
+    border: 1px solid rgb(var(--color-foreground), 0.2);
     margin-right: 10px;
   }
   .menu-drawer_localization .localization-list {
@@ -71,7 +67,7 @@
     bottom: 100%;
     width: 100%;
     box-shadow: none;
-    border: 1px solid #ddd;
+    border: 1px solid rgb(var(--color-foreground), 0.2);
   }
 </style>
 <div
@@ -85,9 +81,8 @@
     {{- 'icon-menu.svg' | inline_asset_content -}}
     {{- 'icon-close.svg' | inline_asset_content -}}
   </button>
-  <div id="menu-drawer" :class="{ 'drawer-open': drawerOpen }">
-    {% render 'nav-dropdown'
-      , nav_style: 'drawer' %}
+  <div id="menu-drawer" class="color-{{ section.settings.menu_color_scheme }} gradient" :class="{ 'drawer-open': drawerOpen }">
+    {% render 'nav-dropdown', nav_style: 'drawer' %}
 
     <div class="menu-drawer_action">
       {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}

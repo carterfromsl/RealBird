@@ -52,134 +52,137 @@
     {% render 'product-media-gallery', product_media: product.media, selected_variant: selected_variant %}
 
     <div>
-      {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
-        <input type="hidden" name="id" value="{{ selected_variant.id }}">
-        <div>
-          <span>{{ product.vendor }}</span>
-        </div>
-
-        <div>
-          <h1>{{ product.title }}</h1>
-        </div>
-
-        <div id="price-{{ section.id }}">
-          <span>{{ selected_variant.compare_at_price | money }}</span>
-          <span>{{ selected_variant.price | money }}</span>
-
-          {% if selected_variant.price < selected_variant.compare_at_price %}
-            <span>Sale</span>
-          {% endif %}
-        </div>
-
-        <div>
-          {% unless product.has_only_default_variant %}
-            <variant-selector>
-              {% for option in product.options_with_values %}
-                <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
-
-                <fieldset>
-                  <select
-                    style="width: 200px; height: 30px;"
-                    name="options[{{ option.name | escape }}]"
-                    id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                  >
-                    {% for value in option.values %}
-                      <option
+      <ajax-cart-product-form>
+        {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
+          <input type="hidden" name="id" value="{{ selected_variant.id }}">
+          <div>
+            <span>{{ product.vendor }}</span>
+          </div>
+  
+          <div>
+            <h1>{{ product.title }}</h1>
+          </div>
+  
+          <div id="price-{{ section.id }}">
+            <span>{{ selected_variant.compare_at_price | money }}</span>
+            <span>{{ selected_variant.price | money }}</span>
+  
+            {% if selected_variant.price < selected_variant.compare_at_price %}
+              <span>Sale</span>
+            {% endif %}
+          </div>
+  
+          <div>
+            {% unless product.has_only_default_variant %}
+              <variant-selector>
+                {% for option in product.options_with_values %}
+                  <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+  
+                  <fieldset>
+                    <select
+                      style="width: 200px; height: 30px;"
+                      name="options[{{ option.name | escape }}]"
+                      id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                    >
+                      {% for value in option.values %}
+                        <option
+                          value="{{ value | escape }}"
+                          data-option-value-id="{{ value.id }}"
+                          {% if value.selected %}
+                            selected="selected"
+                          {% endif %}
+                          {% unless value.available %}
+                            style="color: red; text-decoration: line-through;"
+                          {% endunless %}
+                        >
+                          {{ value }}
+                          {% unless value.available %}
+                            Unavailable
+                          {% endunless %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </fieldset>
+                {% endfor %}
+  
+                {%- for option in product.options_with_values -%}
+                  <fieldset>
+                    <legend>{{ option.name }}</legend>
+                    {%- for value in option.values -%}
+                      <input
+                        type="radio"
+                        id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                        name="{{ option.name }}-{{ option.position }}"
                         value="{{ value | escape }}"
-                        data-option-value-id="{{ value.id }}"
+                        class="pill-radio {% unless value.available %}disabled{% endunless %}"
                         {% if value.selected %}
-                          selected="selected"
+                          checked
                         {% endif %}
-                        {% unless value.available %}
-                          style="color: red; text-decoration: line-through;"
-                        {% endunless %}
+                        data-product-url="{{ value.product_url }}"
+                        data-option-value-id="{{ value.id }}"
+                      >
+                      <label
+                        class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
+                        for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
                       >
                         {{ value }}
-                        {% unless value.available %}
-                          Unavailable
-                        {% endunless %}
-                      </option>
-                    {% endfor %}
-                  </select>
-                </fieldset>
-              {% endfor %}
-
-              {%- for option in product.options_with_values -%}
-                <fieldset>
-                  <legend>{{ option.name }}</legend>
-                  {%- for value in option.values -%}
-                    <input
-                      type="radio"
-                      id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                      name="{{ option.name }}-{{ option.position }}"
-                      value="{{ value | escape }}"
-                      class="pill-radio {% unless value.available %}disabled{% endunless %}"
-                      {% if value.selected %}
-                        checked
-                      {% endif %}
-                      data-product-url="{{ value.product_url }}"
-                      data-option-value-id="{{ value.id }}"
-                    >
-                    <label
-                      class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
-                      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                    >
-                      {{ value }}
-                    </label>
-                  {%- endfor -%}
-                </fieldset>
-              {%- endfor -%}
-
-              <script type="application/json" data-variants>
-                {{ product.variants | json }}
-              </script>
-            </variant-selector>
-          {% endunless %}
-        </div>
-
-        <div>
-          <label for="Quantity-{{ section.id }}">Quantity</label>
-          <quantity-selector>
-            <button name="minus" type="button">-</button>
-            <input
-              id="Quantity-{{ section.id }}"
-              type="number"
-              name="quantity"
-              data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
-              min="{{ selected_variant.quantity_rule.min }}"
-              {% if selected_variant.quantity_rule.max != null %}
-                max="{{ selected_variant.quantity_rule.max }}"
+                      </label>
+                    {%- endfor -%}
+                  </fieldset>
+                {%- endfor -%}
+  
+                <script type="application/json" data-variants>
+                  {{ product.variants | json }}
+                </script>
+              </variant-selector>
+            {% endunless %}
+          </div>
+  
+          <div>
+            <label for="Quantity-{{ section.id }}">Quantity</label>
+            <quantity-selector>
+              <button name="minus" type="button">-</button>
+              <input
+                id="Quantity-{{ section.id }}"
+                type="number"
+                name="quantity"
+                data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
+                min="{{ selected_variant.quantity_rule.min }}"
+                {% if selected_variant.quantity_rule.max != null %}
+                  max="{{ selected_variant.quantity_rule.max }}"
+                {% endif %}
+                step="{{ selected_variant.quantity_rule.increment }}"
+                value="1"
+              >
+              <button name="plus" type="button">+</button>
+            </quantity-selector>
+          </div>
+  
+          <div>
+            <p>{{ product.description }}</p>
+          </div>
+  
+          <div>
+            <button
+              id="AddToCart-{{ section.id }}"
+              type="submit"
+              name="add"
+              {% if selected_variant == null or selected_variant.available == false %}
+                disabled
               {% endif %}
-              step="{{ selected_variant.quantity_rule.increment }}"
-              value="1"
             >
-            <button name="plus" type="button">+</button>
-          </quantity-selector>
-        </div>
-
-        <div>
-          <p>{{ product.description }}</p>
-        </div>
-
-        <div>
-          <button
-            id="AddToCart-{{ section.id }}"
-            type="submit"
-            name="add"
-            {% if selected_variant == null or selected_variant.available == false %}
-              disabled
-            {% endif %}
-          >
-            {% if selected_variant == null %}
-              Unavailable
-            {% elsif selected_variant.available == false %}
-              Sold out
-            {% else %}
-              Add to cart
-            {% endif %}
-          </button>
-        </div>
-      {% endform %}
+              {% if selected_variant == null %}
+                Unavailable
+              {% elsif selected_variant.available == false %}
+                Sold out
+              {% else %}
+                Add to cart
+              {% endif %}
+            </button>
+            <div data-ajax-cart-errors="form"></div>
+          </div>
+        {% endform %}
+      </ajax-cart-product-form>
     </div>
   </product-info>
 </div>
