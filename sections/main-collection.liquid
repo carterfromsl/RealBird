@@ -249,146 +249,173 @@
   }
 </style>
 {% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
-<div
-  class="container section-{{ section.id }}-padding"
-  id="ProductGridContainer"
-  data-section-id="{{ section.id }}"
->
-  <h1>{{ collection.title }}</h1>
-  <div class="main-content">
-    {%- paginate collection.products by section.settings.products_per_page -%}
-      {%- if section.settings.enable_filtering -%}
-        {% render 'filters',
-          results: collection,
-          collapse_filters: section.settings.collapse_filters,
-          filter_type: section.settings.filter_type
-        %}
-      {% endif %}
-      <div class="product-grid-container">
-        {%- if section.settings.enable_filtering -%}
-          <div class="filters">
-            {% liquid
-              assign has_active_filters = false
-              for f in collection.filters
-                if f.active_values.size > 0
-                  assign has_active_filters = true
-                endif
-              endfor
+
+<div class="container section-{{ section.id }}-padding">
+  <collection-info
+    data-section="{{ section.id }}"
+  >
+    <h1>{{ collection.title }}</h1>
+    <div>
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        <form id="collection-form" class="main-content">
+          {%- if section.settings.enable_filtering -%}
+            {% render 'filters',
+              results: collection,
+              collapse_filters: section.settings.collapse_filters,
+              filter_type: section.settings.filter_type
             %}
+          {% endif %}
 
-            {% if has_active_filters %}
-              <div class="filter">
-                Clear all filters
-                <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
-              </div>
-            {% endif %}
+          <div id="ProductGridContainer" class="product-grid-container">
+            {%- if section.settings.enable_filtering -%}
+              <div class="filters">
+                {% liquid
+                  assign has_active_filters = false
+                  for f in collection.filters
+                    if f.active_values.size > 0
+                      assign has_active_filters = true
+                    endif
+                  endfor
+                %}
 
-            {%- for f in collection.filters -%}
-              {% for v in f.active_values %}
-                <div class="filter">
-                  {{ f.label | escape }}: {{ v.label | escape -}}
-                  <span
-                    class="filter-close"
-                    data-render-section-url="{{ v.url_to_remove }}"
-                    >×
-                  </span>
-                </div>
-              {% endfor %}
-            {%- endfor -%}
-          </div>
-        {% endif %}
-        {%- if section.settings.enable_sorting -%}
-          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-          <div class="controls">
-            <div class="sort-dropdown">
-              <button class="sort-button">Sort By</button>
-              <div class="sort-content">
-                {%- for option in collection.sort_options -%}
-                  <a
-                    {% if option.value == sort_by %}
-                      style="font-weight: bold"
-                    {% endif %}
-                    href="#"
-                    data-sort-by="{{ option.value }}"
-                  >
-                    {{- option.name | escape -}}
-                  </a>
+                {% if has_active_filters %}
+                  <div class="filter">
+                    Clear all filters
+                    <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
+                  </div>
+                {% endif %}
+
+                {%- for f in collection.filters -%}
+                  {% for v in f.active_values %}
+                    <div class="filter">
+                      {{ f.label | escape }}: {{ v.label | escape -}}
+                      <span
+                        class="filter-close"
+                        data-render-section-url="{{ v.url_to_remove }}"
+                        >×
+                      </span>
+                    </div>
+                  {% endfor %}
                 {%- endfor -%}
               </div>
+            {% endif %}
+            {%- if section.settings.enable_sorting -%}
+              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              <select
+                data-render-section
+                name="sort_by"
+                id="SortBy"
+              >
+                {%- for option in collection.sort_options -%}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            {%- endif -%}
+            <div class="results-count">
+              {%- if collection.products_count == collection.all_products_count -%}
+                {{ collection.products_count }} products
+              {% else %}
+                {{ collection.products_count }} of {{ collection.all_products_count }}
+              {% endif %}
             </div>
+            <div class="product-grid">
+              {%- if collection.products.size == 0 -%}
+                <p>Nothing Here</p>
+              {%- else -%}
+                {%- for product in collection.products -%}
+                  {% render 'card-product', card_product: product, show_vendor: section.settings.show_vendor %}
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+            {%- if paginate.pages > 1 -%}
+              {% render 'pagination', paginate: paginate, anchor: '' %}
+            {%- endif -%}
           </div>
-        {%- endif -%}
-        <div class="results-count">
-          {%- if collection.products_count == collection.all_products_count -%}
-            {{ collection.products_count }} products
-          {% else %}
-            {{ collection.products_count }} of {{ collection.all_products_count }}
-          {% endif %}
-        </div>
-        <div class="product-grid">
-          {%- if collection.products.size == 0 -%}
-            <p>Nothing Here</p>
-          {%- else -%}
-            {%- for product in collection.products -%}
-              {% render 'card-product', card_product: product, show_vendor: section.settings.show_vendor %}
-            {%- endfor -%}
-          {%- endif -%}
-        </div>
-        {%- if paginate.pages > 1 -%}
-          {% render 'pagination', paginate: paginate, anchor: '' %}
-        {%- endif -%}
-      </div>
-    {%- endpaginate -%}
-  </div>
+        </form>
+      {%- endpaginate -%}
+    </div>
+  </collection-info>
 </div>
-
 <script>
-
-  const updateProductGrid = (responseHtml) => {
-    const html = responseHtml.getElementById('ProductGridContainer').innerHTML;
-    document.getElementById('ProductGridContainer').innerHTML = html;
-  };
-
-  const renderSection = (url) => {
-    fetch(url)
-      .then((response) => response.text())
-      .then((responseText) => {
-        history.pushState({}, '', url);
-        let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
-        updateProductGrid(responseHtml);
-      });
+  function debounce(fn, wait) {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
   }
 
-  const setupEventListeners = () => {
-    const container = document.getElementById("ProductGridContainer");
+  if (!customElements.get('collection-info')) {
+    customElements.define(
+      'collection-info',
+      class CollectionInfo extends HTMLElement {
+        constructor() {
+          super();
+          this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 800);
+          this.addEventListener('change', this.debounceOnChange.bind(this));
+          this.addEventListener('click', this.onClickHandler.bind(this));
+        }
 
-    {% if section.settings.enable_filtering %}
-    container.addEventListener("change", (event) => {
-      if (event.target.matches('[data-render-section-checkbox-url]')) {
-        renderSection(event.target.dataset.renderSectionCheckboxUrl);
+        onClickHandler = (event) => {
+          if (!event.target.matches('[data-render-section-url]')) return;
+          event.preventDefault();
+          const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split('?')[1]).toString();
+          this.fetchSection(searchParams);
+        };
+
+        onChangeHandler = (event) => {
+          if (!event.target.matches('[data-render-section]')) return;
+
+          const formData = new FormData(this.form);
+          const searchParams = new URLSearchParams(formData).toString();
+          this.fetchSection(searchParams);
+        };
+
+        get form() {
+          return this.querySelector('collection-info form');
+        }
+
+        updateSection = (responseHtml) => {
+          const gridFromFetchInnerHtml = responseHtml.getElementById('ProductGridContainer').innerHTML;
+          const gridFromDom = document.getElementById('ProductGridContainer');
+
+          gridFromDom.innerHTML = gridFromFetchInnerHtml;
+
+          const filtersFromFetch = responseHtml.querySelectorAll('#collection-form .js-filter');
+          const filtersFromDom = document.querySelectorAll('#collection-form .js-filter');
+
+          // Remove filters that are no longer returned from the server
+          Array.from(filtersFromDom).forEach((currentElement) => {
+            if (!Array.from(filtersFromFetch).some(({ id }) => currentElement.id === id)) {
+              currentElement.remove();
+            }
+          });
+
+          Array.from(filtersFromFetch).forEach((elementToRender, index) => {
+            document.getElementById(elementToRender.id).innerHTML = elementToRender.innerHTML;
+          });
+        };
+
+        fetchSection = (searchParams) => {
+          console.log(searchParams.split('&'));
+          fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
+            .then((response) => response.text())
+            .then((responseText) => {
+              history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
+              let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
+              this.updateSection(responseHtml);
+            });
+        };
       }
-    });
-    {% endif %}
-
-    container.addEventListener("click", (event) => {
-      if (event.target.matches('[data-render-section-url]')) {
-        event.preventDefault();
-        renderSection(event.target.dataset.renderSectionUrl);
-      }
-
-      {% if section.settings.enable_sorting %}
-      if (event.target.matches('[data-sort-by]')) {
-        event.preventDefault();
-        var url = new URL(window.location.href);
-        url.searchParams.set('sort_by', event.target.dataset.sortBy);
-        url.searchParams.delete('page');
-        renderSection(url.href);
-      }
-      {% endif %}
-    });
-  };
-
-  window.addEventListener("DOMContentLoaded", setupEventListeners);
+    );
+  }
 </script>
 
 {% schema %}

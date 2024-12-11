@@ -1,3 +1,9 @@
+{% comment %} FONT FAMILY INIT {% endcomment %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&display=swap" rel="stylesheet">
+
+{% comment %} SWIPER SLIDER INIT {% endcomment %}
 <link rel="stylesheet" href="{{ "swiper7.4.1.min.css" | asset_url }}">
 <script defer src="{{ "swiper7.4.1.min.js" | asset_url }}" id="swiper-script"></script>
 
@@ -14,134 +20,434 @@
     }
   }
 
+  /* ===============================
+  START PRODUCT INFO SECTION STYLING
+  ==================================*/
+
+  product-info {
+    display: block;
+    background-color: white;
+  }
+
+  product-info .page-width {
+    max-width: 1230px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .flex__item {
+    width: 100%;
+    max-width: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+
+  :root {
+    --swiper-navigation-size: 20px;
+  }
+
+  .swiper {
+    z-index: 0;
+  }
+
+  .swiper-button-next, .swiper-button-prev{
+    color: black;
+  }
+
+  .swiper-pagination-bullet-active{
+    background: black;
+  }
+
+  .product__media-wrapper .swiper-slide img,
+  .product__media-wrapper .swiper-slide video,
+  .product__media-wrapper .swiper-slide iframe {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .product__info-wrapper *  {
+    font-family: Assistant, sans-serif;
+  }
+
+  .product__vendor {
+    display: inline-flex;
+    font-size: 10px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #121212BF;
+    line-height: calc(1 + .2 / 1.0);
+    margin: 0px;
+  }
+
+  .product__title * {
+    margin: 0px;
+  }
+
+  .product__title {
+    word-break: break-word;
+    margin-bottom: 16px;
+    max-width: 400px;
+  }
+
+  .product__title h1,
+  .product__title h2 {
+    font-size: 30px;
+    font-weight: 400;
+    font-family: Assistant, sans-serif;
+    line-height: calc(1 + .3/max(1,1.0));
+    letter-spacing: calc(1.0 * 0.6px);
+  }
+
+  .product__price {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .price__item {
+    margin: 0 15px 0 0;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .price__item.product-regular__price{
+    margin-right: 9px;
+  }
+
+  .price__item.product-sale__price {
+    font-size: 16px;
+    color: rgba(18,18,18,.75);
+  }
+
+  .badge{
+    border: 1px solid transparent;
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 1;
+    padding: 6px 13px 7px;
+    text-align: center;
+    background-color: #334fb4;
+    border-color: white;
+    color: white;
+    word-break: break-word;
+  }
+
+  .option__label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+    line-height: calc(1 + .5 / 1.0);
+    letter-spacing: 0.6px;
+    color: rgba(18, 18, 18, 0.75);
+    padding-left: 0px;
+  }
+
   .pill-radio {
     display: none;
   }
 
   .pill-label {
+    border: 1px solid rgba(18,18,18,0.55);
+    background-color: rgb(255,255,255);
+    border-radius: 40px;
+    color: rgb(18,18,18);
     display: inline-block;
+    margin: 7px 5px 2px 0;
     padding: 10px 20px;
-    margin: 5px;
-    border-radius: 25px;
-    background-color: #f0f0f0;
+    font-size: 14px;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-align: center;
+    transition: border .1s ease;
     cursor: pointer;
-    transition: background-color 0.3s;
+    position: relative;
   }
 
   .pill-radio:checked + .pill-label {
-    background-color: #007bff;
+    background-color: black;
     color: white;
   }
 
-  .pill-label:hover {
-    background-color: #e0e0e0;
-  }
-
   .pill-label.pill-disabled {
-    background-color: #d3d3d3;
     text-decoration: line-through;
   }
+
+  .product__quantity svg.icon {
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+  }
+
+  .product__quantity button {
+    padding: 0px;
+    border: none;
+    background: transparent;
+    width: calc(150px / 1.0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
+    min-height: 46px;
+  }
+
+  .product__quantity .option__label {
+    margin-bottom: 7px;
+  }
+
+  .product__quantity quantity-selector input:focus {
+    border: none;
+    outline: 0px;
+  }
+
+  .product__quantity quantity-selector{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: calc(140px / 1.0 + 1px* 2);
+    min-height: calc((1px* 2) + 45px);
+    outline: 1px solid rgba(18,18,18, .6);
+  }
+
+  .product__quantity quantity-selector input {
+    border: none;
+    text-align: center;
+    background: transparent;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .product__quantity quantity-selector input::-webkit-outer-spin-button,
+  .product__quantity quantity-selector input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .product-form__buttons {
+    margin-top: 27px;
+  }
+
+  .product-form__buttons button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: 1px solid black;
+    padding: 12.5px 10px;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 1px;
+    max-width: 343px;
+  }
+
+  .product-form__buttons button:hover {
+    outline: 2px solid black;
+  }
+
+  .shopify-payment-button__button {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  shopify-buy-it-now-button .shopify-payment-button__button {
+    background: black;
+  }
+
+  .shopify-payment-button {
+    margin-top: 12px;
+  }
+
+  .shopify-payment-button .shopify-payment-button__button--unbranded:hover:not([disabled]){
+    background: black;
+  }
+
+  .product-form__input {
+    padding: 0;
+    margin: 0 0 12px;
+    min-width: fit-content;
+    border: none;
+  }
+
+  .product__info-wrapper{
+    padding-top: 20px;
+  }
+
+  .variant-block__dropdown {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    product-info .page-width {
+      padding: 0 50px;
+    }
+
+    .product__info-wrapper{
+      display: inline-flex;
+      padding-left: 40px;
+      max-width: 50%;
+      width: calc(50% - 40px / 2);
+      height: 100%;
+      padding-top: 0px;
+      position: sticky;
+      top: 137px;
+    }
+
+    .product__info-wrapper form{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product__media-wrapper {
+      max-width: 50%;
+      width: calc(50% - 40px / 2);
+    }
+
+    .product__title h1,
+    .product__title h2 {
+      font-size: 40px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .product__info-wrapper{
+      padding-left: 40px;
+      max-width: 35%;
+      width: calc(35% - 40px / 2);
+    }
+
+    .product__media-wrapper {
+      max-width: 65%;
+      width: calc(65% - 40px / 2);
+    }
+  }
+
+  /* =============================
+  END PRODUCT INFO SECTION STYLING
+  =============================== */
 {%- endstyle -%}
 
 {% assign selected_variant = product.selected_or_first_available_variant %}
-<div class="container section-{{ section.id }}-padding">
-  <product-info
-    data-url="{{ product.url}}"
-    data-section="{{ section.id }}"
-  >
-    {% render 'product-media-gallery', product_media: product.media, selected_variant: selected_variant %}
 
-    <div>
-      <ajax-cart-product-form>
+<product-info
+  data-url="{{ product.url}}"
+  data-section="{{ section.id }}"
+  class="section-{{ section.id }}-padding"
+>
+  <div class="page-width">
+    <div class="product flex">
+      <div class="product__media-wrapper flex__item">
+        {% render 'product-media-gallery', product_media: product.media, selected_variant: selected_variant %}
+      </div>
+
+      <div class="product__info-wrapper flex__item">
         {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
-          <div>
-            <span>{{ product.vendor }}</span>
-          </div>
-  
-          <div>
+
+          <p class="product__vendor">{{ product.vendor }}</p>
+
+          <div class="product__title">
             <h1>{{ product.title }}</h1>
           </div>
-  
-          <div id="price-{{ section.id }}">
-            <span>{{ selected_variant.compare_at_price | money }}</span>
-            <span>{{ selected_variant.price | money }}</span>
-  
+
+          <div id="price-{{ section.id }}" class="product__price">
+            {%- if selected_variant.compare_at_price -%}
+              <s class="price__item product-sale__price">{{ selected_variant.compare_at_price | money_with_currency }}</s>
+            {%- endif -%}
+            <span class="price__item product-regular__price">{{ selected_variant.price | money_with_currency }}</span>
+
             {% if selected_variant.price < selected_variant.compare_at_price %}
-              <span>Sale</span>
+              <span class="badge">Sale</span>
             {% endif %}
           </div>
-  
-          <div>
+
+          <div class="product__variants">
             {% unless product.has_only_default_variant %}
               <variant-selector>
-                {% for option in product.options_with_values %}
-                  <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
-  
-                  <fieldset>
-                    <select
-                      style="width: 200px; height: 30px;"
-                      name="options[{{ option.name | escape }}]"
-                      id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                    >
-                      {% for value in option.values %}
-                        <option
+                <div class="variant-block__dropdown">
+                  {% for option in product.options_with_values %}
+                    <label class="option__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                    <fieldset class="product-form__input">
+                      <select
+                        style="width: 200px; height: 30px;"
+                        name="options[{{ option.name | escape }}]"
+                        id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                      >
+                        {% for value in option.values %}
+                          <option
+                            value="{{ value | escape }}"
+                            data-option-value-id="{{ value.id }}"
+                            {% if value.selected %}
+                              selected="selected"
+                            {% endif %}
+                            {% unless value.available %}
+                              style="color: red; text-decoration: line-through;"
+                            {% endunless %}
+                          >
+                            {{ value }}
+                            {% unless value.available %}
+                              Unavailable
+                            {% endunless %}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </fieldset>
+                  {% endfor %}
+                </div>
+
+                <div class="variant-select__button">
+                  {%- for option in product.options_with_values -%}
+                    <fieldset class="product-form__input">
+                      <legend class="option__label">{{ option.name }}</legend>
+                      {%- for value in option.values -%}
+                        <input
+                          type="radio"
+                          id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                          name="{{ option.name }}-{{ option.position }}"
                           value="{{ value | escape }}"
-                          data-option-value-id="{{ value.id }}"
+                          class="pill-radio {% unless value.available %}disabled{% endunless %}"
                           {% if value.selected %}
-                            selected="selected"
+                            checked
                           {% endif %}
-                          {% unless value.available %}
-                            style="color: red; text-decoration: line-through;"
-                          {% endunless %}
+                          data-product-url="{{ value.product_url }}"
+                          data-option-value-id="{{ value.id }}"
+                        >
+                        <label
+                          class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
+                          for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
                         >
                           {{ value }}
-                          {% unless value.available %}
-                            Unavailable
-                          {% endunless %}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </fieldset>
-                {% endfor %}
-  
-                {%- for option in product.options_with_values -%}
-                  <fieldset>
-                    <legend>{{ option.name }}</legend>
-                    {%- for value in option.values -%}
-                      <input
-                        type="radio"
-                        id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                        name="{{ option.name }}-{{ option.position }}"
-                        value="{{ value | escape }}"
-                        class="pill-radio {% unless value.available %}disabled{% endunless %}"
-                        {% if value.selected %}
-                          checked
-                        {% endif %}
-                        data-product-url="{{ value.product_url }}"
-                        data-option-value-id="{{ value.id }}"
-                      >
-                      <label
-                        class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
-                        for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                      >
-                        {{ value }}
-                      </label>
-                    {%- endfor -%}
-                  </fieldset>
-                {%- endfor -%}
-  
+                        </label>
+                      {%- endfor -%}
+                    </fieldset>
+                  {%- endfor -%}
+                </div>
+
                 <script type="application/json" data-variants>
                   {{ product.variants | json }}
                 </script>
               </variant-selector>
             {% endunless %}
           </div>
-  
-          <div>
-            <label for="Quantity-{{ section.id }}">Quantity</label>
+
+          <div class="product__quantity">
+            <label class="option__label" for="Quantity-{{ section.id }}">Quantity</label>
             <quantity-selector>
-              <button name="minus" type="button">-</button>
+              <button name="minus" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-minus" viewBox="0 0 10 2">
+                  <path fill="currentColor" fill-rule="evenodd" d="M.5 1C.5.7.7.5 1 .5h8a.5.5 0 1 1 0 1H1A.5.5 0 0 1 .5 1" clip-rule="evenodd"></path>
+                </svg>
+              </button>
               <input
                 id="Quantity-{{ section.id }}"
                 type="number"
@@ -154,15 +460,21 @@
                 step="{{ selected_variant.quantity_rule.increment }}"
                 value="1"
               >
-              <button name="plus" type="button">+</button>
+              <button name="plus" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-plus" viewBox="0 0 10 10">
+                  <path fill="currentColor" fill-rule="evenodd" d="M1 4.51a.5.5 0 0 0 0 1h3.5l.01 3.5a.5.5 0 0 0 1-.01V5.5l3.5-.01a.5.5 0 0 0-.01-1H5.5L5.49.99a.5.5 0 0 0-1 .01v3.5l-3.5.01z" clip-rule="evenodd"></path>
+                </svg>
+              </button>
             </quantity-selector>
           </div>
-  
-          <div>
-            <p>{{ product.description }}</p>
-          </div>
-  
-          <div>
+
+          {%- if product.description != blank -%}
+            <div class="product__description">
+              <p>{{ product.description }}</p>
+            </div>
+          {%- endif -%}
+
+          <div class="product-form__buttons">
             <button
               id="AddToCart-{{ section.id }}"
               type="submit"
@@ -179,14 +491,15 @@
                 Add to cart
               {% endif %}
             </button>
-            <div data-ajax-cart-errors="form"></div>
+            {{ form | payment_button }}
           </div>
         {% endform %}
-      </ajax-cart-product-form>
+      </div>
     </div>
-  </product-info>
-</div>
-<script>
+  </div>
+</product-info>
+
+<script type="text/javascript">
   class ProductInfo extends HTMLElement {
     abortController = undefined;
 
@@ -342,6 +655,7 @@
 
   customElements.define('product-info', ProductInfo);
 </script>
+
 {% schema %}
 {
   "name": "t:sections.main-product.name",
