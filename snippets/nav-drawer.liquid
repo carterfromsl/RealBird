@@ -73,11 +73,13 @@
 <div
   id="header-drawer"
   x-data="{ drawerOpen: false }"
-  @click.outside="drawerOpen = false">
+  @click.outside="drawerOpen = false"
+>
   <button
     class="header-drawer_icons"
     @click="drawerOpen = !drawerOpen"
-    :class="{ 'drawer-open': drawerOpen }">
+    :class="{ 'drawer-open': drawerOpen }"
+  >
     {{- 'icon-menu.svg' | inline_asset_content -}}
     {{- 'icon-close.svg' | inline_asset_content -}}
   </button>
@@ -87,9 +89,9 @@
     <div class="menu-drawer_action">
       {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
         <div class="menu-drawer_localization">
-          {%- render 'localization-form'
-            , enable_country_selector: section.settings.enable_country_selector
-            , enable_language_selector: section.settings.enable_language_selector
+          {%- render 'localization-form',
+            enable_country_selector: section.settings.enable_country_selector,
+            enable_language_selector: section.settings.enable_language_selector
           -%}
         </div>
       {% endif %}

@@ -27,23 +27,27 @@
 {% endunless %}
 <ul
   {% if nav_style == 'drawer' %}
-  class="menu-drawer_navigation"
-  {% endif %}>
+    class="menu-drawer_navigation"
+  {% endif %}
+>
   {% for link in section.settings.menu.links %}
     <li x-data="{ menuOpen: false, activeSubMenu: null }" @click.outside="menuOpen = false; activeSubMenu = null">
       {% if link.links != blank %}
         <button
           @click="menuOpen = !menuOpen"
           :class="{ 'menu-open': menuOpen }"
-          class="menu-toggle">
+          class="menu-toggle"
+        >
           {{- link.title | escape -}}
           {{- 'icon-caret.svg' | inline_asset_content -}}
         </button>
         <ul
           x-show="menuOpen"
           class="nav-{{ nav_style }} color-{{ section.settings.menu_color_scheme }} gradient"
+          x-transition
           role="list"
-          style="display: none;">
+          style="display: none;"
+        >
           {%- for childlink in link.links -%}
             <li>
               {% if childlink.links == blank %}
@@ -51,31 +55,36 @@
                   href="{{ childlink.url }}"
                   class="header__menu-item"
                   {% if childlink.current %}
-                  aria-current="page"
-                  {% endif %}>
+                    aria-current="page"
+                  {% endif %}
+                >
                   {{ childlink.title | escape }}
                 </a>
               {% else %}
                 <button
                   @click="activeSubMenu = (activeSubMenu === '{{ childlink.title | escape }}' ? null : '{{ childlink.title | escape }}')"
                   :class="{ 'menu-open': activeSubMenu === '{{ childlink.title | escape }}' }"
-                  class="menu-toggle">
+                  class="menu-toggle"
+                >
                   {{- childlink.title | escape -}}
                   {{- 'icon-caret.svg' | inline_asset_content -}}
                 </button>
                 <ul
                   x-show="activeSubMenu === '{{ childlink.title | escape }}'"
                   class="nav-dropdown_child"
+                  x-transition
                   role="list"
-                  style="display: none;">
+                  style="display: none;"
+                >
                   {%- for grandchildlink in childlink.links -%}
                     <li>
                       <a
                         href="{{ grandchildlink.url }}"
                         class="header__menu-item"
                         {% if grandchildlink.current %}
-                        aria-current="page"
-                        {% endif %}>
+                          aria-current="page"
+                        {% endif %}
+                      >
                         {{ grandchildlink.title | escape }}
                       </a>
                     </li>
@@ -89,8 +98,9 @@
         <a
           href="{{ link.url }}"
           {% if link.current %}
-          aria-current="page"
-          {% endif %}>
+            aria-current="page"
+          {% endif %}
+        >
           {{- link.title | escape -}}
         </a>
       {% endif %}

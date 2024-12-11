@@ -35,11 +35,12 @@
         <button
           @click="menuOpen = !menuOpen"
           :class="{ 'menu-open': menuOpen }"
-          class="menu-toggle">
+          class="menu-toggle"
+        >
           {{- link.title | escape -}}
           {{- 'icon-caret.svg' | inline_asset_content -}}
         </button>
-        <div x-show="menuOpen" class="nav-megamenu color-{{ section.settings.menu_color_scheme }} gradient">
+        <div x-show="menuOpen" x-transition x-cloak class="nav-megamenu color-{{ section.settings.menu_color_scheme }} gradient">
           <ul class="page-wrapper" role="list">
             {%- for childlink in link.links -%}
               <li>
@@ -47,8 +48,9 @@
                   href="{{ childlink.url }}"
                   class="nav-megamenu_heading"
                   {% if childlink.current %}
-                  aria-current="page"
-                  {% endif %}>
+                    aria-current="page"
+                  {% endif %}
+                >
                   {{ childlink.title | escape }}
                 </a>
                 {%- if childlink.links != blank -%}
@@ -58,8 +60,9 @@
                         <a
                           href="{{ grandchildlink.url }}"
                           {% if grandchildlink.current %}
-                          aria-current="page"
-                          {% endif %}>
+                            aria-current="page"
+                          {% endif %}
+                        >
                           {{ grandchildlink.title | escape }}
                         </a>
                       </li>
@@ -74,8 +77,9 @@
         <a
           href="{{ link.url }}"
           {% if link.current %}
-          aria-current="page"
-          {% endif %}>
+            aria-current="page"
+          {% endif %}
+        >
           {{- link.title | escape -}}
         </a>
       {% endif %}
