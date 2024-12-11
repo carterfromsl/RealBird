@@ -5,7 +5,7 @@
   class="color-{{ section.settings.color_scheme }} gradient"
   :class="{ 'cart-open': cartOpen }">
   <button class="cart-drawer-overlay" @click="cartOpen = !cartOpen">
-    <span class="visually-hidden">Close</span>
+    <span hidden>Close</span>
   </button>
   <div class="cart-drawer__wrapper" data-ajax-cart-section>
     <div class="cart-drawer__header">
