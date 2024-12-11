@@ -17,6 +17,10 @@
   .localization-button svg {
     width: 12px;
     height: auto;
+    transition: 300ms ease;
+  }
+  .localization-button.localization-open svg {
+    transform: scaleY(-1);
   }
   .localization-list {
     position: absolute;
@@ -47,11 +51,11 @@
         @click.outside="localizationOpen = false"
       >
         <button
-          @click="localizationOpen = !localizationOpen"
-          :class="{ 'localization-open': localizationOpen }"
           type="button"
           class="localization-button"
           aria-controls="CountryList"
+          @click="localizationOpen = !localizationOpen"
+          :class="{ 'localization-open': localizationOpen }"
         >
           <span>
             {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
@@ -65,8 +69,7 @@
           x-cloak
           id="CountryList"
           role="list"
-          class="localization-list color-{{ section.settings.menu_color_scheme }} gradient"
-          style="display: none;">
+          class="localization-list color-{{ section.settings.menu_color_scheme }} gradient">
           {% for country in localization.available_countries %}
             <li class="localization-item" tabindex="-1">
               <a
@@ -102,11 +105,11 @@
         @click.outside="localizationOpen = false"
       >
         <button
-          @click="localizationOpen = !localizationOpen"
-          :class="{ 'language-open': localizationOpen }"
           type="button"
           class="localization-button"
           aria-controls="LanguageList"
+          @click="localizationOpen = !localizationOpen"
+          :class="{ 'localization-open': localizationOpen }"
         >
           {{ localization.language.endonym_name | capitalize }}
           {{- 'icon-caret.svg' | inline_asset_content -}}
@@ -117,8 +120,7 @@
           x-cloak
           id="LanguageList"
           role="list"
-          class="localization-list color-{{ section.settings.menu_color_scheme }} gradient"
-          style="display: none;">
+          class="localization-list color-{{ section.settings.menu_color_scheme }} gradient">
           {% for language in localization.available_languages %}
             <li class="localization-item" tabindex="-1">
               <a
