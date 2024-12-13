@@ -98,7 +98,6 @@
   .product__info-wrapper .product__title {
     word-break: break-word;
     margin-bottom: 16px;
-    max-width: 400px;
     margin-top: 0px;
   }
 
@@ -113,7 +112,9 @@
   .product__price {
     margin-bottom: 20px;
     display: flex;
+    flex-wrap:wrap;
     align-items: center;
+    row-gap: 10px;
   }
 
   .price__item {
@@ -175,6 +176,10 @@
     transition: border .1s ease;
     cursor: pointer;
     position: relative;
+  }
+
+  .product-form__input input[type=radio]+label:hover {
+    border-color: rgb(18,18,18);
   }
 
   .pill-radio:checked + .pill-label {
@@ -388,17 +393,31 @@
       padding: 0 50px;
     }
 
-    .product__info-wrapper form{
-      max-width: 345px;
+    .product--right .product__media-wrapper {
+      order: 1;
+    }
+
+    .product--right .product__info-wrapper {
+      order: 0;
     }
 
     .product__info-wrapper{
       display: inline-flex;
-      padding-left: 40px;
       max-width: 50%;
       width: calc(50% - 40px / 2);
       height: 100%;
       padding-top: 0px;
+    }
+
+    .product--left .product__info-wrapper{
+      padding-left: 40px;
+    }
+
+    .product--right .product__info-wrapper{
+      padding-right: 40px;
+    }
+
+    .product__info-sticky {
       position: sticky;
       top: 137px;
     }
@@ -427,21 +446,52 @@
       font-size: 40px;
     }
 
-    .product-form__buttons button {
+    .product--small .product__variants variant-selector,
+    .product--small .product-form__buttons button,
+    .product--small .product__accordion,
+    .product--medium .product__variants variant-selector,
+    .product--medium .product-form__buttons button,
+    .product--medium .product__accordion {
+      display: block;
+      max-width: 440px;
+    }
+
+    .product--large .product__variants variant-selector,
+    .product--large .product__accordion,
+    .product--large .product-form__buttons button {
       max-width: 343px;
     }
   }
 
   @media screen and (min-width: 990px) {
-    .product__info-wrapper{
-      padding-left: 40px;
+    .product--large .product__info-wrapper{
       max-width: 35%;
       width: calc(35% - 40px / 2);
     }
 
-    .product__media-wrapper {
+    .product--large .product__media-wrapper {
       max-width: 65%;
       width: calc(65% - 40px / 2);
+    }
+
+    .product--medium .product__info-wrapper{
+      max-width: 45%;
+      width: calc(45% - 40px / 2);
+    }
+
+    .product--medium .product__media-wrapper {
+      max-width: 55%;
+      width: calc(55% - 40px / 2);
+    }
+
+    .product--small .product__info-wrapper{
+      max-width: 55%;
+      width: calc(55% - 40px / 2);
+    }
+
+    .product--small .product__media-wrapper {
+      max-width: 45%;
+      width: calc(45% - 40px / 2);
     }
   }
 
@@ -458,11 +508,11 @@
   class="section-{{ section.id }}-padding"
 >
   <div class="page-width">
-    <div class="product flex">
+    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }}  flex">
       <div class="product__media-wrapper flex__item">
         {% render 'product-media-gallery', product_media: product.media, selected_variant: selected_variant %}
       </div>
-      <div class="product__info-wrapper flex__item">
+      <div class="product__info-wrapper {% if section.settings.enable_sticky_info %}product__info-sticky {% endif %}flex__item">
         {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
           {%- for block in section.blocks -%}
