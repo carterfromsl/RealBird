@@ -9,6 +9,7 @@
   {% endif %}
   z-index: 9;
   transition: top 150ms ease-out;
+  margin-bottom: {{ section.settings.margin_bottom }}px;
 }
 
 {% if section.settings.sticky_header_type == 'on-scroll-up' %}
@@ -180,6 +181,14 @@
   .header-actions_account,
   .header-actions_localization {
     display: none;
+  }
+  #main-header {
+    grid-template-columns: 
+    {% if section.settings.mobile_logo_position == 'center' %}
+      1fr auto 1fr
+    {% else %}
+      auto 1fr auto
+    {% endif %};
   }
 }
 </style>
