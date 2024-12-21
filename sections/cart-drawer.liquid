@@ -1,9 +1,10 @@
-{{ "cart-drawer.css" | asset_url | stylesheet_tag }}
+{{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
 
 <div
   id="cart-drawer"
   class="color-{{ section.settings.color_scheme }} gradient"
-  :class="{ 'cart-open': cartOpen }">
+  :class="{ 'cart-open': cartOpen }"
+>
   <button class="cart-drawer-overlay" @click="cartOpen = !cartOpen">
     <span hidden>Close</span>
   </button>
@@ -32,21 +33,25 @@
             </div>
             <div class="cart-item__action">
               <ajax-cart-quantity>
-
-                <a data-ajax-cart-quantity-minus href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | minus: 1 }}">
+                <a
+                  data-ajax-cart-quantity-minus
+                  href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | minus: 1 }}"
+                >
                   {{- 'icon-minus.svg' | inline_asset_content -}}
                 </a>
-
 
                 <input
                   data-ajax-cart-quantity-input="{{ line_item_index }}"
                   name="updates[]"
                   value="{{ line_item.quantity }}"
                   type="number"
-                  form="my-ajax-cart-form" />
+                  form="my-ajax-cart-form"
+                >
 
-
-                <a data-ajax-cart-quantity-plus href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | plus: 1 }}">
+                <a
+                  data-ajax-cart-quantity-plus
+                  href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | plus: 1 }}"
+                >
                   {{- 'icon-plus.svg' | inline_asset_content -}}
                 </a>
               </ajax-cart-quantity>
@@ -64,9 +69,7 @@
 
     <div class="cart-drawer__footer">
       {% form 'cart', cart, id: 'my-ajax-cart-form' %}
-        <button type="submit" name="checkout">
-          Checkout — {{ cart.total_price | money_with_currency }}
-        </button>
+        <button type="submit" name="checkout">Checkout — {{ cart.total_price | money_with_currency }}</button>
       {% endform %}
     </div>
   </div>
