@@ -33,6 +33,14 @@
             "text_style": "uppercase"
           }
         },
+        "inventory_aTTemW": {
+          "type": "inventory",
+          "settings": {
+            "text_style": "body",
+            "inventory_threshold": 3,
+            "show_inventory_quantity": false
+          }
+        },
         "variant_picker_NWh8q7": {
           "type": "variant_picker",
           "settings": {
@@ -47,14 +55,6 @@
         "description_RxGjaP": {
           "type": "description",
           "settings": {}
-        },
-        "inventory_aTTemW": {
-          "type": "inventory",
-          "settings": {
-            "text_style": "body",
-            "inventory_threshold": 31,
-            "show_inventory_quantity": true
-          }
         }
       },
       "block_order": [
@@ -62,10 +62,10 @@
         "title_bpmXVj",
         "text_CmhREB",
         "sku_m7MALE",
+        "inventory_aTTemW",
         "variant_picker_NWh8q7",
         "quantity_selector_cwaLFj",
-        "description_RxGjaP",
-        "inventory_aTTemW"
+        "description_RxGjaP"
       ],
       "settings": {
         "enable_sticky_info": true,
