@@ -29,7 +29,20 @@
               <a href="{{ line_item.url }}">
                 {{ line_item.title | escape }}
               </a>
+
+              {% if line_item.original_price > line_item.final_price %}
+                <s>{{ line_item.original_price | money }}</s>
+              {% endif %}
+
               <div>{{ line_item.final_price | money }}</div>
+              {% if line_item.line_level_discount_allocations.size > 0 %}
+                Discounts:
+                <ul>
+                  {% for discount_allocation in line_item.line_level_discount_allocations %}
+                    <li>{{ discount_allocation.discount_application.title }}-{{ discount_allocation.amount | money }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             </div>
             <div class="cart-item__action">
               <ajax-cart-quantity>
@@ -66,7 +79,20 @@
         </div>
       {% endfor %}
     </div>
+    <div>
+      Subtotal: {{ cart.items_subtotal_price | money }}
+      {% if cart.cart_level_discount_applications.size > 0 %}
+        Discounts:
 
+        <ul>
+          {% for discount_application in cart.cart_level_discount_applications %}
+            <li>{{ discount_application.title }}-{{ discount_application.total_allocated_amount | money }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      Total: {{ cart.total_price | money }}
+    </div>
     <div class="cart-drawer__footer">
       {% form 'cart', cart, id: 'my-ajax-cart-form' %}
         <button type="submit" name="checkout">Checkout — {{ cart.total_price | money_with_currency }}</button>
