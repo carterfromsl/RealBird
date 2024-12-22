@@ -55,6 +55,13 @@
         "description_RxGjaP": {
           "type": "description",
           "settings": {}
+        },
+        "buy_buttons_JPDYXc": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
         }
       },
       "block_order": [
@@ -65,7 +72,8 @@
         "inventory_aTTemW",
         "variant_picker_NWh8q7",
         "quantity_selector_cwaLFj",
-        "description_RxGjaP"
+        "description_RxGjaP",
+        "buy_buttons_JPDYXc"
       ],
       "settings": {
         "enable_sticky_info": true,
