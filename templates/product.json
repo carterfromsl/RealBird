@@ -12,72 +12,60 @@
     "main-product": {
       "type": "main-product",
       "blocks": {
-        "text_UwzVCe": {
+        "price_4XTzqR": {
+          "type": "price",
+          "settings": {}
+        },
+        "title_bpmXVj": {
+          "type": "title",
+          "settings": {}
+        },
+        "text_CmhREB": {
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "body"
           }
         },
-        "title_c6iEAC": {
-          "type": "title",
-          "settings": {}
+        "sku_m7MALE": {
+          "type": "sku",
+          "settings": {
+            "text_style": "uppercase"
+          }
         },
-        "price_MimJVT": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker_fhy4Ed": {
+        "variant_picker_NWh8q7": {
           "type": "variant_picker",
           "settings": {
             "picker_type": "button",
             "swatch_shape": "circle"
           }
         },
-        "quantity_selector_8PXhVh": {
+        "quantity_selector_cwaLFj": {
           "type": "quantity_selector",
           "settings": {}
         },
-        "buy_buttons_jzAcyb": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
-          }
-        },
-        "description_QqbmiK": {
+        "description_RxGjaP": {
           "type": "description",
           "settings": {}
         },
-        "collapsible_tab_cDNEg9": {
-          "type": "collapsible_tab",
+        "inventory_aTTemW": {
+          "type": "inventory",
           "settings": {
-            "heading": "About Lorem Ipsum?",
-            "icon": "check_mark",
-            "content": "<p><strong>Lorem Ipsum </strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-            "page": ""
-          }
-        },
-        "collapsible_tab_8wwjg9": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "What is Lorem Ipsum?",
-            "icon": "check_mark",
-            "content": "<p><strong>Lorem Ipsum </strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-            "page": ""
+            "text_style": "body",
+            "inventory_threshold": 31,
+            "show_inventory_quantity": true
           }
         }
       },
       "block_order": [
-        "text_UwzVCe",
-        "title_c6iEAC",
-        "price_MimJVT",
-        "variant_picker_fhy4Ed",
-        "quantity_selector_8PXhVh",
-        "buy_buttons_jzAcyb",
-        "description_QqbmiK",
-        "collapsible_tab_cDNEg9",
-        "collapsible_tab_8wwjg9"
+        "price_4XTzqR",
+        "title_bpmXVj",
+        "text_CmhREB",
+        "sku_m7MALE",
+        "variant_picker_NWh8q7",
+        "quantity_selector_cwaLFj",
+        "description_RxGjaP",
+        "inventory_aTTemW"
       ],
       "settings": {
         "enable_sticky_info": true,
