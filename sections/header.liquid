@@ -5,10 +5,11 @@
     background: #fff;
     width: 100%;
     {% if section.settings.show_line_separator %}
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid rgb(var(--color-foreground), 0.2);
     {% endif %}
     z-index: 9;
     transition: top 150ms ease-out;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
   }
 
   {% if section.settings.sticky_header_type == 'on-scroll-up' %}
@@ -68,6 +69,7 @@
     cursor: pointer;
     border: 0;
     background: transparent;
+    color: inherit;
     font-size: inherit;
   }
   #main-header .menu-toggle svg {
@@ -91,11 +93,15 @@
   {% endif %}
   #main-header a {
     text-decoration: none;
-    color: #000;
+    color: inherit;
   }
   #header-cart-bubble {
-    position: relative;
-    margin-right: 6px;
+      position: relative;
+      margin-right: 6px;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
   }
   [data-cart-count] {
     position: absolute;
@@ -105,8 +111,8 @@
     right: -6px;
     width: 16px;
     height: 16px;
-    color: #fff;
-    background: #000;
+    color: rgb(var(--color-background));
+    background: rgb(var(--color-foreground));
     font-size: 10px;
     border-radius: 10rem;
   }
@@ -126,7 +132,8 @@
   #header-search {
     position: absolute;
     inset: 0;
-    background: #fff;
+    color: rgb(var(--color-foreground));
+    background: rgb(var(--color-background));
     display: none;
     justify-content: center;
     align-items: center;
@@ -137,7 +144,7 @@
   }
   #header-search form {
     position: relative;
-    border: 1px solid #ddd;
+    border: 1px solid rgb(var(--color-foreground), 0.2);
     width: min(600px, 100%);
     height: 40px;
     display: flex;
@@ -148,6 +155,8 @@
     width: 100%;
     border: 0;
     font-size: 15px;
+    color: inherit;
+    background: transparent;
   }
   #header-search button {
     background: transparent;
@@ -157,6 +166,7 @@
   }
   #header-search svg {
     width: 20px;
+    color: rgb(var(--color-foreground));
   }
 
   @media (min-width: 768px) {
@@ -172,6 +182,14 @@
     .header-actions_localization {
       display: none;
     }
+    #main-header {
+      grid-template-columns:
+      {% if section.settings.mobile_logo_position == 'center' %}
+        1fr auto 1fr
+      {% else %}
+        auto 1fr auto
+      {% endif %};
+    }
   }
 </style>
 
@@ -180,84 +198,87 @@
     {{ 'icon-search.svg' | inline_asset_content }}
   </div>
 {% endcapture %}
-<header id="main-header" x-data="{ searchOpen: false }" @click.outside="searchOpen = false">
-  {% render 'nav-drawer' %}
 
-  {% if section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
-    {{ header_search }}
-  {% endif %}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <header id="main-header" x-data="{ searchOpen: false }" @click.outside="searchOpen = false">
+    {% render 'nav-drawer' %}
 
-  {% if request.page_type == 'index' %}<h1 style="margin: 0">{% endif %}
-  <a href="{{ routes.root_url }}" style="display: flex">
-    {% if settings.logo != blank %}
-      {{ settings.logo | image_url: width: 900 | image_tag: class: 'header-logo' }}
-    {% else %}
-      <span class="header-shop_name">{{ shop.name }}</span>
-    {% endif %}
-  </a>
-  {% if request.page_type == 'index' %}</h1>{% endif %}
-
-  {% if section.settings.menu != blank and section.settings.menu_type_desktop != 'drawer' %}
-    <nav>
-      {% if section.settings.menu_type_desktop == 'dropdown' %}
-        {% render 'nav-dropdown', nav_style: 'dropdown' %}
-      {% elsif section.settings.menu_type_desktop != 'drawer' %}
-        {% render 'nav-megamenu' %}
-      {% endif %}
-    </nav>
-  {% endif %}
-
-  <div class="header-actions">
-    {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
-      <div class="header-actions_localization">
-        {%- render 'localization-form',
-          enable_country_selector: section.settings.enable_country_selector,
-          enable_language_selector: section.settings.enable_language_selector
-        -%}
-      </div>
-    {% endif %}
-
-    {% unless section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
+    {% if section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
       {{ header_search }}
-    {% endunless %}
-
-    {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
-      <a
-        class="header-actions_account"
-        href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
-        rel="nofollow"
-      >
-        {{ 'icon-account.svg' | inline_asset_content }}
-      </a>
     {% endif %}
 
-    <a href="{{ routes.cart_url }}" id="header-cart-bubble">
-      {{ 'icon-cart.svg' | inline_asset_content }}
-      <div data-cart-count>{{ cart.item_count }}</div>
+    {% if request.page_type == 'index' %}<h1 style="margin: 0">{% endif %}
+    <a href="{{ routes.root_url }}" style="display: flex">
+      {% if settings.logo != blank %}
+        {{ settings.logo | image_url: width: 900 | image_tag: class: 'header-logo' }}
+      {% else %}
+        <span class="header-shop_name">{{ shop.name }}</span>
+      {% endif %}
     </a>
-  </div>
+    {% if request.page_type == 'index' %}</h1>{% endif %}
 
-  <div id="header-search" :class="{ 'active': searchOpen }">
-    <form
-      action="{{ routes.search_url }}"
-      method="get"
-      role="search"
-    >
-      <input
-        type="search"
-        name="q"
-        value="{{ search.terms | escape }}"
-        placeholder="Search"
+    {% if section.settings.menu != blank and section.settings.menu_type_desktop != 'drawer' %}
+      <nav>
+        {% if section.settings.menu_type_desktop == 'dropdown' %}
+          {% render 'nav-dropdown', nav_style: 'dropdown' %}
+        {% elsif section.settings.menu_type_desktop != 'drawer' %}
+          {% render 'nav-megamenu' %}
+        {% endif %}
+      </nav>
+    {% endif %}
+
+    <div class="header-actions">
+      {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
+        <div class="header-actions_localization">
+          {%- render 'localization-form',
+            enable_country_selector: section.settings.enable_country_selector,
+            enable_language_selector: section.settings.enable_language_selector
+          -%}
+        </div>
+      {% endif %}
+
+      {% unless section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
+        {{ header_search }}
+      {% endunless %}
+
+      {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
+        <a
+          class="header-actions_account"
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+          rel="nofollow"
+        >
+          {{ 'icon-account.svg' | inline_asset_content }}
+        </a>
+      {% endif %}
+
+      <a id="header-cart-bubble" @click.prevent="cartOpen = !cartOpen">
+        {{ 'icon-cart.svg' | inline_asset_content }}
+        <div data-cart-count data-ajax-cart-bind="item_count">{{ cart.item_count }}</div>
+      </a>
+    </div>
+
+    <div id="header-search" :class="{ 'active': searchOpen }">
+      <form
+        action="{{ routes.search_url }}"
+        method="get"
+        role="search"
       >
-      <button aria-label="Search">
-        {{- 'icon-search.svg' | inline_asset_content -}}
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="Search"
+        >
+        <button aria-label="Search">
+          {{- 'icon-search.svg' | inline_asset_content -}}
+        </button>
+      </form>
+      <button id="close-header-search" @click="searchOpen = !searchOpen">
+        {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
-    </form>
-    <button id="close-header-search" @click="searchOpen = !searchOpen">
-      {{- 'icon-close.svg' | inline_asset_content -}}
-    </button>
-  </div>
-</header>
+    </div>
+  </header>
+</div>
 
 <script>
   const header = document.getElementById('shopify-section-{{ section.id }}');

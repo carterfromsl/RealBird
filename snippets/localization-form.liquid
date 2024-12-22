@@ -7,6 +7,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    color: inherit;
     background: transparent;
     min-width: max-content;
     max-width: 100%;
@@ -16,11 +17,14 @@
   .localization-button svg {
     width: 12px;
     height: auto;
+    transition: 300ms ease;
+  }
+  .localization-button.localization-open svg {
+    transform: scaleY(-1);
   }
   .localization-list {
     position: absolute;
     top: calc(100% + 1px);
-    background: #fff;
     box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0, rgba(0, 0, 0, 0.06) 0 1px 2px 0;
     list-style: none;
     padding: 0;
@@ -30,11 +34,11 @@
   }
   .localization-list a {
     display: block;
-    color: #111;
+    color: inherit;
     font-size: 15px;
     line-height: 1.5;
     padding: 12px 18px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgb(var(--color-foreground), 0.2);
   }
 </style>
 
@@ -47,11 +51,11 @@
         @click.outside="localizationOpen = false"
       >
         <button
-          @click="localizationOpen = !localizationOpen"
-          :class="{ 'localization-open': localizationOpen }"
           type="button"
           class="localization-button"
           aria-controls="CountryList"
+          @click="localizationOpen = !localizationOpen"
+          :class="{ 'localization-open': localizationOpen }"
         >
           <span>
             {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
@@ -65,8 +69,7 @@
           x-cloak
           id="CountryList"
           role="list"
-          class="localization-list"
-        >
+          class="localization-list color-{{ section.settings.menu_color_scheme }} gradient">
           {% for country in localization.available_countries %}
             <li class="localization-item" tabindex="-1">
               <a
@@ -102,11 +105,11 @@
         @click.outside="localizationOpen = false"
       >
         <button
-          @click="localizationOpen = !localizationOpen"
-          :class="{ 'language-open': localizationOpen }"
           type="button"
           class="localization-button"
           aria-controls="LanguageList"
+          @click="localizationOpen = !localizationOpen"
+          :class="{ 'localization-open': localizationOpen }"
         >
           {{ localization.language.endonym_name | capitalize }}
           {{- 'icon-caret.svg' | inline_asset_content -}}
@@ -117,8 +120,7 @@
           x-cloak
           id="LanguageList"
           role="list"
-          class="localization-list"
-        >
+          class="localization-list color-{{ section.settings.menu_color_scheme }} gradient">
           {% for language in localization.available_languages %}
             <li class="localization-item" tabindex="-1">
               <a
