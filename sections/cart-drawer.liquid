@@ -74,6 +74,23 @@
                 <a href="{{ line_item.url_to_remove }}" data-ajax-cart-request-button>Remove</a>
               </div>
             </div>
+
+            <div>
+              {%- if line_item.original_line_price != line_item.final_line_price -%}
+                <div>
+                  <s>
+                    {{ line_item.original_line_price | money }}
+                  </s>
+                  <span>
+                    {{ line_item.final_line_price | money }}
+                  </span>
+                </div>
+              {%- else -%}
+                <span>
+                  {{ line_item.original_line_price | money }}
+                </span>
+              {%- endif -%}
+            </div>
             <div data-ajax-cart-errors="{{ line_item.key }}"></div>
           </div>
         </div>

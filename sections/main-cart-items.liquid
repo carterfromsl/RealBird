@@ -1,148 +1,145 @@
-{% if cart.item_count > 0 %}
-  <div class="p-4">
-    <div class="max-w-6xl flex- flex-col my-10 mx-auto">
-      <div class="flex-1">
-        <div class="flex items-end justify-between my-5">
-          <h1 class="text-3xl">Your cart</h1>
-          <a href="{{ routes.all_products_collectiom_url }}" class="text-blue-600 hover:text-blue-800 font-medium underline"
-            >Continue shopping</a
-          >
-        </div>
-      </div>
+{{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
+
+<div>
+  <div class="cart-drawer__wrapper" data-ajax-cart-section>
+    <div class="cart-drawer__header">
+      <h2>Cart ({{ cart.item_count }})</h2>
     </div>
 
-    <div class="max-w-6xl flex flex-col my-10 mx-auto">
-      <form action="{{ routes.cart_url }}" method="POST" novalidate>
-        <table class="table-auto divide-y divide-gray-200 my-4 w-full">
-          <thead>
-            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Product</th>
-            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Quantity</th>
-            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Total Price</th>
-          </thead>
-          <tbody>
-            {% for item in cart.items %}
-              <tr class="table-row">
-                <td class="py-4 px-2 flex flex-col justify-center">
-                  <a href="{{ item.url }}">
-                    {% if item.image %}
-                      <img src="{{ item | img_url: 'small' }}" alt="{{ item.title | escape }}" class="w-20 h-20 object-cover border">
-                    {% else %}
-                      {{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
-                    {% endif %}
-                  </a>
-                </td>
-                <td class="py-4 px-2 flex flex-col justify-center">
-                  <a href="{{ item.url }}" class="my-1">{{ item.product.title | truncatewords: 5 }}</a>
-                  <br>
-                  <span class="text-sm text-gray-500 my-1">{{ item.variant.title }}</span>
-                  <br>
+    <div class="cart-drawer__items" data-ajax-cart-section-scroll>
+      {% for line_item in cart.items %}
+        {% assign line_item_index = forloop.index %}
 
-                  <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="text-sm font-medium text-red-500 my-1"
-                    >remove</a
-                  >
-                </td>
-                <td class="py-4 px-2">
-                  <input
-                    type="number"
-                    name="updates[]"
-                    id="updates_{{ forloop.index }}"
-                    value="{{ item.quantity }}"
-                    min="0"
-                    class="w-20 border p-2"
-                  >
-                </td>
-                <td class="py-4 px-2">
-                  {% if item.original_price > item.final_price %}
-                    <s>{{ item.original_price | money }}</s>
-                  {% endif %}
-    
-                  <div>{{ item.final_price | money }}</div>
+        <div class="cart-drawer__item">
+          <div class="cart-item__media">
+            {{ line_item.product | image_url: width: 200 | image_tag }}
+          </div>
+          <div class="cart-item__details">
+            <div class="cart-item__heading">
+              <a href="{{ line_item.url }}">
+                {{ line_item.title | escape }}
+              </a>
 
+              {% if line_item.original_price > line_item.final_price %}
+                <s>{{ line_item.original_price | money }}</s>
+              {% endif %}
 
-                  {% if item.line_level_discount_allocations.size > 0 %}
-                    Discounts:
-                    <ul>
-                      {% for discount_allocation in item.line_level_discount_allocations %}
-                        <li>{{ discount_allocation.discount_application.title }}-{{ discount_allocation.amount | money }}</li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <div class="flex flex-col md:flex-row items-center justify-between">
-          <div class="w-full my-4">
-            <div class="flex flex-col items-start">
-              <label for="cart_notes my-1">Cart notes</label>
-              <textarea name="note" id="cart_note" class="w-full md:max-w-lg resize-none border h-20"></textarea>
+              <div>{{ line_item.final_price | money }}</div>
+              {% if line_item.line_level_discount_allocations.size > 0 %}
+                Discounts:
+                <ul>
+                  {% for discount_allocation in line_item.line_level_discount_allocations %}
+                    <li>{{ discount_allocation.discount_application.title }}-{{ discount_allocation.amount | money }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             </div>
-          </div>
+            <div class="cart-item__action">
+              <ajax-cart-quantity>
+                <a
+                  data-ajax-cart-quantity-minus
+                  href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | minus: 1 }}"
+                >
+                  {{- 'icon-minus.svg' | inline_asset_content -}}
+                </a>
 
-          <div class="w-full my-4 md:w-80">
-            {% for block in section.blocks %}
-              {% case block.type %}
-                {% when 'subtotal' %}
-                  <h3 class="text-xl">Subtotal: {{ cart.total_price | money }}</h3>
-                {% when 'update_button' %}
-                  <div class="my-2">
-                    <button
-                      type="submit"
-                      name="update"
-                      class="w-full p-3 border border-gray-600 text-gray-600 font-medium hover:bg-gray-600 hover:text-white"
-                    >
-                      Update
-                    </button>
-                  </div>
-                {% when 'checkout_button' %}
-                  <div class="my-2">
-                    <button type="submit" name="checkout" class="w-full p-3 border border-gray-600 font-medium bg-gray-600 text-white">
-                      Checkout
-                    </button>
-                  </div>
-                {% else %}
+                <input
+                  data-ajax-cart-quantity-input="{{ line_item_index }}"
+                  name="updates[]"
+                  value="{{ line_item.quantity }}"
+                  type="number"
+                  form="my-ajax-cart-form"
+                >
 
-              {% endcase %}
-            {% endfor %}
+                <a
+                  data-ajax-cart-quantity-plus
+                  href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | plus: 1 }}"
+                >
+                  {{- 'icon-plus.svg' | inline_asset_content -}}
+                </a>
+              </ajax-cart-quantity>
+
+              <div class="cart-item__remove">
+                {{- 'icon-close.svg' | inline_asset_content -}}
+                <a href="{{ line_item.url_to_remove }}" data-ajax-cart-request-button>Remove</a>
+              </div>
+            </div>
+            <div>
+              {%- if line_item.original_line_price != line_item.final_line_price -%}
+                <div>
+                  <s>
+                    {{ line_item.original_line_price | money }}
+                  </s>
+                  <span>
+                    {{ line_item.final_line_price | money }}
+                  </span>
+                </div>
+              {%- else -%}
+                <span>
+                  {{ line_item.original_line_price | money }}
+                </span>
+              {%- endif -%}
+            </div>
+            <div data-ajax-cart-errors="{{ line_item.key }}"></div>
           </div>
         </div>
-      </form>
+      {% endfor %}
     </div>
-  </div>
-{% else %}
-  <div class="max-w-6xl h-60 my-4 mx-auto flex flex-col items-center justify-center">
-    <div class="text-center">
-      <h1 class="text-3xl my-4">Your cart is empty</h1>
+    <div>
+      Subtotal: {{ cart.items_subtotal_price | money }}
+      {% if cart.cart_level_discount_applications.size > 0 %}
+        Discounts:
 
-      <div class="my-4 py-4">
-        <a href="{{ routes.all_products_collection_url }}" class="border border-gray-600 text-white bg-gray-600 px-8 py-3"
-          >Continue shopping</a
-        >
-      </div>
+        <ul>
+          {% for discount_application in cart.cart_level_discount_applications %}
+            <li>{{ discount_application.title }}-{{ discount_application.total_allocated_amount | money }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      Total: {{ cart.total_price | money }}
+    </div>
+    <div class="cart-drawer__footer">
+      {% form 'cart', cart, id: 'my-ajax-cart-form' %}
+        <button type="submit" name="checkout">Checkout — {{ cart.total_price | money_with_currency }}</button>
+      {% endform %}
     </div>
   </div>
-{% endif %}
+</div>
 
 {% schema %}
 {
-  "name": "Template Cart",
-  "blocks": [
+  "name": "t:sections.main-cart-items.name",
+  "settings": [
     {
-      "type": "subtotal",
-      "name": "Subtotal",
-      "limit": 1
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     },
     {
-      "type": "update_button",
-      "name": "Update Button",
-      "limit": 1
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
-      "type": "checkout_button",
-      "name": "Checkout Button",
-      "limit": 1
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
     }
   ]
 }
