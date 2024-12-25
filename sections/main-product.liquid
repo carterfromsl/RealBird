@@ -28,7 +28,7 @@
   }
 
   product-info .page-width {
-    max-width: 1230px;
+    max-width: {{ settings.page_width }}px;
     margin: 0 auto;
     padding: 0 15px;
   }
@@ -65,8 +65,26 @@
   .product__media-wrapper .swiper-slide iframe {
     display: block;
     width: 100%;
-    max-width: 500px;
+    height: 100%;
     margin: 0 auto;
+  }
+
+  .constrain-height .product__media-wrapper .swiper-slide img,
+  .constrain-height .product__media-wrapper .swiper-slide video,
+  .constrain-height .product__media-wrapper .swiper-slide iframe {
+    max-height: 75vh;
+  }
+  
+  .product__media-wrapper.media-cover .swiper-slide img,
+  .product__media-wrapper.media-cover .swiper-slide video,
+  .product__media-wrapper.media-cover .swiper-slide iframe {
+    object-fit: cover;
+  }
+
+  .product__media-wrapper.media-contain .swiper-slide img,
+  .product__media-wrapper.media-contain .swiper-slide video,
+  .product__media-wrapper.media-contain .swiper-slide iframe {
+    object-fit: contain;
   }
 
   .product__info-wrapper{
@@ -82,7 +100,6 @@
     font-size: 10px;
     letter-spacing: 1.3px;
     text-transform: uppercase;
-    color: #121212BF;
     line-height: calc(1 + .2 / 1.0);
     margin: 0px;
   }
@@ -125,11 +142,11 @@
 
   .price__item.product-regular__price{
     margin-right: 9px;
+    color: rgb(var(--color-foreground));
   }
 
   .price__item.product-sale__price {
     font-size: 16px;
-    color: rgba(18,18,18,.75);
   }
 
   .badge{
@@ -141,9 +158,7 @@
     line-height: 1;
     padding: 6px 13px 7px;
     text-align: center;
-    background-color: #334fb4;
-    border-color: white;
-    color: white;
+    border-color: var(--color-badge-border);
     word-break: break-word;
   }
 
@@ -153,7 +168,6 @@
     font-size: 13px;
     line-height: calc(1 + .5 / 1.0);
     letter-spacing: 0.6px;
-    color: rgba(18, 18, 18, 0.75);
     padding-left: 0px;
   }
 
@@ -162,10 +176,10 @@
   }
 
   .pill-label {
-    border: 1px solid rgba(18,18,18,0.55);
-    background-color: rgb(255,255,255);
-    border-radius: 40px;
-    color: rgb(18,18,18);
+    border: var(--variant-pills-border-width) solid rgba(var(--color-foreground),var(--variant-pills-border-opacity));
+    border-radius: var(--variant-pills-radius);
+    color: rgba(var(--color-foreground));
+    background-color: rgb(var(--color-background));
     display: inline-block;
     margin: 7px 5px 2px 0;
     padding: 10px 20px;
@@ -179,12 +193,12 @@
   }
 
   .product-form__input input[type=radio]+label:hover {
-    border-color: rgb(18,18,18);
+    border-color: rgb(var(--color-foreground));
   }
 
   .pill-radio:checked + .pill-label {
-    background-color: black;
-    color: white;
+    background-color: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
   }
 
   .pill-label.pill-disabled {
@@ -216,6 +230,7 @@
     cursor: pointer;
     z-index: 1;
     min-height: 45px;
+    color: rgb(var(--color-foreground));
   }
 
   .product__quantity .option__label {
@@ -233,7 +248,7 @@
     justify-content: flex-start;
     width: calc(140px / 1.0 + 1px* 2);
     min-height: calc((1px* 2) + 40px);
-    outline: 1px solid rgba(18,18,18, .6);
+    outline: var(--inputs-border-width) solid rgba(var(--color-foreground),var(--inputs-border-opacity));
   }
 
   .product__quantity quantity-selector input {
@@ -242,6 +257,7 @@
     background: transparent;
     width: 100%;
     font-size: 16px;
+    color: currentColor;
   }
 
   .product__quantity quantity-selector input::-webkit-outer-spin-button,
@@ -258,15 +274,16 @@
     width: 100%;
     background: transparent;
     border: none;
-    outline: 1px solid black;
+    outline: var(--inputs-border-width) solid rgba(var(--color-foreground),var(--inputs-border-opacity));
     padding: 12.5px 10px;
     cursor: pointer;
     font-size: 15px;
     letter-spacing: 1px;
+    color: var(--color-secondary-button);
   }
 
   .product-form__buttons button:hover {
-    outline: 2px solid black;
+    outline: 2px solid rgba(var(--color-foreground));
   }
 
   .shopify-payment-button__button {
@@ -282,8 +299,8 @@
     margin-top: 12px;
   }
 
-  .shopify-payment-button .shopify-payment-button__button--unbranded:hover:not([disabled]){
-    background: black;
+  .shopify-payment-button .shopify-payment-button__button--unbranded{
+    background: rgba(var(--color-button),var(--alpha-button-background));
   }
 
   .product-form__input {
@@ -296,8 +313,8 @@
   .product__info-wrapper .product__accordion {
     margin-top: 25px;
     margin-bottom: 0;
-    border-top: 1px solid rgba(18,18,18,.08);
-    border-bottom: 1px solid rgba(18,18,18,.08);
+    border-top: 1px solid rgba(var(--color-foreground),.08);
+    border-bottom: 1px solid rgba(var(--color-foreground),.08);
   }
 
   .product__accordion summary {
@@ -314,7 +331,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    fill: rgb(18, 18, 18);
+    fill: rgb(var(--color-foreground));
     width: calc(1.0 * 20px);
     height: calc(1.0 * 20px);
     align-self: center;
@@ -334,6 +351,7 @@
     margin: 0;
     font-size: 16px;
     font-weight: 500;
+    color: rgb(var(--color-foreground));
   }
 
   .product__accordion svg.icon.icon-caret {
@@ -373,7 +391,6 @@
     align-items: center;
     gap: .5rem;
     font-size: 16px;
-    color: #121212BF;
     letter-spacing: .5px;
   }
 
@@ -444,13 +461,16 @@
     .product__title h1,
     .product__title h2 {
       font-size: 40px;
+      color: rgb(var(--color-foreground));
     }
 
     .product--small .product__variants variant-selector,
     .product--small .product-form__buttons button,
+    .product--small .product-form__buttons .shopify-payment-button,
     .product--small .product__accordion,
     .product--medium .product__variants variant-selector,
     .product--medium .product-form__buttons button,
+    .product--medium .product-form__buttons .shopify-payment-button,
     .product--medium .product__accordion {
       display: block;
       max-width: 440px;
@@ -458,7 +478,8 @@
 
     .product--large .product__variants variant-selector,
     .product--large .product__accordion,
-    .product--large .product-form__buttons button {
+    .product--large .product-form__buttons button,
+    .product--large .product-form__buttons .shopify-payment-button {
       max-width: 343px;
     }
   }
@@ -505,14 +526,18 @@
 <product-info
   data-url="{{ product.url}}"
   data-section="{{ section.id }}"
-  class="section-{{ section.id }}-padding"
+  class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
 >
   <div class="page-width">
-    <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }}  flex">
-      <div class="product__media-wrapper flex__item">
-        {% render 'product-media-gallery', product_media: product.media, selected_variant: selected_variant %}
+    <div class="product flex product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} {% if section.settings.constrain_to_viewport %}constrain-height{% endif %}">
+      <div class="product__media-wrapper flex__item media-{{ section.settings.media_fit }}">
+        {% render 'product-media-gallery',
+          product_media: product.media,
+          selected_variant: selected_variant,
+          video_looping: section.settings.enable_video_looping
+        %}
       </div>
-      <div class="product__info-wrapper {% if section.settings.enable_sticky_info %}product__info-sticky {% endif %}flex__item">
+      <div class="product__info-wrapper flex__item {% if section.settings.enable_sticky_info %}product__info-sticky {% endif %}">
         {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
           <input type="hidden" name="id" value="{{ selected_variant.id }}">
           {%- for block in section.blocks -%}
@@ -529,13 +554,21 @@
 
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" class="product__price">
+                  {%- liquid
+                    assign compare_at_price = selected_variant.compare_at_price | money
+                    assign price = selected_variant.price | money
+                    if settings.currency_code_enabled
+                      assign compare_at_price = selected_variant.compare_at_price | money_with_currency
+                      assign price = selected_variant.price | money_with_currency
+                    endif
+                  -%}
                   {%- if selected_variant.compare_at_price -%}
-                    <s class="price__item product-sale__price">{{ selected_variant.compare_at_price | money_with_currency }}</s>
+                    <s class="price__item product-sale__price">{{ compare_at_price }}</s>
                   {%- endif -%}
-                  <span class="price__item product-regular__price">{{ selected_variant.price | money_with_currency }}</span>
+                  <span class="price__item product-regular__price">{{ price }}</span>
 
                   {% if selected_variant.price < selected_variant.compare_at_price %}
-                    <span class="badge">Sale</span>
+                    <span class="badge color-{{ settings.sale_badge_color_scheme }}">Sale</span>
                   {% endif %}
                 </div>
 
@@ -660,6 +693,7 @@
                     id="AddToCart-{{ section.id }}"
                     type="submit"
                     name="add"
+                    class="{% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
                     {% if selected_variant == null or selected_variant.available == false %}
                       disabled
                     {% endif %}
@@ -762,6 +796,7 @@
 
     initSwiper() {
       this.swiper = new Swiper('.swiper', {
+        autoHeight: true,
         direction: 'horizontal',
         pagination: {
           el: '.swiper-pagination',
@@ -2319,30 +2354,6 @@
     },
     {
       "type": "select",
-      "id": "gallery_layout",
-      "options": [
-        {
-          "value": "stacked",
-          "label": "t:sections.main-product.settings.gallery_layout.options__1.label"
-        },
-        {
-          "value": "columns",
-          "label": "t:sections.main-product.settings.gallery_layout.options__2.label"
-        },
-        {
-          "value": "thumbnail",
-          "label": "t:sections.main-product.settings.gallery_layout.options__3.label"
-        },
-        {
-          "value": "thumbnail_slider",
-          "label": "t:sections.main-product.settings.gallery_layout.options__4.label"
-        }
-      ],
-      "default": "stacked",
-      "label": "t:sections.main-product.settings.gallery_layout.label"
-    },
-    {
-      "type": "select",
       "id": "media_position",
       "options": [
         {
@@ -2378,32 +2389,6 @@
       "default": "lightbox",
       "label": "t:sections.main-product.settings.image_zoom.label",
       "info": "t:sections.main-product.settings.image_zoom.info"
-    },
-    {
-      "type": "select",
-      "id": "mobile_thumbnails",
-      "options": [
-        {
-          "value": "columns",
-          "label": "t:sections.main-product.settings.mobile_thumbnails.options__1.label"
-        },
-        {
-          "value": "show",
-          "label": "t:sections.main-product.settings.mobile_thumbnails.options__2.label"
-        },
-        {
-          "value": "hide",
-          "label": "t:sections.main-product.settings.mobile_thumbnails.options__3.label"
-        }
-      ],
-      "default": "hide",
-      "label": "t:sections.main-product.settings.mobile_thumbnails.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "hide_variants",
-      "default": false,
-      "label": "t:sections.main-product.settings.hide_variants.label"
     },
     {
       "type": "checkbox",
