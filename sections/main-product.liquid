@@ -405,177 +405,6 @@
     align-items: center;
   }
 
-  .share-button {
-    display: block;
-    position: relative;
-  }
-
-  .share-button .hidden {
-    display: none;
-  }
-
-  .share-button__button {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    color: rgb(var(--color-link));
-    margin-left: 0;
-    padding-left: 0;
-    min-height: 44px;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-  }
-
-  .share-button .svg-wrapper {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-  }
-
-  .share-button__button .icon-share {
-    height: 12px;
-    margin-right: 10px;
-    min-width: 13px;
-  }
-
-  .share-button details {
-    width: fit-content;
-  }
-
-  .share-button__fallback {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 30px;
-    left: 1px;
-    z-index: 3;
-    width: 100%;
-    min-width: max-content;
-    border-radius: var(--inputs-radius);
-    border: 0;
-  }
-
-  .share-button__fallback .field {
-    border-radius: 0;
-    min-width: auto;
-    min-height: auto;
-    transition: none;
-    position: relative;
-    width: 100%;
-    display: flex;
-  }
-
-  .share-button__message:not(:empty) {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin-top: 0;
-    padding: 8px 0 8px 15px;
-    margin: var(--inputs-border-width);
-  }
-
-  .share-button__fallback .field__input {
-    box-shadow: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    filter: none;
-    width: 100%;
-    min-width: auto;
-    min-height: auto;
-    flex-grow: 1;
-    text-align: left;
-    padding: 22px 15px 8px 20px;
-    transition: box-shadow var(--duration-short) ease;
-    appearance: none;
-    background-color: rgb(var(--color-background));
-    color: rgb(var(--color-foreground));
-    font-family: var(--font-body-family);
-    font-style: var(--font-body-style);
-    font-weight: var(--font-body-weight);
-    font-size: 16px;
-    box-sizing: border-box;
-    position: relative;
-    border: 0;
-  }
-
-  .field__label, .customer .field label {
-    margin-bottom: 0;
-    pointer-events: none;
-    position: absolute;
-    transition: top var(--duration-short) ease, font-size var(--duration-short) ease;
-    color: rgba(var(--color-foreground), .75);
-    line-height: 1.5;
-    font-size: 10px;
-    top: calc(var(--inputs-border-width) + 5px);
-    left: calc(var(--inputs-border-width) + 20px);
-  }
-
-  .share-button__fallback button {
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    right: var(--inputs-border-width);
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-  }
-
-  .share-button__fallback:before {
-    background: rgb(var(--color-background));
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border-radius: var(--inputs-radius-outset);
-    box-shadow: var(--inputs-shadow-horizontal-offset) var(--inputs-shadow-vertical-offset) var(--inputs-shadow-blur-radius) rgba(var(--color-shadow), var(--inputs-shadow-opacity));
-    z-index: -1;
-  }
-
-  .share-button__fallback:after {
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    top: var(--inputs-border-width);
-    right: var(--inputs-border-width);
-    bottom: var(--inputs-border-width);
-    left: var(--inputs-border-width);
-    border: .1rem solid transparent;
-    border-radius: var(--inputs-radius);
-    box-shadow: 0 0 0 var(--inputs-border-width) rgba(var(--color-foreground), var(--inputs-border-opacity));
-    transition: box-shadow var(--duration-short) ease;
-    z-index: 1;
-  }
-
-  .share-button__fallback .hidden,
-  .share-button__message:not(:empty):not(.hidden)~* {
-    display: none;
-  }
-
-  .visually-hidden {
-    position: absolute;
-    overflow: hidden;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-    clip: rect(0 0 0 0);
-    word-wrap: normal;
-  }
-
   @media screen and (min-width: 750px) {
     product-info .page-width {
       padding: 0 50px;
@@ -949,45 +778,7 @@
                 </p>
               {%- when 'share' -%}
                 {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
-                <share-button class="share-button quick-add-hidden">
-                  <button class="share-button__button hidden">
-                    <span class="svg-wrapper">{{ 'icon-share.svg' | inline_asset_content }}</span>
-                    {{ block.settings.share_label | escape }}
-                  </button>
-                  <details id="Details-{{ block.id }}-{{ section.id }}">
-                    <summary class="share-button__button">
-                      <span class="svg-wrapper">{{ 'icon-share.svg' | inline_asset_content }}</span>
-                      {{ block.settings.share_label | escape }}
-                    </summary>
-                    <div class="share-button__fallback motion-reduce">
-                      <div class="field">
-                        <span id="ShareMessage-{{ section.id }}" class="share-button__message hidden" role="status"> </span>
-                        <input
-                          type="text"
-                          class="field__input"
-                          id="ShareUrl-{{ section.id }}"
-                          value="{{ share_url }}"
-                          placeholder="{{ 'general.share.share_url' | t }}"
-                          onclick="this.select();"
-                          readonly
-                        >
-                        <label class="field__label" for="ShareUrl-{{ section.id }}">{{ 'general.share.share_url' | t }}</label>
-                      </div>
-                      <button class="share-button__close hidden">
-                        <span class="svg-wrapper">
-                          {{- 'icon-close.svg' | inline_asset_content -}}
-                        </span>
-                        <span class="visually-hidden">{{ 'general.share.close' | t }}</span>
-                      </button>
-                      <button class="share-button__copy">
-                        <span class="svg-wrapper">
-                          {{- 'icon-copy.svg' | inline_asset_content -}}
-                        </span>
-                        <span class="visually-hidden">{{ 'general.share.copy_to_clipboard' | t }}</span>
-                      </button>
-                    </div>
-                  </details>
-                </share-button>
+                {% render 'share-button', block: block, share_link: share_url %}
             {%- endcase -%}
           {%- endfor -%}
         {% endform %}
@@ -1007,7 +798,6 @@
       this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
       this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
       document.getElementById('swiper-script').addEventListener('load', this.initSwiper.bind(this));
-      this.initShareButton();
     }
 
     initSwiper() {
@@ -1022,56 +812,6 @@
           nextEl: '.swiper-button-next',
         },
       });
-    }
-
-    initShareButton() {
-      const shareButton = this.querySelector('share-button');
-      if (!shareButton) return;
-      const urlInput = shareButton.querySelector('input');
-      const urlToShare = urlInput ? urlInput.value : document.location.href;
-
-      if (navigator.share) {
-        shareButton.querySelector('details').setAttribute('hidden', 'hidden');
-        shareButton.querySelector('button').classList.remove('hidden');
-        shareButton.querySelector('button').addEventListener('click', (event) => {
-          event.preventDefault();
-          navigator.share({ url: urlToShare, title: document.title });
-        });
-      } else {
-        const copyButton = shareButton.querySelector('.share-button__copy');
-        const closeButton = shareButton.querySelector('.share-button__close');
-        const summary = shareButton.querySelector('summary');
-        const successMessage = shareButton.querySelector('[id^="ShareMessage"]');
-
-        summary.addEventListener('click', (event) => {
-          event.preventDefault();
-          shareButton.querySelector('details').open = !shareButton.querySelector('details').open;
-        });
-
-        document.addEventListener('click', (event) => {
-          if (!shareButton.querySelector('details').contains(event.target) && shareButton.querySelector('details').open) {
-            shareButton.querySelector('details').open = false;
-          }
-        });
-
-        copyButton.addEventListener('click', (event) => {
-          event.preventDefault();
-          navigator.clipboard.writeText(urlInput.value).then(() => {
-            successMessage.classList.remove('hidden');
-            successMessage.textContent = 'Link copied!';
-            closeButton.classList.remove('hidden');
-            closeButton.focus();
-          });
-        });
-
-        closeButton.addEventListener('click', (event) => {
-          event.preventDefault();
-          shareButton.querySelector('details').open = false;
-          successMessage.classList.add('hidden');
-          successMessage.textContent = '';
-          closeButton.classList.add('hidden');
-        });
-      }
     }
 
     get variantSelector() {
