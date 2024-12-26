@@ -52,6 +52,12 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "share_ybFkAW": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
         "description_RxGjaP": {
           "type": "description",
           "settings": {}
@@ -72,6 +78,7 @@
         "inventory_aTTemW",
         "variant_picker_NWh8q7",
         "quantity_selector_cwaLFj",
+        "share_ybFkAW",
         "description_RxGjaP",
         "buy_buttons_JPDYXc"
       ],
@@ -83,7 +90,6 @@
         "media_fit": "cover",
         "media_position": "left",
         "image_zoom": "lightbox",
-        "hide_variants": false,
         "enable_video_looping": true,
         "padding_top": 36,
         "padding_bottom": 100
