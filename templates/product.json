@@ -12,12 +12,12 @@
     "main-product": {
       "type": "main-product",
       "blocks": {
-        "price_4XTzqR": {
-          "type": "price",
-          "settings": {}
-        },
         "title_bpmXVj": {
           "type": "title",
+          "settings": {}
+        },
+        "price_4XTzqR": {
+          "type": "price",
           "settings": {}
         },
         "text_CmhREB": {
@@ -71,8 +71,8 @@
         }
       },
       "block_order": [
-        "price_4XTzqR",
         "title_bpmXVj",
+        "price_4XTzqR",
         "text_CmhREB",
         "sku_m7MALE",
         "inventory_aTTemW",
