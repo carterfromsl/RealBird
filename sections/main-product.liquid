@@ -547,12 +547,15 @@
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'text' -%}
-              <p class="product__text {% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}">
+              <p
+                class="product__text {% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
+                {{ block.shopify_attributes }}
+              >
                 {{- block.settings.text -}}
               </p>
 
             {%- when 'title' -%}
-              <div class="product__title">
+              <div class="product__title" {{ block.shopify_attributes }}>
                 <h1>{{ product.title }}</h1>
               </div>
 
@@ -589,6 +592,7 @@
 
             {%- when 'sku' -%}
               <p
+                {{ block.shopify_attributes }}
                 class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if selected_variant.sku.size == 0 %} visibility-hidden{% endif %}"
                 id="sku-{{ section.id }}"
               >
@@ -596,7 +600,7 @@
               </p>
 
             {%- when 'variant_picker' -%}
-              <div class="product__variants">
+              <div class="product__variants" {{ block.shopify_attributes }}>
                 {% unless product.has_only_default_variant %}
                   <variant-selector>
                     {%- if block.settings.picker_type == 'dropdown' -%}
@@ -669,7 +673,7 @@
               </div>
 
             {%- when 'quantity_selector' -%}
-              <div class="product__quantity">
+              <div class="product__quantity" {{ block.shopify_attributes }}>
                 <label class="option__label" for="Quantity-{{ section.id }}">Quantity</label>
                 <quantity-selector>
                   <button name="minus" type="button">
@@ -700,13 +704,13 @@
 
             {%- when 'description' -%}
               {%- if product.description != blank -%}
-                <div class="product__description">
+                <div class="product__description" {{ block.shopify_attributes }}>
                   <p>{{ product.description }}</p>
                 </div>
               {%- endif -%}
 
             {%- when 'buy_buttons' -%}
-              <div class="product-form__buttons">
+              <div class="product-form__buttons" {{ block.shopify_attributes }}>
                 <ajax-cart-product-form>
                   {% form 'product', product, id: product_form_id, novalidate: 'novalidate' %}
                     <input type="hidden" name="id" value="{{ selected_variant.id }}">
@@ -738,7 +742,7 @@
               {{ block.settings.custom_liquid }}
 
             {%- when 'collapsible_tab' -%}
-              <div class="product__accordion accordion">
+              <div class="product__accordion accordion" {{ block.shopify_attributes }}>
                 <details>
                   <summary>
                     <div class="summary__title">
@@ -762,6 +766,7 @@
               <p
                 class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if selected_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
                 id="inventory-{{ section.id }}"
+                {{ block.shopify_attributes }}
               >
                 {%- if selected_variant.inventory_management == 'shopify' -%}
                   {%- if selected_variant.inventory_quantity > 0 -%}
@@ -941,7 +946,7 @@
       const newInventory = html.getElementById(`inventory-${this.dataset.section}`);
       if (oldInventory && newInventory) oldInventory.innerHTML = newInventory.innerHTML;
     }
-    
+
     renderSection() {
       this.abortController?.abort();
       this.abortController = new AbortController();
@@ -960,7 +965,7 @@
           this.updateSubmitButton(html);
           this.updateVariantInputs(variant?.id);
           this.updateSku(html);
-          this.updateInventory(html);        
+          this.updateInventory(html);
         })
         .catch((error) => {
           if (error.name === 'AbortError') {
