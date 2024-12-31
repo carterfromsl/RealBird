@@ -602,7 +602,7 @@
             {%- when 'variant_picker' -%}
               <div class="product__variants" {{ block.shopify_attributes }}>
                 {% unless product.has_only_default_variant %}
-                  <variant-selector>
+                  <variant-selector data-picker-type="{{ block.settings.picker_type }}">
                     {%- if block.settings.picker_type == 'dropdown' -%}
                       <div class="variant-block__dropdown">
                         {% for option in product.options_with_values %}
@@ -614,9 +614,14 @@
                               form="{{ product_form_id }}"
                             >
                               {% for value in option.values %}
+                                {%- capture input_id -%}
+                                  {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+                                {%- endcapture -%}
                                 <option
+                                  id="{{ input_id }}"
                                   value="{{ value | escape }}"
                                   data-option-value-id="{{ value.id }}"
+                                  data-product-url="{{ value.product_url }}"
                                   {% if value.selected %}
                                     selected="selected"
                                   {% endif %}
@@ -862,10 +867,25 @@
     }
 
     get selectedOptionValues() {
-      return Array.from(this.querySelectorAll('select option[selected], fieldset input:checked')).map(
-        ({ dataset }) => dataset.optionValueId
-      );
+      if (this.variantSelector.dataset.pickerType === 'dropdown') {
+        const list = Array.from(this.variantSelector.querySelectorAll('select')).map(
+          (select) => select.options[select.selectedIndex].dataset.optionValueId
+        );
+        return list;
+      } else {
+        const list = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked')).map(
+          ({ dataset }) => dataset.optionValueId
+        );
+        return list;
+      }
     }
+
+    // get selectedOptionValues() {
+    //   const list = Array.from(this.variantSelector.querySelectorAll('select option[selected], fieldset input:checked')).map(
+    //     ({ dataset }) => dataset.optionValueId
+    //   );
+    //   return list;
+    // }
 
     getSelectedVariant(html) {
       const selectedVariant = html.querySelector('[data-selected-variant]')?.innerHTML;
@@ -958,10 +978,11 @@
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const variant = this.getSelectedVariant(html);
+          this.updateVariantSelector(html);
           this.updateMedia(variant?.featured_media?.id);
           this.updateURL(variant?.id);
           this.updatePrice(html);
-          this.updateVariantSelector(html);
+
           this.updateSubmitButton(html);
           this.updateVariantInputs(variant?.id);
           this.updateSku(html);
