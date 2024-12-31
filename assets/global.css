@@ -20,6 +20,7 @@ body {
 
 .page-wrapper {
   max-width: var(--page-width);
+  margin-inline: auto;
 }
 
 /* 
