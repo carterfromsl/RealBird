@@ -12,12 +12,12 @@
     "main-product": {
       "type": "main-product",
       "blocks": {
-        "price_4XTzqR": {
-          "type": "price",
-          "settings": {}
-        },
         "title_bpmXVj": {
           "type": "title",
+          "settings": {}
+        },
+        "price_4XTzqR": {
+          "type": "price",
           "settings": {}
         },
         "text_CmhREB": {
@@ -44,13 +44,19 @@
         "variant_picker_NWh8q7": {
           "type": "variant_picker",
           "settings": {
-            "picker_type": "button",
+            "picker_type": "dropdown",
             "swatch_shape": "circle"
           }
         },
         "quantity_selector_cwaLFj": {
           "type": "quantity_selector",
           "settings": {}
+        },
+        "share_ybFkAW": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
         },
         "description_RxGjaP": {
           "type": "description",
@@ -65,13 +71,14 @@
         }
       },
       "block_order": [
-        "price_4XTzqR",
         "title_bpmXVj",
+        "price_4XTzqR",
         "text_CmhREB",
         "sku_m7MALE",
         "inventory_aTTemW",
         "variant_picker_NWh8q7",
         "quantity_selector_cwaLFj",
+        "share_ybFkAW",
         "description_RxGjaP",
         "buy_buttons_JPDYXc"
       ],
@@ -81,12 +88,9 @@
         "media_size": "medium",
         "constrain_to_viewport": true,
         "media_fit": "cover",
-        "gallery_layout": "stacked",
         "media_position": "left",
         "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
-        "hide_variants": false,
-        "enable_video_looping": false,
+        "enable_video_looping": true,
         "padding_top": 36,
         "padding_bottom": 100
       }

@@ -1,12 +1,24 @@
+{% comment %}
+  Accepts:
+  - media: {Object} Product Media object
+  - loop: {Boolean} Enable video looping (optional)
+
+  Usage:
+  {% render 'product-media',
+    media: media,
+    loop: section.settings.enable_video_looping
+  %}
+{% endcomment %}
+
 {% case media.media_type %}
   {% when 'image' %}
-    <img src="{{ media | img_url: 'large' }}" alt="{{ media.preview_image.alt }}">
+    {{ media | image_url: width: media.width | image_tag: width: media.width, height: media.height, loading: 'eager', alt: media.alt }}
 
   {% when 'external_video' %}
     {{ media | external_video_tag }}
 
   {% when 'video' %}
-    {{ media | video_tag: controls: true }}
+    {{ media | media_tag: image_size: '2048x', autoplay: true, loop: loop, controls: true, preload: 'none' }}
 
   {% when 'model' %}
     {{ media | model_viewer_tag }}
