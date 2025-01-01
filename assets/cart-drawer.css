@@ -103,9 +103,16 @@
 .cart-item__option:empty {
   display: none;
 }
+.cart-item__total s {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
 .cart-item__total {
-  font-size: 15px;
   text-align: right;
+}
+.cart-item__details ul.cart-discounts {
+  margin: 10px 0 0;
 }
 .cart-item__action {
   padding-block: 10px;
