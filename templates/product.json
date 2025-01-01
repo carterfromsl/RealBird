@@ -12,12 +12,12 @@
     "main-product": {
       "type": "main-product",
       "blocks": {
-        "price_4XTzqR": {
-          "type": "price",
-          "settings": {}
-        },
         "title_bpmXVj": {
           "type": "title",
+          "settings": {}
+        },
+        "price_4XTzqR": {
+          "type": "price",
           "settings": {}
         },
         "text_CmhREB": {
@@ -44,7 +44,7 @@
         "variant_picker_NWh8q7": {
           "type": "variant_picker",
           "settings": {
-            "picker_type": "button",
+            "picker_type": "dropdown",
             "swatch_shape": "circle"
           }
         },
@@ -71,8 +71,8 @@
         }
       },
       "block_order": [
-        "price_4XTzqR",
         "title_bpmXVj",
+        "price_4XTzqR",
         "text_CmhREB",
         "sku_m7MALE",
         "inventory_aTTemW",

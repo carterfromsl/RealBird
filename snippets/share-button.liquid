@@ -173,7 +173,7 @@
   }
 {%- endstyle -%}
 
-<share-button class="share-button quick-add-hidden">
+<share-button class="share-button quick-add-hidden" {{ block.shopify_attributes }}>
   <button class="share-button__button hidden">
     <span class="svg-wrapper">{{ 'icon-share.svg' | inline_asset_content }}</span>
     {{ block.settings.share_label | escape }}

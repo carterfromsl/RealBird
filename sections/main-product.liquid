@@ -424,6 +424,7 @@
       width: calc(50% - 40px / 2);
       height: 100%;
       padding-top: 0px;
+      flex-direction: column;
     }
 
     .product--left .product__info-wrapper{
@@ -541,247 +542,278 @@
         %}
       </div>
       <div class="product__info-wrapper flex__item {% if section.settings.enable_sticky_info %}product__info-sticky {% endif %}">
-        {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
-          <input type="hidden" name="id" value="{{ selected_variant.id }}">
-          {%- for block in section.blocks -%}
-            {%- case block.type -%}
-              {%- when 'text' -%}
-                <p class="product__text {% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}">
-                  {{- block.settings.text -}}
-                </p>
+        {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
-              {%- when 'title' -%}
-                <div class="product__title">
-                  <h1>{{ product.title }}</h1>
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'text' -%}
+              <p
+                class="product__text {% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
+                {{ block.shopify_attributes }}
+              >
+                {{- block.settings.text -}}
+              </p>
+
+            {%- when 'title' -%}
+              <div class="product__title" {{ block.shopify_attributes }}>
+                <h1>{{ product.title }}</h1>
+              </div>
+
+            {%- when 'price' -%}
+              <div id="price-{{ section.id }}" class="product__price" role="status" {{ block.shopify_attributes }}>
+                {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+              </div>
+              {%- if product.quantity_price_breaks_configured? -%}
+                <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
+                  <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                 </div>
-
-              {%- when 'price' -%}
-                <div id="price-{{ section.id }}" class="product__price">
-                  {%- liquid
-                    assign compare_at_price = selected_variant.compare_at_price | money
-                    assign price = selected_variant.price | money
-                    if settings.currency_code_enabled
-                      assign compare_at_price = selected_variant.compare_at_price | money_with_currency
-                      assign price = selected_variant.price | money_with_currency
-                    endif
-                  -%}
-                  {%- if selected_variant.compare_at_price -%}
-                    <s class="price__item product-sale__price">{{ compare_at_price }}</s>
+              {%- endif -%}
+              {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
+                <div class="product__tax caption rte">
+                  {%- if cart.duties_included and cart.taxes_included -%}
+                    {{ 'products.product.duties_and_taxes_included' | t }}
+                  {%- elsif cart.taxes_included -%}
+                    {{ 'products.product.taxes_included' | t }}
+                  {%- elsif cart.duties_included -%}
+                    {{ 'products.product.duties_included' | t }}
                   {%- endif -%}
-                  <span class="price__item product-regular__price">{{ price }}</span>
-
-                  {% if selected_variant.price < selected_variant.compare_at_price %}
-                    <span class="badge color-{{ settings.sale_badge_color_scheme }}">Sale</span>
-                  {% endif %}
+                  {%- if shop.shipping_policy.body != blank -%}
+                    {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                  {%- endif -%}
                 </div>
+              {%- endif -%}
+              <div {{ block.shopify_attributes }}>
+                {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
+                {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  {{ form | payment_terms }}
+                {%- endform -%}
+              </div>
 
-              {%- when 'sku' -%}
-                <p
-                  class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if selected_variant.sku.size == 0 %} visibility-hidden{% endif %}"
-                  id="Sku-{{ section.id }}"
-                >
-                  {{- selected_variant.sku -}}
-                </p>
+            {%- when 'sku' -%}
+              <p
+                {{ block.shopify_attributes }}
+                class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if selected_variant.sku.size == 0 %} visibility-hidden{% endif %}"
+                id="sku-{{ section.id }}"
+              >
+                {{- selected_variant.sku -}}
+              </p>
 
-              {%- when 'variant_picker' -%}
-                <div class="product__variants">
-                  {% unless product.has_only_default_variant %}
-                    <variant-selector>
-                      {%- if block.settings.picker_type == 'dropdown' -%}
-                        <div class="variant-block__dropdown">
-                          {% for option in product.options_with_values %}
-                            <label class="option__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
-                            <fieldset class="product-form__input">
-                              <select
-                                name="options[{{ option.name | escape }}]"
-                                id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                              >
-                                {% for value in option.values %}
-                                  <option
-                                    value="{{ value | escape }}"
-                                    data-option-value-id="{{ value.id }}"
-                                    {% if value.selected %}
-                                      selected="selected"
-                                    {% endif %}
-                                    {% unless value.available %}
-                                      style="color: red; text-decoration: line-through;"
-                                    {% endunless %}
-                                  >
-                                    {{ value }}
-                                    {% unless value.available %}
-                                      Unavailable
-                                    {% endunless %}
-                                  </option>
-                                {% endfor %}
-                              </select>
-                            </fieldset>
-                          {% endfor %}
-                        </div>
-                      {%- endif -%}
-                      {%- if block.settings.picker_type == 'button' -%}
-                        <div class="variant-select__button">
-                          {%- for option in product.options_with_values -%}
-                            <fieldset class="product-form__input">
-                              <legend class="option__label">{{ option.name }}</legend>
-                              {%- for value in option.values -%}
-                                <input
-                                  type="radio"
-                                  id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
-                                  name="{{ option.name }}-{{ option.position }}"
+            {%- when 'variant_picker' -%}
+              <div class="product__variants" {{ block.shopify_attributes }}>
+                {% unless product.has_only_default_variant %}
+                  <variant-selector data-picker-type="{{ block.settings.picker_type }}">
+                    {%- if block.settings.picker_type == 'dropdown' -%}
+                      <div class="variant-block__dropdown">
+                        {% for option in product.options_with_values %}
+                          <label class="option__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                          <fieldset class="product-form__input">
+                            <select
+                              name="options[{{ option.name | escape }}]"
+                              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                              form="{{ product_form_id }}"
+                            >
+                              {% for value in option.values %}
+                                {%- capture input_id -%}
+                                  {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+                                {%- endcapture -%}
+                                <option
+                                  id="{{ input_id }}"
                                   value="{{ value | escape }}"
-                                  class="pill-radio {% unless value.available %}disabled{% endunless %}"
-                                  {% if value.selected %}
-                                    checked
-                                  {% endif %}
-                                  data-product-url="{{ value.product_url }}"
                                   data-option-value-id="{{ value.id }}"
-                                >
-                                <label
-                                  class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
-                                  for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                                  data-product-url="{{ value.product_url }}"
+                                  {% if value.selected %}
+                                    selected="selected"
+                                  {% endif %}
+                                  {% unless value.available %}
+                                    style="color: red; text-decoration: line-through;"
+                                  {% endunless %}
                                 >
                                   {{ value }}
-                                </label>
-                              {%- endfor -%}
-                            </fieldset>
-                          {%- endfor -%}
-                        </div>
-                      {%- endif -%}
-                      <script type="application/json" data-variants>
-                        {{ product.variants | json }}
-                      </script>
-                    </variant-selector>
-                  {% endunless %}
-                </div>
-
-              {%- when 'quantity_selector' -%}
-                <div class="product__quantity">
-                  <label class="option__label" for="Quantity-{{ section.id }}">Quantity</label>
-                  <quantity-selector>
-                    <button name="minus" type="button">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-minus" viewBox="0 0 10 2">
-                        <path fill="currentColor" fill-rule="evenodd" d="M.5 1C.5.7.7.5 1 .5h8a.5.5 0 1 1 0 1H1A.5.5 0 0 1 .5 1" clip-rule="evenodd"></path>
-                      </svg>
-                    </button>
-                    <input
-                      id="Quantity-{{ section.id }}"
-                      type="number"
-                      name="quantity"
-                      data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
-                      min="{{ selected_variant.quantity_rule.min }}"
-                      {% if selected_variant.quantity_rule.max != null %}
-                        max="{{ selected_variant.quantity_rule.max }}"
-                      {% endif %}
-                      step="{{ selected_variant.quantity_rule.increment }}"
-                      value="1"
-                    >
-                    <button name="plus" type="button">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-plus" viewBox="0 0 10 10">
-                        <path fill="currentColor" fill-rule="evenodd" d="M1 4.51a.5.5 0 0 0 0 1h3.5l.01 3.5a.5.5 0 0 0 1-.01V5.5l3.5-.01a.5.5 0 0 0-.01-1H5.5L5.49.99a.5.5 0 0 0-1 .01v3.5l-3.5.01z" clip-rule="evenodd"></path>
-                      </svg>
-                    </button>
-                  </quantity-selector>
-                </div>
-
-              {%- when 'description' -%}
-                {%- if product.description != blank -%}
-                  <div class="product__description">
-                    <p>{{ product.description }}</p>
-                  </div>
-                {%- endif -%}
-
-              {%- when 'buy_buttons' -%}
-                <div class="product-form__buttons">
-                  <button
-                    id="AddToCart-{{ section.id }}"
-                    type="submit"
-                    name="add"
-                    class="{% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
-                    {% if selected_variant == null or selected_variant.available == false %}
-                      disabled
-                    {% endif %}
-                  >
-                    {% if selected_variant == null %}
-                      Unavailable
-                    {% elsif selected_variant.available == false %}
-                      Sold out
-                    {% else %}
-                      Add to cart
-                    {% endif %}
-                  </button>
-                  {%- if block.settings.show_dynamic_checkout -%}
-                    {{ form | payment_button }}
-                  {%- endif -%}
-                </div>
-
-              {%- when 'custom_liquid' -%}
-                {{ block.settings.custom_liquid }}
-
-              {%- when 'collapsible_tab' -%}
-                <div class="product__accordion accordion">
-                  <details>
-                    <summary>
-                      <div class="summary__title">
-                        {%- if block.settings.icon != 'none' -%}
-                          {%- assign file = block.settings.icon | replace: '_', '-' | prepend: 'icon-' | append: '.svg' -%}
-                          <span class="svg-wrapper">{{ file | inline_asset_content }}</span>
-                        {%- endif -%}
-                        <h2 class="accordion__title">
-                          {{ block.settings.heading | default: block.settings.page.title | escape }}
-                        </h2>
+                                  {% unless value.available %}
+                                    Unavailable
+                                  {% endunless %}
+                                </option>
+                              {% endfor %}
+                            </select>
+                          </fieldset>
+                        {% endfor %}
                       </div>
-                      {{- 'icon-caret.svg' | inline_asset_content -}}
-                    </summary>
-                    <div class="accordion__content">
-                      {{ block.settings.content }}
-                      {{ block.settings.page.content }}
-                    </div>
-                  </details>
+                    {%- endif -%}
+                    {%- if block.settings.picker_type == 'button' -%}
+                      <div class="variant-select__button">
+                        {%- for option in product.options_with_values -%}
+                          <fieldset class="product-form__input">
+                            <legend class="option__label">{{ option.name }}</legend>
+                            {%- for value in option.values -%}
+                              <input
+                                type="radio"
+                                id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                                name="{{ option.name }}-{{ option.position }}"
+                                form="{{ product_form_id }}"
+                                value="{{ value | escape }}"
+                                class="pill-radio {% unless value.available %}disabled{% endunless %}"
+                                {% if value.selected %}
+                                  checked
+                                {% endif %}
+                                data-product-url="{{ value.product_url }}"
+                                data-option-value-id="{{ value.id }}"
+                              >
+                              <label
+                                class="pill-label {% unless value.available %}pill-disabled{% endunless %}"
+                                for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}"
+                              >
+                                {{ value }}
+                              </label>
+                            {%- endfor -%}
+                          </fieldset>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                    <script type="application/json" data-selected-variant>
+                      {{ selected_variant | json }}
+                    </script>
+                  </variant-selector>
+                {% endunless %}
+              </div>
+
+            {%- when 'quantity_selector' -%}
+              <div class="product__quantity" {{ block.shopify_attributes }}>
+                <label class="option__label" for="Quantity-{{ section.id }}">Quantity</label>
+                <quantity-selector>
+                  <button name="minus" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-minus" viewBox="0 0 10 2">
+                      <path fill="currentColor" fill-rule="evenodd" d="M.5 1C.5.7.7.5 1 .5h8a.5.5 0 1 1 0 1H1A.5.5 0 0 1 .5 1" clip-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                  <input
+                    id="Quantity-{{ section.id }}"
+                    type="number"
+                    name="quantity"
+                    form="{{ product_form_id }}"
+                    data-cart-quantity="{{ cart | item_count_for_variant: selected_variant.id }}"
+                    min="{{ selected_variant.quantity_rule.min }}"
+                    {% if selected_variant.quantity_rule.max != null %}
+                      max="{{ selected_variant.quantity_rule.max }}"
+                    {% endif %}
+                    step="{{ selected_variant.quantity_rule.increment }}"
+                    value="1"
+                  >
+                  <button name="plus" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-plus" viewBox="0 0 10 10">
+                      <path fill="currentColor" fill-rule="evenodd" d="M1 4.51a.5.5 0 0 0 0 1h3.5l.01 3.5a.5.5 0 0 0 1-.01V5.5l3.5-.01a.5.5 0 0 0-.01-1H5.5L5.49.99a.5.5 0 0 0-1 .01v3.5l-3.5.01z" clip-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                </quantity-selector>
+              </div>
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}
+                <div class="product__description" {{ block.shopify_attributes }}>
+                  <p>{{ product.description }}</p>
                 </div>
-              {%- when 'inventory' -%}
-                <p class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if selected_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}">
-                  {%- if selected_variant.inventory_management == 'shopify' -%}
-                    {%- if selected_variant.inventory_quantity > 0 -%}
-                      {%- if selected_variant.inventory_quantity <= block.settings.inventory_threshold -%}
-                        <span class="svg-wrapper" style="color: rgb(238, 148, 65)">
-                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
-                        </span>
-                        {%- if block.settings.show_inventory_quantity -%}
-                          {{- 'products.product.inventory_low_stock_show_count' | t: quantity: selected_variant.inventory_quantity -}}
-                        {%- else -%}
-                          {{- 'products.product.inventory_low_stock' | t -}}
-                        {%- endif -%}
+              {%- endif -%}
+
+            {%- when 'buy_buttons' -%}
+              <div class="product-form__buttons" {{ block.shopify_attributes }}>
+                <ajax-cart-product-form>
+                  {% form 'product', product, id: product_form_id, novalidate: 'novalidate' %}
+                    <input type="hidden" name="id" value="{{ selected_variant.id }}">
+                    <button
+                      id="AddToCart-{{ section.id }}"
+                      type="submit"
+                      name="add"
+                      class="{% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+                      {% if selected_variant == null or selected_variant.available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      {% if selected_variant == null %}
+                        Unavailable
+                      {% elsif selected_variant.available == false %}
+                        Sold out
+                      {% else %}
+                        Add to cart
+                      {% endif %}
+                    </button>
+                    {%- if block.settings.show_dynamic_checkout -%}
+                      {{ form | payment_button }}
+                    {%- endif -%}
+                  {% endform %}
+                </ajax-cart-product-form>
+              </div>
+
+            {%- when 'custom_liquid' -%}
+              {{ block.settings.custom_liquid }}
+
+            {%- when 'collapsible_tab' -%}
+              <div class="product__accordion accordion" {{ block.shopify_attributes }}>
+                <details>
+                  <summary>
+                    <div class="summary__title">
+                      {%- if block.settings.icon != 'none' -%}
+                        {%- assign file = block.settings.icon | replace: '_', '-' | prepend: 'icon-' | append: '.svg' -%}
+                        <span class="svg-wrapper">{{ file | inline_asset_content }}</span>
+                      {%- endif -%}
+                      <h2 class="accordion__title">
+                        {{ block.settings.heading | default: block.settings.page.title | escape }}
+                      </h2>
+                    </div>
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                  </summary>
+                  <div class="accordion__content">
+                    {{ block.settings.content }}
+                    {{ block.settings.page.content }}
+                  </div>
+                </details>
+              </div>
+            {%- when 'inventory' -%}
+              <p
+                class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if selected_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
+                id="inventory-{{ section.id }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if selected_variant.inventory_management == 'shopify' -%}
+                  {%- if selected_variant.inventory_quantity > 0 -%}
+                    {%- if selected_variant.inventory_quantity <= block.settings.inventory_threshold -%}
+                      <span class="svg-wrapper" style="color: rgb(238, 148, 65)">
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                      </span>
+                      {%- if block.settings.show_inventory_quantity -%}
+                        {{- 'products.product.inventory_low_stock_show_count' | t: quantity: selected_variant.inventory_quantity -}}
                       {%- else -%}
-                        <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
-                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
-                        </span>
-                        {%- if block.settings.show_inventory_quantity -%}
-                          {{- 'products.product.inventory_in_stock_show_count' | t: quantity: selected_variant.inventory_quantity -}}
-                        {%- else -%}
-                          {{- 'products.product.inventory_in_stock' | t -}}
-                        {%- endif -%}
+                        {{- 'products.product.inventory_low_stock' | t -}}
                       {%- endif -%}
                     {%- else -%}
-                      {%- if selected_variant.inventory_policy == 'continue' -%}
-                        <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
-                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
-                        </span>
-                        {{- 'products.product.inventory_out_of_stock_continue_selling' | t -}}
+                      <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                      </span>
+                      {%- if block.settings.show_inventory_quantity -%}
+                        {{- 'products.product.inventory_in_stock_show_count' | t: quantity: selected_variant.inventory_quantity -}}
                       {%- else -%}
-                        <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
-                          {{- 'icon-inventory-status.svg' | inline_asset_content -}}
-                        </span>
-                        {{- 'products.product.inventory_out_of_stock' | t -}}
+                        {{- 'products.product.inventory_in_stock' | t -}}
                       {%- endif -%}
                     {%- endif -%}
+                  {%- else -%}
+                    {%- if selected_variant.inventory_policy == 'continue' -%}
+                      <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                      </span>
+                      {{- 'products.product.inventory_out_of_stock_continue_selling' | t -}}
+                    {%- else -%}
+                      <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
+                      </span>
+                      {{- 'products.product.inventory_out_of_stock' | t -}}
+                    {%- endif -%}
                   {%- endif -%}
-                </p>
-              {%- when 'share' -%}
-                {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
-                {% render 'share-button', block: block, share_link: share_url %}
-            {%- endcase -%}
-          {%- endfor -%}
-        {% endform %}
+                {%- endif -%}
+              </p>
+            {%- when 'share' -%}
+              {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
+              {% render 'share-button', block: block, share_link: share_url %}
+          {%- endcase -%}
+        {%- endfor -%}
       </div>
     </div>
   </div>
@@ -798,6 +830,7 @@
       this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
       this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
       document.getElementById('swiper-script').addEventListener('load', this.initSwiper.bind(this));
+      document.addEventListener('liquid-ajax-cart:request-end', this.onCartUpdate.bind(this));
     }
 
     initSwiper() {
@@ -814,6 +847,17 @@
       });
     }
 
+    onCartUpdate(e) {
+      const { requestState } = e.detail;
+      // If the "add to cart" request is successful
+      if (requestState.requestType === 'add' && requestState.responseData?.ok) {
+        // Add the CSS class to the "body" tag
+        document.body.classList.add('js-show-ajax-cart');
+        // dispatch a custom event
+        this.dispatchEvent(new CustomEvent('product-info-updated'));
+      }
+    }
+
     get variantSelector() {
       return this.querySelector('variant-selector');
     }
@@ -822,22 +866,34 @@
       return this.querySelector('quantity-selector');
     }
 
-    onVariantChange(e) {
-      this.updateSelectedOptions(e.target.tagName);
-      this.updateCurrentVariant();
-      this.updateUrl();
-      this.updateFormID();
-      this.renderSection();
-      this.updateSwiperSlide();
+    get selectedOptionValues() {
+      if (this.variantSelector.dataset.pickerType === 'dropdown') {
+        const list = Array.from(this.variantSelector.querySelectorAll('select')).map(
+          (select) => select.options[select.selectedIndex].dataset.optionValueId
+        );
+        return list;
+      } else {
+        const list = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked')).map(
+          ({ dataset }) => dataset.optionValueId
+        );
+        return list;
+      }
     }
 
-    updateSwiperSlide() {
-      if (this.currentVariant) {
-        var media = this.currentVariant.featured_media?.id;
-        if (!media) return;
-        var index = this.querySelector(`.swiper-slide[data-media-id="${media}"]`).dataset.mediaIndex;
-        this.swiper?.slideTo(index);
-      }
+    // get selectedOptionValues() {
+    //   const list = Array.from(this.variantSelector.querySelectorAll('select option[selected], fieldset input:checked')).map(
+    //     ({ dataset }) => dataset.optionValueId
+    //   );
+    //   return list;
+    // }
+
+    getSelectedVariant(html) {
+      const selectedVariant = html.querySelector('[data-selected-variant]')?.innerHTML;
+      return !!selectedVariant ? JSON.parse(selectedVariant) : null;
+    }
+
+    onVariantChange(e) {
+      this.renderSection();
     }
 
     onQuantitySelectorEvent(e) {
@@ -859,51 +915,56 @@
       }
     }
 
-    updateSelectedOptions(tagName) {
-      if (tagName === 'SELECT') {
-        this.options = Array.from(this.variantSelector.querySelectorAll('select'), (select) => select.value);
-        this.selectedOptionValues = Array.from(this.variantSelector.querySelectorAll('select'))
-          .map((select) => select.options[select.selectedIndex].dataset.optionValueId)
-          .join(',');
-      } else {
-        this.options = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked')).map((element) => element.value);
-        this.selectedOptionValues = Array.from(this.variantSelector.querySelectorAll('fieldset input:checked'))
-          .map((element) => element.dataset.optionValueId)
-          .join(',');
-      }
-
-      console.log('this.selectedOptionValues', this.selectedOptionValues);
+    updateMedia(variantFeaturedMediaId) {
+      if (!variantFeaturedMediaId) return;
+      var index = this.querySelector(`.swiper-slide[data-media-id="${variantFeaturedMediaId}"]`).dataset.mediaIndex;
+      this.swiper?.slideTo(index);
     }
 
-    getVariants() {
-      this.variantData = this.variantData || JSON.parse(this.variantSelector.querySelector('[data-variants]').textContent);
-      return this.variantData;
+    updateURL(variantId) {
+      // this.querySelector('share-button')?.updateUrl(
+      //   `${window.shopUrl}${url}${variantId ? `?variant=${variantId}` : ''}`
+      // );
+      window.history.replaceState({}, '', `${this.dataset.url}${variantId ? `?variant=${variantId}` : ''}`);
     }
 
-    updateCurrentVariant() {
-      this.currentVariant = this.getVariants().find((variant) => {
-        const findings = !variant.options
-          .map((option, index) => {
-            return this.options[index] === option;
-          })
-          .includes(false);
-
-        if (findings) return variant;
-      });
-      console.log('this.currentVariant', this.currentVariant);
+    updatePrice(html) {
+      const oldPrice = document.getElementById(`price-${this.dataset.section}`);
+      const newPrice = html.getElementById(`price-${this.dataset.section}`);
+      if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
     }
 
-    updateUrl() {
-      if (this.currentVariant) {
-        window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
-      } else {
-        window.history.replaceState({}, '', `${this.dataset.url}`);
-      }
+    updateVariantSelector(html) {
+      const oldVariantSelector = document.querySelector('variant-selector');
+      const newVariantSelector = html.querySelector('variant-selector');
+      if (oldVariantSelector && newVariantSelector) oldVariantSelector.innerHTML = newVariantSelector.innerHTML;
     }
 
-    updateFormID() {
-      const form_input = this.querySelector('#product-form').querySelector('input[name="id"]');
-      form_input.value = this.currentVariant ? this.currentVariant.id : '';
+    updateSubmitButton(html) {
+      const oldSubmitButton = document.getElementById(`AddToCart-${this.dataset.section}`);
+      const newSubmitButton = html.getElementById(`AddToCart-${this.dataset.section}`);
+      if (oldSubmitButton && newSubmitButton) oldSubmitButton.replaceWith(newSubmitButton);
+    }
+
+    updateVariantInputs(variantId) {
+      this.querySelectorAll(`#product-form-${this.dataset.section}, #product-form-installment-${this.dataset.section}`).forEach(
+        (productForm) => {
+          const input = productForm.querySelector('input[name="id"]');
+          input.value = variantId ?? '';
+        }
+      );
+    }
+
+    updateSku(html) {
+      const oldSku = document.getElementById(`sku-${this.dataset.section}`);
+      const newSku = html.getElementById(`sku-${this.dataset.section}`);
+      if (oldSku && newSku) oldSku.innerHTML = newSku.innerHTML;
+    }
+
+    updateInventory(html) {
+      const oldInventory = document.getElementById(`inventory-${this.dataset.section}`);
+      const newInventory = html.getElementById(`inventory-${this.dataset.section}`);
+      if (oldInventory && newInventory) oldInventory.innerHTML = newInventory.innerHTML;
     }
 
     renderSection() {
@@ -916,21 +977,16 @@
         .then((response) => response.text())
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
+          const variant = this.getSelectedVariant(html);
+          this.updateVariantSelector(html);
+          this.updateMedia(variant?.featured_media?.id);
+          this.updateURL(variant?.id);
+          this.updatePrice(html);
 
-          const oldPrice = document.getElementById(`price-${this.dataset.section}`);
-          const newPrice = html.getElementById(`price-${this.dataset.section}`);
-
-          if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
-
-          const oldVariantSelector = document.querySelector('variant-selector');
-          const newVariantSelector = html.querySelector('variant-selector');
-
-          if (oldVariantSelector && newVariantSelector) oldVariantSelector.innerHTML = newVariantSelector.innerHTML;
-
-          const oldSubmitButton = document.getElementById(`AddToCart-${this.dataset.section}`);
-          const newSubmitButton = html.getElementById(`AddToCart-${this.dataset.section}`);
-
-          if (oldSubmitButton && newSubmitButton) oldSubmitButton.replaceWith(newSubmitButton);
+          this.updateSubmitButton(html);
+          this.updateVariantInputs(variant?.id);
+          this.updateSku(html);
+          this.updateInventory(html);
         })
         .catch((error) => {
           if (error.name === 'AbortError') {
