@@ -10,9 +10,7 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-{%- endstyle -%}
 
-<style>
   .breadcrumb {
     margin-bottom: 20px;
   }
@@ -46,7 +44,7 @@
     cursor: pointer;
   }
 
-  .main-content {
+  .collection-filters-wrapper {
     display: flex;
     {%- if section.settings.enable_filtering and section.settings.filter_type == "vertical" -%}
       flex-direction: row;
@@ -188,8 +186,7 @@
       flex-shrink: 0;
     }
   }
-</style>
-<style>
+
   .color-swatches {
     display: flex;
     gap: 5px;
@@ -202,8 +199,8 @@
     border-radius: 50%;
     border: 1px solid #ccc;
   }
-</style>
-<style>
+
+
   .filter-dropdown {
     position: relative;
     display: inline-block;
@@ -247,102 +244,127 @@
   .filter-content ul li a:hover {
     background-color: #ddd;
   }
-</style>
-{% comment %} class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }} page-width" {% endcomment %}
 
-<div class="container section-{{ section.id }}-padding">
-  <collection-info
-    data-section="{{ section.id }}"
-  >
-    <h1>{{ collection.title }}</h1>
-    <div>
-      {%- paginate collection.products by section.settings.products_per_page -%}
-        <form id="collection-form" class="main-content">
-          {%- if section.settings.enable_filtering -%}
-            {% render 'filters',
-              results: collection,
-              collapse_filters: section.settings.collapse_filters,
-              filter_type: section.settings.filter_type
-            %}
-          {% endif %}
 
-          <div id="ProductGridContainer" class="product-grid-container">
-            {%- if section.settings.enable_filtering -%}
-              <div class="filters">
-                {% liquid
-                  assign has_active_filters = false
-                  for f in collection.filters
-                    if f.active_values.size > 0
-                      assign has_active_filters = true
-                    endif
-                  endfor
+
+  .collection-hero__title {
+    margin: 2.5rem 0;
+  }
+
+  .sorting-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-end;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} page-width">
+  <div class="collection-hero color-{{ section.settings.color_scheme }}">
+    <div class="collection-hero__text-wrapper">
+      <h1 class="collection-hero__title">{{ collection.title }}</h1>
+    </div>
+  </div>
+  <div class="collection-info-wrapper section-{{ section.id }}-padding">
+    <collection-info
+      data-section="{{ section.id }}"
+    >
+      <div>
+        {%- paginate collection.products by section.settings.products_per_page -%}
+          <form id="collection-form" class="main-content">
+            <div class="sorting-wrapper">
+              <div class="child-sorting-wrapper">
+                {%- if section.settings.enable_sorting -%}
+                  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                  <select
+                    data-render-section
+                    name="sort_by"
+                    id="SortBy"
+                  >
+                    {%- for option in collection.sort_options -%}
+                      <option
+                        value="{{ option.value | escape }}"
+                        {% if option.value == sort_by %}
+                          selected="selected"
+                        {% endif %}
+                      >
+                        {{ option.name | escape }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                {%- endif -%}
+                <div class="results-count">
+                  {%- if collection.products_count == collection.all_products_count -%}
+                    {{ collection.products_count }} products
+                  {% else %}
+                    {{ collection.products_count }} of {{ collection.all_products_count }}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="collection-filters-wrapper">
+              {%- if section.settings.enable_filtering -%}
+                {% render 'filters',
+                  results: collection,
+                  collapse_filters: section.settings.collapse_filters,
+                  filter_type: section.settings.filter_type
                 %}
+              {% endif %}
 
-                {% if has_active_filters %}
-                  <div class="filter">
-                    Clear all filters
-                    <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
+              <div id="ProductGridContainer" class="product-grid-container">
+                {%- if section.settings.enable_filtering -%}
+                  <div class="filters">
+                    {% liquid
+                      assign has_active_filters = false
+                      for f in collection.filters
+                        if f.active_values.size > 0
+                          assign has_active_filters = true
+                        endif
+                      endfor
+                    %}
+
+                    {% if has_active_filters %}
+                      <div class="filter">
+                        Clear all filters
+                        <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
+                      </div>
+                    {% endif %}
+
+                    {%- for f in collection.filters -%}
+                      {% for v in f.active_values %}
+                        <div class="filter">
+                          {{ f.label | escape }}: {{ v.label | escape -}}
+                          <span
+                            class="filter-close"
+                            data-render-section-url="{{ v.url_to_remove }}"
+                            >×
+                          </span>
+                        </div>
+                      {% endfor %}
+                    {%- endfor -%}
                   </div>
                 {% endif %}
-
-                {%- for f in collection.filters -%}
-                  {% for v in f.active_values %}
-                    <div class="filter">
-                      {{ f.label | escape }}: {{ v.label | escape -}}
-                      <span
-                        class="filter-close"
-                        data-render-section-url="{{ v.url_to_remove }}"
-                        >×
-                      </span>
-                    </div>
-                  {% endfor %}
-                {%- endfor -%}
+                <div class="product-grid">
+                  {%- if collection.products.size == 0 -%}
+                    <p>Nothing Here</p>
+                  {%- else -%}
+                    {%- for product in collection.products -%}
+                      {% render 'card-product', card_product: product, show_vendor: section.settings.show_vendor %}
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+                {%- if paginate.pages > 1 -%}
+                  {% render 'pagination', paginate: paginate, anchor: '' %}
+                {%- endif -%}
               </div>
-            {% endif %}
-            {%- if section.settings.enable_sorting -%}
-              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-              <select
-                data-render-section
-                name="sort_by"
-                id="SortBy"
-              >
-                {%- for option in collection.sort_options -%}
-                  <option
-                    value="{{ option.value | escape }}"
-                    {% if option.value == sort_by %}
-                      selected="selected"
-                    {% endif %}
-                  >
-                    {{ option.name | escape }}
-                  </option>
-                {%- endfor -%}
-              </select>
-            {%- endif -%}
-            <div class="results-count">
-              {%- if collection.products_count == collection.all_products_count -%}
-                {{ collection.products_count }} products
-              {% else %}
-                {{ collection.products_count }} of {{ collection.all_products_count }}
-              {% endif %}
             </div>
-            <div class="product-grid">
-              {%- if collection.products.size == 0 -%}
-                <p>Nothing Here</p>
-              {%- else -%}
-                {%- for product in collection.products -%}
-                  {% render 'card-product', card_product: product, show_vendor: section.settings.show_vendor %}
-                {%- endfor -%}
-              {%- endif -%}
-            </div>
-            {%- if paginate.pages > 1 -%}
-              {% render 'pagination', paginate: paginate, anchor: '' %}
-            {%- endif -%}
-          </div>
-        </form>
-      {%- endpaginate -%}
-    </div>
-  </collection-info>
+          </form>
+        {%- endpaginate -%}
+      </div>
+    </collection-info>
+  </div>
 </div>
+
 <script>
   function debounce(fn, wait) {
     let t;
