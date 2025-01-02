@@ -11,133 +11,30 @@
     }
   }
 
-  .breadcrumb {
-    margin-bottom: 20px;
+  /*====================================
+  START COLLECTION FILTERS & GRID STYLING
+  ======================================*/
+
+  .collection-hero__title {
+    margin: 25px 0;
+    font-size: 40px;
+    font-weight: 400;
+    color: black;
   }
 
-  h1 {
-    margin-bottom: 10px;
-  }
-
-  .results-count {
-    color: #666;
-    margin-bottom: 20px;
-  }
-
-  .filters {
+  .sorting-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-end;
   }
 
-  .filter {
-    background-color: #f0f0f0;
-    padding: 5px 10px;
-    border-radius: 20px;
+  .child-sorting-wrapper {
     display: flex;
     align-items: center;
-  }
-
-  .filter-close {
-    margin-left: 5px;
-    cursor: pointer;
-  }
-
-  .collection-filters-wrapper {
-    display: flex;
-    {%- if section.settings.enable_filtering and section.settings.filter_type == "vertical" -%}
-      flex-direction: row;
-    {%- elsif section.settings.enable_filtering and section.settings.filter_type == "horizontal" -%}
-      flex-direction: column;
-    {% else %}
-      flex-direction: column;
-    {%- endif -%}
-  }
-
-  .sidebar {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .filter-section {
-    margin-bottom: 20px;
-  }
-
-  .filter-section h3 {
-    margin-bottom: 10px;
-    padding-top: 15px;
-    border-top: 1px solid #ccc;
-  }
-
-  .filter-section input[type='range'] {
-    width: 100%;
-  }
-
-  .price-range {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .price-input {
-    width: 60px;
-  }
-
-  .product-grid-container {
-    width: 100%;
-  }
-
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .product-card {
-    border: 1px solid #e0e0e0;
-    padding: 10px;
-  }
-
-  .product-image {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-
-  {% comment %} @media (min-width: 576px) {
-    .product-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  } {% endcomment %}
-
-  .product-brand {
-    font-size: 0.9em;
-    color: #666;
-  }
-
-  .product-name {
-    font-weight: bold;
-    margin: 5px 0;
-  }
-
-  .product-price {
-    font-weight: bold;
-  }
-
-  .product-original-price {
-    text-decoration: line-through;
-    color: #666;
-    margin-right: 5px;
-  }
-
-  .controls {
-    display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 350px;
   }
 
   .sort-dropdown {
@@ -178,28 +75,44 @@
     display: block;
   }
 
-  @media (min-width: 768px) {
-
-    .sidebar {
-      width: 250px;
-      margin-right: 20px;
-      flex-shrink: 0;
-    }
-  }
-
-  .color-swatches {
+  .collection-filters-wrapper {
     display: flex;
-    gap: 5px;
-    margin-top: 10px;
+    {%- if section.settings.enable_filtering and section.settings.filter_type == "vertical" -%}
+      flex-direction: row;
+    {%- elsif section.settings.enable_filtering and section.settings.filter_type == "horizontal" -%}
+      flex-direction: column;
+    {% else %}
+      flex-direction: column;
+    {%- endif -%}
   }
 
-  .color-swatch {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid #ccc;
+  .filters-sidebar {
+    margin-bottom: 20px;
+    width: 250px;
+    margin-right: 30px;
+    flex-shrink: 0;
   }
 
+  .facets__disclosure-vertical summary {
+    padding: 16.5px 17.5px 16.5px 0px;
+  }
+
+  .filter-section h3 {
+    margin-bottom: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+  }
+
+  .product-grid-container {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
 
   .filter-dropdown {
     position: relative;
@@ -219,8 +132,8 @@
     position: absolute;
     background-color: #f9f9f9;
     min-width: 300px;
-    max-height: 400px; /* Set maximum height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 400px;
+    overflow-y: auto;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
@@ -245,18 +158,213 @@
     background-color: #ddd;
   }
 
-
-
-  .collection-hero__title {
-    margin: 2.5rem 0;
+  .facet-filters__label {
+    display: block;
+    color: rgba(var(--color-foreground), .85);
+    font-size: 14px;
+    margin: 0 20px 0 0;
+    font-weight: 400;
   }
 
-  .sorting-wrapper {
+  .facet-filters__field {
+    display: flex;
+    align-items: center;
+  }
+
+  .facets__heading {
+    display: block;
+    color: rgba(var(--color-foreground), .85);
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-section {
+    border-top: 1px solid rgba(var(--color-foreground), .1);
+    margin-right: 0;
+  }
+
+  .collection-filters-wrapper summary {
+    list-style: none;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .collection-filters-wrapper summary:hover {
+    text-decoration: underline;
+    color: rgba(var(--color-foreground), 1);
+  }
+
+  .collection-filters-wrapper summary span{
+    font-size: 14px;
+  }
+
+  .facets__display-vertical {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    align-items: flex-end;
+    padding: 6px 12px 25px 0px;
   }
+
+  .facets__label:hover,
+  .facets__label:has(:focus-visible) {
+    color: rgba(var(--color-foreground), 1);
+  }
+
+  .facet-checkbox {
+    padding: 10px 20px 10px 0;
+    flex-grow: 1;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+    cursor: pointer;
+  }
+
+  .facet-checkbox:hover {
+    color: rgba(var(--color-foreground),1);
+    text-decoration: underline;
+  }
+
+  .facet-checkbox input[type=checkbox] {
+    margin-right: 12px;
+    position: absolute;
+    opacity: 0;
+    width: 16px;
+    height: 16px;
+    top: 7px;
+    left: -4px;
+  }
+
+  .facet-checkbox>svg, .facet-checkbox>.svg-wrapper {
+    background-color: rgb(var(--color-background));
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .facet-checkbox .svg-wrapper {
+    visibility: hidden;
+    position: absolute;
+    left: 3px;
+    z-index: 5;
+    top: 9px;
+    width: 11px;
+    height: 7px;
+  }
+
+  .facet-checkbox>input[type=checkbox]:checked~.svg-wrapper>.icon-checkmark {
+    visibility: visible;
+  }
+
+  .facet-filters__sort {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    font-size: 14px;
+    height: auto;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 17px;
+    cursor: pointer;
+    color: rgba(var(--color-foreground),.75);
+  }
+
+  .facets__disclosure-vertical details[open] summary .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .facets__disclosure-vertical summary .icon-caret {
+    position: absolute;
+    height: 6px;
+    right: 0px;
+    top: calc(50% - 2px);
+  }
+
+  .reset-button {
+    text-transform: capitalize;
+    color: rgba(var(--color-foreground),.75);
+    margin-left: 10px;
+  }
+
+  .facets__disclosure-vertical details[open] .facets__display-vertical {
+    animation: animateMenuOpen .2s ease;
+  }
+
+  .filters__show-more {
+    background: white;
+    border: 1px solid;
+    padding: 10px 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    outline: 1px solid transparent;
+  }
+
+  .filters__show-more:hover {
+    outline: 1px solid black;
+  }
+
+  @media screen and (max-width: 990px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 750px) {
+    .small-hide {
+      display: none !important;
+    }
+  }
+
+  @keyframes animateMenuOpen {
+    0% {
+      opacity: 0;
+      transform: translateY(-1.5rem);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /*====================================
+  END COLLECTION FILTERS & GRID STYLING
+  ======================================*/
+
+  /*=========================
+  START PRODUCT CARD STYLING
+  ===========================*/
+  .product-image {
+    width: 100%;
+    height: unset;
+    max-height: 250px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+
+  .product-brand {
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .product-name {
+    font-weight: bold;
+    margin: 5px 0;
+  }
+
+  .product-price {
+    font-weight: bold;
+  }
+
+  .product-original-price {
+    text-decoration: line-through;
+    color: #666;
+    margin-right: 5px;
+  }
+
+  /*=======================
+  END PRODUCT CARD STYLING
+  =========================*/
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} page-width">
@@ -276,22 +384,28 @@
               <div class="child-sorting-wrapper">
                 {%- if section.settings.enable_sorting -%}
                   {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-                  <select
-                    data-render-section
-                    name="sort_by"
-                    id="SortBy"
-                  >
-                    {%- for option in collection.sort_options -%}
-                      <option
-                        value="{{ option.value | escape }}"
-                        {% if option.value == sort_by %}
-                          selected="selected"
-                        {% endif %}
-                      >
-                        {{ option.name | escape }}
-                      </option>
-                    {%- endfor -%}
-                  </select>
+                  <div class="facet-filters__field">
+                    <h2 class="facet-filters__label">
+                      <label for="SortBy">Sort by:</label>
+                    </h2>
+                    <select
+                      data-render-section
+                      name="sort_by"
+                      id="SortBy"
+                      class="facet-filters__sort"
+                    >
+                      {%- for option in collection.sort_options -%}
+                        <option
+                          value="{{ option.value | escape }}"
+                          {% if option.value == sort_by %}
+                            selected="selected"
+                          {% endif %}
+                        >
+                          {{ option.name | escape }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                  </div>
                 {%- endif -%}
                 <div class="results-count">
                   {%- if collection.products_count == collection.all_products_count -%}
@@ -365,7 +479,7 @@
   </div>
 </div>
 
-<script>
+<script type="text/javascript">
   function debounce(fn, wait) {
     let t;
     return (...args) => {
