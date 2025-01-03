@@ -25,7 +25,10 @@
 #cart-drawer:not(.cart-open) .cart-drawer-overlay,
 #cart-drawer:not(.cart-open) .cart-drawer__wrapper {
   opacity: 0;
-  transition: opacity 0.4s, width 0s linear 0.4s, visibility 0s linear 0.4s;
+  transition:
+    opacity 0.4s,
+    width 0s linear 0.4s,
+    visibility 0s linear 0.4s;
   visibility: hidden;
   width: 0;
 }
@@ -57,7 +60,7 @@
 }
 .cart-items {
   opacity: 1;
-  transition: opacity .2s;
+  transition: opacity 0.2s;
   padding: 1rem;
   overflow: auto;
   flex: 1;
@@ -234,7 +237,6 @@ html.js-ajax-cart-processing .cart-items {
   opacity: 0.7;
 }
 
-
 /* Main Cart Page */
 
 #cart-main {
@@ -278,5 +280,4 @@ html.js-ajax-cart-processing .cart-items {
     width: 35rem;
     margin-left: auto;
   }
-
 }
