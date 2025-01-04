@@ -287,9 +287,9 @@
     margin-left: 10px;
   }
 
-  .facets__disclosure-vertical details[open] .facets__display-vertical {
+  /* .facets__disclosure-vertical details[open] .facets__display-vertical {
     animation: animateMenuOpen .2s ease;
-  }
+  } */
 
   .filters__show-more {
     background: white;
@@ -499,11 +499,31 @@
           this.addEventListener('click', this.onClickHandler.bind(this));
         }
 
+        onSwatchClick(event) {
+          const swatch = event.target;
+          if (!swatch || swatch.classList.contains('swatch-disabled')) return;
+          const productCard = swatch.closest('.product-card');
+          if (!productCard) return;
+          // Remove selected class from all swatches in this product card
+          productCard.querySelectorAll('.color-swatch').forEach((s) => s.classList.remove('selected'));
+          // Add selected class to clicked swatch
+          swatch.classList.add('selected');
+          const productId = productCard.dataset.productId;
+          const productImage = productCard.querySelector(`[data-product-image="${productId}"]`);
+          const newImageUrl = swatch.dataset.variantImage;
+          if (productImage && newImageUrl) {
+            productImage.src = newImageUrl;
+          }
+        }
+
         onClickHandler = (event) => {
-          if (!event.target.matches('[data-render-section-url]')) return;
-          event.preventDefault();
-          const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split('?')[1]).toString();
-          this.fetchSection(searchParams);
+          if (event.target.matches('[data-render-section-url]')) {
+            event.preventDefault();
+            const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split('?')[1]).toString();
+            this.fetchSection(searchParams);
+          } else if (event.target.matches('[data-swatch]')) {
+            this.onSwatchClick(event);
+          }
         };
 
         onChangeHandler = (event) => {
@@ -776,6 +796,13 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 36
+    },
+    {
+      "type": "text",
+      "id": "variant_option_name",
+      "label": "Variant Option Name",
+      "default": "Color",
+      "info": "Enter the product option name to use for variant swatches (e.g. 'Color', 'Size', etc.)"
     }
   ]
 }
