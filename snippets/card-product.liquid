@@ -36,28 +36,30 @@
   {% endif %}
 
   <div class="product-name">{{ card_product.title }}</div>
-  <div class="color-swatches">
-    {%- for option in card_product.options_with_values -%}
-      {%- if option.name == section.settings.variant_option_name -%}
-        {%- for value in option.values -%}
-          {%- for variant in card_product.variants -%}
-            {%- if variant.options contains value and variant.featured_image != blank -%}
-              <span
-                class="color-swatch"
-                style="background-image: url('{{ variant.featured_image | default: card_product.featured_image | image_url: width: 50 }}'); background-size: cover; background-position: center;"
-                title="{{ value }}"
-                data-variant-id="{{ variant.id }}"
-                data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
-                data-swatch-color="{{ value | handleize }}"
-                data-swatch
-              ></span>
-              {%- break -%}
-            {%- endif -%}
+  {% if section.settings.enable_swatches %}
+    <div class="color-swatches">
+      {%- for option in card_product.options_with_values -%}
+        {%- if option.name == section.settings.variant_option_name -%}
+          {%- for value in option.values -%}
+            {%- for variant in card_product.variants -%}
+              {%- if variant.options contains value and variant.featured_image != blank -%}
+                <span
+                  class="color-swatch"
+                  style="background-image: url('{{ variant.featured_image | default: card_product.featured_image | image_url: width: 50 }}'); background-size: cover; background-position: center;"
+                  title="{{ value }}"
+                  data-variant-id="{{ variant.id }}"
+                  data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
+                  data-swatch-color="{{ value | handleize }}"
+                  data-swatch
+                ></span>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
           {%- endfor -%}
-        {%- endfor -%}
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {% endif %}
   <div class="product-price">
     <span class="product-original-price">{{ card_product.price_max | money }}</span>
     {{ card_product.compare_at_price | money }}
