@@ -7,8 +7,8 @@
   - enable_swatches: {Boolean} Enable variant swatches display
   - swatch_trigger: {String} Product option name to use for swatches (e.g., 'Color')
   - swatch_type: {String} Type of swatch to display ('color' or 'image')
-  
-  
+
+
   Example usage:
   {% render 'card-product',
     card_product: product,
@@ -48,7 +48,9 @@
   }
 </style>
 
-<div class="product-card" data-product-id="{{ card_product.id }}">
+
+
+<product-card class="product-card" data-product-id="{{ card_product.id }}">
   <a href="/products/{{ card_product.handle }}">
     <img
       src="{{ card_product.featured_image | image_url: width: 533 }}"
@@ -78,7 +80,6 @@
                   data-variant-id="{{ variant.id }}"
                   data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
                   data-swatch-color="{{ value | handleize }}"
-                  data-swatch
                 ></span>
                 {%- break -%}
               {%- endif -%}
@@ -92,4 +93,4 @@
     <span class="product-original-price">{{ card_product.price_max | money }}</span>
     {{ card_product.compare_at_price | money }}
   </div>
-</div>
+</product-card>
