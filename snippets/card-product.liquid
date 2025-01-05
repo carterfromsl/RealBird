@@ -70,7 +70,7 @@
         {%- if option.name == swatch_trigger -%}
           {%- for value in option.values -%}
             {%- for variant in card_product.variants -%}
-              {%- if variant.options contains value and variant.featured_image != blank -%}
+              {%- if variant.options contains value -%}
                 <span
                   class="color-swatch"
                   style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image | image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{% endif %}"
