@@ -1,24 +1,22 @@
 {% comment %}
-  Renders a product card
+  Renders a product card with optional variant swatches
 
   Accepts:
-  - card_product: {Object} Product Liquid object (optional)
-  - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
-  - image_shape: {String} Image mask to apply to the product image card. Values are "arch", "blob", "chevronleft", "chevronright", "diamond", "parallelogram", and "round". (optional)
-  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - card_product: {Object} Product Liquid object (required)
   - show_vendor: {Boolean} Show the product vendor. Default: false
-  - show_rating: {Boolean} Show the product rating. Default: false
-  - extend_height: {Boolean} Card height extends to available container space. Default: true (optional)
-  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
-  - skip_styles: {Boolean} Don't include component styles. Useful when rendering multiple product cards in a loop. Default: false (optional)
-  - quick_add: {Boolean} Show the quick add button.
-  - section_id: {String} The ID of the section that contains this card.
-  - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
-  - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
-  - placeholder_image: {String} The placeholder image to use when no product exists. Default: 'product-apparel-2' (optional)
-
-  Usage:
-  {% render 'card-product', show_vendor: section.settings.show_vendor %}
+  - enable_swatches: {Boolean} Enable variant swatches display
+  - swatch_trigger: {String} Product option name to use for swatches (e.g., 'Color')
+  - swatch_type: {String} Type of swatch to display ('color' or 'image')
+  
+  
+  Example usage:
+  {% render 'card-product',
+    card_product: product,
+    show_vendor: section.settings.show_vendor,
+    enable_swatches: section.settings.enable_swatches,
+    swatch_trigger: section.settings.swatch_trigger,
+    swatch_type: section.settings.swatch_type
+  %}
 {% endcomment %}
 
 <style>
@@ -66,16 +64,16 @@
   {% endif %}
 
   <div class="product-name">{{ card_product.title }}</div>
-  {% if section.settings.enable_swatches %}
+  {% if enable_swatches %}
     <div class="color-swatches">
       {%- for option in card_product.options_with_values -%}
-        {%- if option.name == section.settings.variant_option_name -%}
+        {%- if option.name == swatch_trigger -%}
           {%- for value in option.values -%}
             {%- for variant in card_product.variants -%}
-              {%- if variant.options contains value -%}
+              {%- if variant.options contains value and variant.featured_image != blank -%}
                 <span
                   class="color-swatch"
-                  style="background-image: url('{{ variant.featured_image | default: card_product.featured_image | image_url: width: 50 }}'); background-size: cover; background-position: center;"
+                  style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image | image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{% endif %}"
                   title="{{ value }}"
                   data-variant-id="{{ variant.id }}"
                   data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"

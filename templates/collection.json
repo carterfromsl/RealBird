@@ -28,7 +28,9 @@
         "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 32,
-        "variant_option_name": "Color"
+        "enable_swatches": true,
+        "swatch_trigger": "Color",
+        "swatch_type": "image"
       }
     }
   },
