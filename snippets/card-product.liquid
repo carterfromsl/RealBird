@@ -7,7 +7,7 @@
   - enable_swatches: {Boolean} Enable variant swatches display
   - swatch_trigger: {String} Product option name to use for swatches (e.g., 'Color')
   - swatch_type: {String} Type of swatch to display ('color' or 'image')
-
+  - image_shape: {String} Image mask to apply to the product image card. Values are "arch", "blob", "chevronleft", "chevronright", "diamond", "parallelogram", and "round". (optional)
 
   Example usage:
   {% render 'card-product',
@@ -19,78 +19,55 @@
   %}
 {% endcomment %}
 
-<style>
-  .color-swatches {
-    display: flex;
-    gap: 5px;
-    margin: 8px 0;
-  }
-  .color-swatch {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  .color-swatch.selected {
-    border: 2px solid #000;
-    transform: scale(1.1);
-  }
-  .color-swatch:hover {
-    transform: scale(1.1);
-    border-color: #000;
-  }
-  .swatch-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    text-decoration: line-through;
-  }
-</style>
-
-
-
-<product-card class="product-card" data-product-id="{{ card_product.id }}">
-  <a href="/products/{{ card_product.handle }}">
-    <img
-      src="{{ card_product.featured_image | image_url: width: 533 }}"
-      alt="{{ card_product.title }}"
-      class="product-image"
-      width="{{ card_product.featured_image.width }}"
-      height="{{ card_product.featured_image.height }}"
-      data-product-image="{{ card_product.id }}"
-    >
-  </a>
-  {% if show_vendor %}
-    <div class="product-brand">{{ card_product.vendor }}</div>
-  {% endif %}
-
-  <div class="product-name">{{ card_product.title }}</div>
-  {% if enable_swatches %}
-    <div class="color-swatches">
-      {%- for option in card_product.options_with_values -%}
-        {%- if option.name == swatch_trigger -%}
-          {%- for value in option.values -%}
-            {%- for variant in card_product.variants -%}
-              {%- if variant.options contains value -%}
-                <span
-                  class="color-swatch"
-                  style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image | image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{% endif %}"
-                  title="{{ value }}"
-                  data-variant-id="{{ variant.id }}"
-                  data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
-                  data-swatch-color="{{ value | handleize }}"
-                ></span>
-                {%- break -%}
+<product-card
+  class="product-card card--{{ settings.card_style }}{% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}{% if image_shape and image_shape != 'default' %} card--shape{% endif %}"
+  data-product-id="{{ card_product.id }}"
+>
+  <a href="{{ card_product.url }}" class="card-link-wrapper">
+    <div
+      class="card-media">
+      <img
+        src="{{ card_product.featured_image | image_url: width: 533 }}"
+        alt="{{ card_product.title }}"
+        class="product__media-image"
+        width="{{ card_product.featured_image.width }}"
+        height="{{ card_product.featured_image.height }}"
+        data-product-image="{{ card_product.id }}"
+      >
+    </div>
+    <div class="card-information">
+      <h2 class="card-heading">{{ card_product.title }}</h2>
+      {% if show_vendor %}
+        <span class="card-vendor">{{ card_product.vendor }}</span>
+      {% endif %}
+      {% comment %} 
+        {% if enable_swatches %}
+          <div class="product-color-swatches">
+            {%- for option in card_product.options_with_values -%}
+              {%- if option.name == swatch_trigger -%}
+                {%- for value in option.values -%}
+                  {%- for variant in card_product.variants -%}
+                    {%- if variant.options contains value -%}
+                      <span
+                        class="color-swatch"
+                        style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image |   image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{%   endif %}"
+                        title="{{ value }}"
+                        data-variant-id="{{ variant.id }}"
+                        data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
+                        data-swatch-color="{{ value | handleize }}"
+                      ></span>
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
               {%- endif -%}
             {%- endfor -%}
-          {%- endfor -%}
-        {%- endif -%}
-      {%- endfor -%}
+          </div>
+        {% endif %}
+      {% endcomment %}
+      <div class="card-pricing">
+        {% render 'price', product: card_product, show_compare_at_price: true  %}
+      </div>
     </div>
-  {% endif %}
-  <div class="product-price">
-    <span class="product-original-price">{{ card_product.price_max | money }}</span>
-    {{ card_product.compare_at_price | money }}
-  </div>
+  </a>
 </product-card>

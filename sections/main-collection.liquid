@@ -217,7 +217,7 @@
     position: relative;
     font-size: 14px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     word-break: break-word;
     cursor: pointer;
   }
@@ -330,41 +330,6 @@
   /*====================================
   END COLLECTION FILTERS & GRID STYLING
   ======================================*/
-
-  /*=========================
-  START PRODUCT CARD STYLING
-  ===========================*/
-  .product-image {
-    width: 100%;
-    height: unset;
-    max-height: 250px;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-
-  .product-brand {
-    font-size: 0.9em;
-    color: #666;
-  }
-
-  .product-name {
-    font-weight: bold;
-    margin: 5px 0;
-  }
-
-  .product-price {
-    font-weight: bold;
-  }
-
-  .product-original-price {
-    text-decoration: line-through;
-    color: #666;
-    margin-right: 5px;
-  }
-
-  /*=======================
-  END PRODUCT CARD STYLING
-  =========================*/
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} page-width">
