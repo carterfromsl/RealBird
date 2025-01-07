@@ -234,6 +234,60 @@ html.js-ajax-cart-processing .cart-items {
   opacity: 0.7;
 }
 
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+.cart-empty .cart-header {
+  align-self: flex-end;
+  border-bottom: 0;
+}
+.cart__empty-content {
+  text-align: center;
+}
+h2.cart__empty-text {
+  margin-top: 0;
+  font-weight: 400;
+}
+.cart__empty-content p {
+  margin-block: 0 1rem;
+}
+.cart__empty-content .button {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  background: #000;
+  color: #fff;
+  padding: 15px 20px;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: .03em;
+  margin: 0 auto 2rem;
+}
+.cart__login-paragraph, .cart__login-paragraph a {
+  color: rgba(18,18,18, 0.75);
+}
+.cart-collection {
+  width: 100%;
+  padding-block: 0 2rem;
+}
+.cart-collection a {
+  text-decoration: none;
+}
+.cart-collection img {
+  display: block;
+  width: 90%;
+  height: auto;
+  margin-inline: auto;
+}
+.cart-collection__title {
+  padding: 1rem 5% 0;
+  color: #000;
+}
 
 /* Main Cart Page */
 
