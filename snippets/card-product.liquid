@@ -8,6 +8,7 @@
   - swatch_trigger: {String} Product option name to use for swatches (e.g., 'Color')
   - swatch_type: {String} Type of swatch to display ('color' or 'image')
   - image_shape: {String} Image mask to apply to the product image card. Values are "arch", "blob", "chevronleft", "chevronright", "diamond", "parallelogram", and "round". (optional)
+  - media_aspect_ratio: {String} Size of the product image card. Values are "square" "adapt" and "portrait". Default is "adapt" (optional)
 
   Example usage:
   {% render 'card-product',
@@ -15,9 +16,23 @@
     show_vendor: section.settings.show_vendor,
     enable_swatches: section.settings.enable_swatches,
     swatch_trigger: section.settings.swatch_trigger,
-    swatch_type: section.settings.swatch_type
+    swatch_type: section.settings.swatch_type,
+    image_shape: section.settings.image_shape,
+    media_aspect_ratio: section.settings.media_aspect_ratio
   %}
 {% endcomment %}
+
+{%- liquid
+  assign ratio = 1
+  if card_product.featured_media and media_aspect_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif card_product.featured_media and media_aspect_ratio == 'adapt'
+    assign ratio = card_product.featured_media.aspect_ratio
+  endif
+  if ratio == 0 or ratio == null
+    assign ratio = 1
+  endif
+-%}
 
 <product-card
   class="product-card card--{{ settings.card_style }}{% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}{% if image_shape and image_shape != 'default' %} card--shape{% endif %}"
@@ -25,48 +40,68 @@
 >
   <a href="{{ card_product.url }}" class="card-link-wrapper">
     <div
-      class="card-media">
-      <img
-        src="{{ card_product.featured_image | image_url: width: 533 }}"
-        alt="{{ card_product.title }}"
-        class="product__media-image"
-        width="{{ card_product.featured_image.width }}"
-        height="{{ card_product.featured_image.height }}"
-        data-product-image="{{ card_product.id }}"
-      >
+      class="card-media"
+      style="--media-ratio: {{ 1 | divided_by: ratio | times: 100 }}%;"
+    >
+      <div class="card-media-child">
+        {{
+          card_product.featured_image
+          | image_url: width: card_product.featured_image.width
+          | image_tag:
+            width: card_product.featured_image.width,
+            height: card_product.featured_image.height,
+            alt: card_product.featured_media.alt
+          | escape
+        }}
+      </div>
+      <div class="card-badge-wrapper {{ settings.badge_position }}">
+        <div class="card__badge {{ settings.badge_position }}">
+          {%- if card_product.available == false -%}
+            <span
+              class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
+            >
+              {{- 'products.product.sold_out' | t -}}
+            </span>
+          {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+            <span
+              class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
+            >
+              {{- 'products.product.on_sale' | t -}}
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
     </div>
     <div class="card-information">
       <h2 class="card-heading">{{ card_product.title }}</h2>
       {% if show_vendor %}
         <span class="card-vendor">{{ card_product.vendor }}</span>
       {% endif %}
-      {% comment %} 
-        {% if enable_swatches %}
-          <div class="product-color-swatches">
-            {%- for option in card_product.options_with_values -%}
-              {%- if option.name == swatch_trigger -%}
-                {%- for value in option.values -%}
-                  {%- for variant in card_product.variants -%}
-                    {%- if variant.options contains value -%}
-                      <span
-                        class="color-swatch"
-                        style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image |   image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{%   endif %}"
-                        title="{{ value }}"
-                        data-variant-id="{{ variant.id }}"
-                        data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
-                        data-swatch-color="{{ value | handleize }}"
-                      ></span>
-                      {%- break -%}
-                    {%- endif -%}
-                  {%- endfor -%}
+      {% if enable_swatches %}
+        <div class="product-color-swatches">
+          {%- for option in card_product.options_with_values -%}
+            {%- if option.name == swatch_trigger -%}
+              {%- for value in option.values -%}
+                {%- for variant in card_product.variants -%}
+                  {%- if variant.options contains value -%}
+                    <span
+                      class="color-swatch"
+                      style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image |   image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{%   endif %}"
+                      title="{{ value }}"
+                      data-variant-id="{{ variant.id }}"
+                      data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
+                      data-swatch-color="{{ value | handleize }}"
+                    ></span>
+                    {%- break -%}
+                  {%- endif -%}
                 {%- endfor -%}
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {% endif %}
-      {% endcomment %}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {% endif %}
       <div class="card-pricing">
-        {% render 'price', product: card_product, show_compare_at_price: true  %}
+        {% render 'price', product: card_product, show_compare_at_price: true %}
       </div>
     </div>
   </a>

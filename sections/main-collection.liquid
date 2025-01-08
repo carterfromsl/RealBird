@@ -24,15 +24,16 @@
 
   .sorting-wrapper {
     display: flex;
-    flex-direction: column;
     width: 100%;
-    align-items: flex-end;
+    align-items: flex-start;
+    justify-content: flex-end;
+    margin-bottom: 20px;
   }
 
   .child-sorting-wrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
     max-width: 350px;
   }
@@ -105,7 +106,6 @@
 
   .product-grid-container {
     width: 100%;
-    margin-top: 16px;
   }
 
   .product-grid {
@@ -164,11 +164,13 @@
     font-size: 14px;
     margin: 0 20px 0 0;
     font-weight: 400;
+    width: max-content;
   }
 
   .facet-filters__field {
     display: flex;
     align-items: center;
+    margin-right: 30px;
   }
 
   .facets__heading {
@@ -304,6 +306,53 @@
     outline: 1px solid black;
   }
 
+  .facet-checkbox:has(input:disabled) {
+    opacity: .4;
+    pointer-events: none;
+  }
+
+  .active-filter-item {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .active-filter-item span {
+    font-size: 14px;
+    margin-right: 10px;
+    pointer-events: none
+  }
+
+  .results-count {
+    width: max-content;
+  }
+
+  .active-filter-group__item-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .filter-close .icon-close {
+    width: 15px;
+    height: 15px;
+    pointer-events: none;
+  }
+
+  .filter-close {
+    display: flex;
+  }
+
+  .active-filter-item.active-filter-clear-all {
+    background: none;
+    text-decoration: underline;
+  }
+
   @media screen and (max-width: 990px) {
     .product-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -313,6 +362,14 @@
   @media screen and (max-width: 750px) {
     .small-hide {
       display: none !important;
+    }
+
+    .product-grid {
+      gap: 5px;
+    }
+
+    .results-count{
+      font-size: 14px;
     }
   }
 
@@ -332,6 +389,10 @@
   ======================================*/
 {%- endstyle -%}
 
+{% comment %} COMPONENT STYLES {% endcomment %}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-card-product.css' | asset_url | stylesheet_tag }}
+
 <div class="color-{{ section.settings.color_scheme }} page-width">
   <div class="collection-hero color-{{ section.settings.color_scheme }}">
     <div class="collection-hero__text-wrapper">
@@ -345,42 +406,6 @@
       <div>
         {%- paginate collection.products by section.settings.products_per_page -%}
           <form id="collection-form" class="main-content">
-            <div class="sorting-wrapper">
-              <div class="child-sorting-wrapper">
-                {%- if section.settings.enable_sorting -%}
-                  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-                  <div class="facet-filters__field">
-                    <h2 class="facet-filters__label">
-                      <label for="SortBy">Sort by:</label>
-                    </h2>
-                    <select
-                      data-render-section
-                      name="sort_by"
-                      id="SortBy"
-                      class="facet-filters__sort"
-                    >
-                      {%- for option in collection.sort_options -%}
-                        <option
-                          value="{{ option.value | escape }}"
-                          {% if option.value == sort_by %}
-                            selected="selected"
-                          {% endif %}
-                        >
-                          {{ option.name | escape }}
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                  </div>
-                {%- endif -%}
-                <div class="results-count">
-                  {%- if collection.products_count == collection.all_products_count -%}
-                    {{ collection.products_count }} products
-                  {% else %}
-                    {{ collection.products_count }} of {{ collection.all_products_count }}
-                  {% endif %}
-                </div>
-              </div>
-            </div>
             <div class="collection-filters-wrapper">
               {%- if section.settings.enable_filtering -%}
                 {% render 'filters',
@@ -391,38 +416,75 @@
               {% endif %}
 
               <div id="ProductGridContainer" class="product-grid-container">
-                {%- if section.settings.enable_filtering -%}
-                  <div class="filters">
-                    {% liquid
-                      assign has_active_filters = false
-                      for f in collection.filters
-                        if f.active_values.size > 0
-                          assign has_active_filters = true
-                        endif
-                      endfor
-                    %}
+                <div class="sorting-wrapper">
+                  {%- if section.settings.enable_filtering -%}
+                    <div class="active-filter-group__item-wrapper small-hide">
+                      {% liquid
+                        assign has_active_filters = false
+                        for f in collection.filters
+                          if f.active_values.size > 0
+                            assign has_active_filters = true
+                          endif
+                        endfor
+                      %}
 
-                    {% if has_active_filters %}
-                      <div class="filter">
-                        Clear all filters
-                        <span class="filter-close" data-render-section-url="{{ collection.url }}">×</span>
-                      </div>
-                    {% endif %}
+                      {%- for f in collection.filters -%}
+                        {% for v in f.active_values %}
+                          <div class="filter active-filter-item">
+                            <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
+                            <div
+                              class="filter-close"
+                              data-render-section-url="{{ v.url_to_remove }}"
+                            >
+                              {{- 'icon-close.svg' | inline_asset_content -}}
+                            </div>
+                          </div>
+                        {% endfor %}
+                      {%- endfor -%}
 
-                    {%- for f in collection.filters -%}
-                      {% for v in f.active_values %}
-                        <div class="filter">
-                          {{ f.label | escape }}: {{ v.label | escape -}}
-                          <span
-                            class="filter-close"
-                            data-render-section-url="{{ v.url_to_remove }}"
-                            >×
-                          </span>
+                      {% if has_active_filters %}
+                        <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ collection.url }}">
+                          <span>Clear all filters</span>
                         </div>
-                      {% endfor %}
-                    {%- endfor -%}
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  <div class="child-sorting-wrapper">
+                    {%- if section.settings.enable_sorting -%}
+                      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                      <div class="facet-filters__field small-hide">
+                        <h2 class="facet-filters__label">
+                          <label for="SortBy">Sort by:</label>
+                        </h2>
+                        <select
+                          data-render-section
+                          name="sort_by"
+                          id="SortBy"
+                          class="facet-filters__sort"
+                        >
+                          {%- for option in collection.sort_options -%}
+                            <option
+                              value="{{ option.value | escape }}"
+                              {% if option.value == sort_by %}
+                                selected="selected"
+                              {% endif %}
+                            >
+                              {{ option.name | escape }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                      </div>
+                    {%- endif -%}
+                    <div class="results-count">
+                      {%- if collection.products_count == collection.all_products_count -%}
+                        {{ collection.products_count }} products
+                      {% else %}
+                        {{ collection.products_count }} of {{ collection.all_products_count }}
+                      {% endif %}
+                    </div>
                   </div>
-                {% endif %}
+                </div>
+
                 <div class="product-grid">
                   {%- if collection.products.size == 0 -%}
                     <p>Nothing Here</p>
@@ -433,7 +495,8 @@
                         show_vendor: section.settings.show_vendor,
                         enable_swatches: section.settings.enable_swatches,
                         swatch_trigger: section.settings.swatch_trigger,
-                        swatch_type: section.settings.swatch_type
+                        swatch_type: section.settings.swatch_type,
+                        media_aspect_ratio: section.settings.image_ratio
                       %}
                     {%- endfor -%}
                   {%- endif -%}

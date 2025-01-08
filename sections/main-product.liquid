@@ -2,6 +2,9 @@
 <link rel="stylesheet" href="{{ "swiper7.4.1.min.css" | asset_url }}">
 <script defer src="{{ "swiper7.4.1.min.js" | asset_url }}" id="swiper-script"></script>
 
+{% comment %} COMPONENT STYLES {% endcomment %}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -147,19 +150,6 @@
 
   .price__item.product-sale__price {
     font-size: 16px;
-  }
-
-  .badge{
-    border: 1px solid transparent;
-    border-radius: 50px;
-    display: inline-block;
-    font-size: 12px;
-    letter-spacing: 1px;
-    line-height: 1;
-    padding: 6px 13px 7px;
-    text-align: center;
-    border-color: var(--color-badge-border);
-    word-break: break-word;
   }
 
   .option__label {
