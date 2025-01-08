@@ -14,7 +14,6 @@
         <h2 class="facets__heading facets__heading--vertical">Filter:</h2>
       </div>
     </div>
-
     {% for f in results.filters %}
       <div
         class="filter-section facets__disclosure-vertical js-filter"
@@ -74,7 +73,12 @@
               </label>
             {% endfor %}
             {%- if f.values.size > show_more_number -%}
-              <button type="button" class="filters__show-more" x-on:click="showMore = !showMore" x-text="showMore ? 'Show less' : 'Show more'">
+              <button
+                type="button"
+                class="filters__show-more"
+                x-on:click="showMore = !showMore"
+                x-text="showMore ? 'Show less' : 'Show more'"
+              >
                 Show more
               </button>
             {%- endif %}
