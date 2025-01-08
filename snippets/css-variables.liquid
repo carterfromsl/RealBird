@@ -68,5 +68,13 @@
 
     --badge-corner-radius: {{ settings.badge_corner_radius }}px;
     --alpha-badge-border: 0.1;
+
+    --popup-border-width: {{ settings.popup_border_thickness }}px;
+    --popup-border-opacity: {{ settings.popup_border_opacity | divided_by: 100.0 }};
+    --popup-corner-radius: {{ settings.popup_corner_radius }}px;
+    --popup-shadow-opacity: {{ settings.popup_shadow_opacity | divided_by: 100.0 }};
+    --popup-shadow-horizontal-offset: {{ settings.popup_shadow_horizontal_offset }}px;
+    --popup-shadow-vertical-offset: {{ settings.popup_shadow_vertical_offset }}px;
+    --popup-shadow-blur-radius: {{ settings.popup_shadow_blur }}px;
   }
 </style>
