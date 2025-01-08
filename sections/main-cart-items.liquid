@@ -1,5 +1,12 @@
 {{ 'cart.css' | asset_url | stylesheet_tag }}
 
+{% style %}  
+  .cart__wrapper {
+    padding-top: {{ section.settings.padding_top | append: 'px' }};
+    padding-bottom: {{ section.settings.padding_bottom | append: 'px' }};
+  }
+{% endstyle %}
+
 <div
   id="cart-main"
   class="page-wrapper color-{{ section.settings.color_scheme }} gradient"

@@ -2,7 +2,7 @@
 
 <div
   id="cart-drawer"
-  class="color-{{ section.settings.color_scheme }} gradient"
+  class="color-{{ settings.cart_color_scheme }} gradient"
   :class="{ 'cart-open': cartOpen }"
 >
   <button class="cart-drawer-overlay" @click="cartOpen = !cartOpen">
@@ -10,13 +10,12 @@
   </button>
   <div class="cart-drawer__wrapper" data-ajax-cart-section>
     {%- if cart == empty -%}
-      <div class="cart-empty">
-        <div class="cart-header">
-          <div class="cart-drawer__close" @click="cartOpen = !cartOpen">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </div>
+      <div class="cart-header cart-header--empty">
+        <div class="cart-drawer__close" @click="cartOpen = !cartOpen">
+          {{- 'icon-close.svg' | inline_asset_content -}}
         </div>
-        
+      </div>
+      <div class="cart-empty">
         <div class="cart__empty-content">
           <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
           <a href="{{ routes.all_products_collection_url }}" class="button">
