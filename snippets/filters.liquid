@@ -1,7 +1,7 @@
 {% if filter_type == 'vertical' %}
   {% assign show_more_number = 10 %}
 
-  <aside class="sidebar">
+  <aside class="filters-sidebar small-hide">
     {% liquid
       assign open = true
       if collapse_filters
@@ -9,9 +9,14 @@
       endif
     %}
 
+    <div class="active-facets active-facets-desktop">
+      <div class="active-facets-vertical-filter">
+        <h2 class="facets__heading facets__heading--vertical">Filter:</h2>
+      </div>
+    </div>
     {% for f in results.filters %}
       <div
-        class="filter-section js-filter"
+        class="filter-section facets__disclosure-vertical js-filter"
         id="Details-{{ f.param_name | escape }}-{{ section.id }}"
         x-data="{ open: {{ open }} }"
       >
@@ -25,20 +30,23 @@
               {% if f.active_values.size > 0 %}
                 ({{ f.active_values.size }})
                 <a
+                  class="reset-button"
                   data-render-section-url="{{ f.url_to_remove }}"
                   href="{{ f.url_to_remove }}"
                   >reset
                 </a>
               {% endif %}
             </span>
+            {{ 'icon-caret.svg' | inline_asset_content }}
           </summary>
           <div
-            style="display: flex; flex-direction: column"
+            class="parent-display facets__display-vertical"
             x-data="{ showMore : $persist(false).as('sm-{{ f.param_name }}') }"
           >
             {% for v in f.values %}
               {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
               <label
+                class="facet-checkbox"
                 {% if forloop.index > show_more_number %}
                   x-show="showMore"
                   x-transition
@@ -57,11 +65,20 @@
                     disabled
                   {% endif -%}
                 >
+                {{- 'square.svg' | inline_asset_content -}}
+                <div class="svg-wrapper">
+                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                </div>
                 {{- v.label }} ({{ v.count }})
               </label>
             {% endfor %}
             {%- if f.values.size > show_more_number -%}
-              <button type="button" class="show-more" x-on:click="showMore = !showMore" x-text="showMore ? 'Show less' : 'Show more'">
+              <button
+                type="button"
+                class="filters__show-more"
+                x-on:click="showMore = !showMore"
+                x-text="showMore ? 'Show less' : 'Show more'"
+              >
                 Show more
               </button>
             {%- endif %}
