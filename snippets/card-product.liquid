@@ -36,8 +36,9 @@
   class="product-card card--{{ settings.card_style }}{% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }}{% endif %}"
   data-product-id="{{ card_product.id }}"
 >
-  <a href="{{ card_product.url }}" class="product-card-child">
-    <div
+  <div class="product-card-child">
+    <a
+      href="{{ card_product.url }}"
       class="card-media"
       style="--media-ratio: {{ 1 | divided_by: ratio | times: 100 }}%;"
     >
@@ -48,7 +49,8 @@
           | image_tag:
             width: card_product.featured_image.width,
             height: card_product.featured_image.height,
-            alt: card_product.featured_media.alt
+            alt: card_product.featured_media.alt,
+            data-product-image: card_product.id
           | escape
         }}
       </div>
@@ -69,9 +71,11 @@
           {%- endif -%}
         </div>
       </div>
-    </div>
+    </a>
     <div class="card-information">
-      <h2 class="card-heading">{{ card_product.title }}</h2>
+      <h2 class="card-heading">
+        <a href="{{ card_product.url }}">{{ card_product.title }}</a>
+      </h2>
       {% if show_vendor %}
         <span class="card-vendor">{{ card_product.vendor }}</span>
       {% endif %}
@@ -84,12 +88,33 @@
                   {%- if variant.options contains value -%}
                     <span
                       class="color-swatch"
-                      style="{% if swatch_type == 'image' %}background-image: url('{{ variant.featured_image | default: card_product.featured_image |   image_url: width: 50 }}'); background-size: cover; background-position: center;{% else %}background-color: {{ value | handleize }};{%   endif %}"
+                      {%- unless swatch_type == 'image' -%}
+                        style="background-color: {{ value | handleize }};"
+                      {%- endunless -%}
                       title="{{ value }}"
                       data-variant-id="{{ variant.id }}"
-                      data-variant-image="{{ variant.featured_image | default: card_product.featured_image | image_url: width: 533 }}"
                       data-swatch-color="{{ value | handleize }}"
-                    ></span>
+                    >
+                      {%- if swatch_type == 'image' -%}
+                        {%- liquid
+                          assign variant_image = null
+                          if variant.featured_image != null
+                            assign variant_image = variant.featured_image
+                          else
+                            assign variant_image = card_product.featured_image
+                          endif
+                        -%}
+                        {{
+                          variant_image
+                          | image_url: width: variant_image.width
+                          | image_tag:
+                            width: variant_image.width,
+                            height: variant_image.height,
+                            alt: variant_image.alt,
+                            class: 'data-variant-image'
+                        }}
+                      {%- endif -%}
+                    </span>
                     {%- break -%}
                   {%- endif -%}
                 {%- endfor -%}
@@ -102,5 +127,5 @@
         {% render 'price', product: card_product, show_compare_at_price: true %}
       </div>
     </div>
-  </a>
+  </div>
 </product-card>
