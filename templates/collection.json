@@ -16,21 +16,19 @@
         "columns_desktop": 4,
         "color_scheme": "",
         "image_ratio": "portrait",
-        "image_shape": "default",
-        "show_secondary_image": false,
         "show_vendor": true,
         "show_rating": false,
         "quick_add": "none",
+        "enable_swatches": true,
+        "swatch_type": "image",
+        "swatch_trigger": "Color",
         "enable_filtering": true,
-        "filter_type": "vertical",
+        "filter_type": "horizontal",
         "collapse_filters": true,
         "enable_sorting": true,
         "columns_mobile": "2",
         "padding_top": 36,
-        "padding_bottom": 32,
-        "enable_swatches": true,
-        "swatch_trigger": "Color",
-        "swatch_type": "image"
+        "padding_bottom": 32
       }
     }
   },
