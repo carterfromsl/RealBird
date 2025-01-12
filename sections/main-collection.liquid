@@ -235,7 +235,7 @@
                   filter_type: section.settings.filter_type
                 %}
               {% endif %}
-              <div id="ProductGridContainer" class="product-grid-container">
+              <div class="product-grid-container">
                 <div class="sorting-wrapper">
                   <div class="horizontal-filters__parent-wrapper small-hide">
                     {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
@@ -246,7 +246,7 @@
                       %}
                     {% endif %}
                     {%- if section.settings.enable_filtering -%}
-                      <div class="active-filter-group__item-wrapper">
+                      <div id="active-filter-group-{{ section.id }}" class="active-filter-group__item-wrapper">
                         {% liquid
                           assign has_active_filters = false
                           for f in collection.filters
@@ -305,7 +305,7 @@
                         </select>
                       </div>
                     {%- endif -%}
-                    <div class="results-count">
+                    <div id="results-count-{{ section.id }}" class="results-count">
                       {%- if collection.products_count == collection.all_products_count -%}
                         {{ collection.products_count }} products
                       {% else %}
@@ -315,25 +315,27 @@
                   </div>
                 </div>
 
-                <div class="product-grid">
-                  {%- if collection.products.size == 0 -%}
-                    <p>Nothing Here</p>
-                  {%- else -%}
-                    {%- for product in collection.products -%}
-                      {% render 'card-product',
-                        card_product: product,
-                        show_vendor: section.settings.show_vendor,
-                        enable_swatches: section.settings.enable_swatches,
-                        swatch_trigger: section.settings.swatch_trigger,
-                        swatch_type: section.settings.swatch_type,
-                        media_aspect_ratio: section.settings.image_ratio
-                      %}
-                    {%- endfor -%}
+                <div id="product-grid-{{ section.id }}">
+                  <div class="product-grid">
+                    {%- if collection.products.size == 0 -%}
+                      <p>Nothing Here</p>
+                    {%- else -%}
+                      {%- for product in collection.products -%}
+                        {% render 'card-product',
+                          card_product: product,
+                          show_vendor: section.settings.show_vendor,
+                          enable_swatches: section.settings.enable_swatches,
+                          swatch_trigger: section.settings.swatch_trigger,
+                          swatch_type: section.settings.swatch_type,
+                          media_aspect_ratio: section.settings.image_ratio
+                        %}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  </div>
+                  {%- if paginate.pages > 1 -%}
+                    {% render 'pagination', paginate: paginate, anchor: '' %}
                   {%- endif -%}
                 </div>
-                {%- if paginate.pages > 1 -%}
-                  {% render 'pagination', paginate: paginate, anchor: '' %}
-                {%- endif -%}
               </div>
             </div>
           </form>
@@ -343,7 +345,9 @@
   </div>
 </div>
 
-<script type="text/javascript">
+<script
+  type="text/javascript"
+>
   function debounce(fn, wait) {
     let t;
     return (...args) => {
@@ -383,13 +387,20 @@
           return this.querySelector('collection-info form');
         }
 
-        updateSection = (responseHtml) => {
-          const gridFromFetchInnerHtml = responseHtml.getElementById('ProductGridContainer').innerHTML;
-          const gridFromDom = document.getElementById('ProductGridContainer');
+        updateSourceFromDestination = (html, id) => {
+          const source = html.getElementById(`${id}`);
+          const destination = this.querySelector(`#${id}`);
+          if (source && destination) {
+            destination.innerHTML = source.innerHTML;
+          }
+        };
 
-          gridFromDom.innerHTML = gridFromFetchInnerHtml;
+        updateSection = (html) => {
+          this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
 
-          const filtersFromFetch = responseHtml.querySelectorAll('#collection-form .js-filter');
+          const filtersFromFetch = html.querySelectorAll('#collection-form .js-filter');
           const filtersFromDom = document.querySelectorAll('#collection-form .js-filter');
 
           // Remove filters that are no longer returned from the server
@@ -410,8 +421,8 @@
             .then((response) => response.text())
             .then((responseText) => {
               history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
-              let responseHtml = new DOMParser().parseFromString(responseText, 'text/html');
-              this.updateSection(responseHtml);
+              let html = new DOMParser().parseFromString(responseText, 'text/html');
+              this.updateSection(html);
             });
         };
       }
