@@ -55,15 +55,26 @@
     --variant-pills-border-width: {{ settings.variant_pills_border_thickness }}px;
     --variant-pills-border-opacity: {{ settings.variant_pills_border_opacity | divided_by: 100.0 }};
 
-    --product-card-image-padding: {{ settings.card_image_padding | divided_by: 10.0 }}px;
-    --product-card-corner-radius: {{ settings.card_corner_radius | divided_by: 10.0 }}px;
+    --product-card-image-padding: {{ settings.card_image_padding }}px;
+    --product-card-corner-radius: {{ settings.card_corner_radius }}px;
     --product-card-text-alignment: {{ settings.card_text_alignment }};
-    --product-card-border-width: {{ settings.card_border_thickness | divided_by: 10.0 }}px;
+    --product-card-border-width: {{ settings.card_border_thickness }}px;
     --product-card-border-opacity: {{ settings.card_border_opacity | divided_by: 100.0 }};
     --product-card-shadow-opacity: {{ settings.card_shadow_opacity | divided_by: 100.0 }};
     --product-card-shadow-visible: {% if settings.card_shadow_opacity > 0 %}1{% else %}0{% endif %};
-    --product-card-shadow-horizontal-offset: {{ settings.card_shadow_horizontal_offset | divided_by: 10.0 }}px;
-    --product-card-shadow-vertical-offset: {{ settings.card_shadow_vertical_offset | divided_by: 10.0 }}px;
-    --product-card-shadow-blur-radius: {{ settings.card_shadow_blur | divided_by: 10.0 }}px;
+    --product-card-shadow-horizontal-offset: {{ settings.card_shadow_horizontal_offset }}px;
+    --product-card-shadow-vertical-offset: {{ settings.card_shadow_vertical_offset }}px;
+    --product-card-shadow-blur-radius: {{ settings.card_shadow_blur }}px;
+
+    --badge-corner-radius: {{ settings.badge_corner_radius }}px;
+    --alpha-badge-border: 0.1;
+
+    --popup-border-width: {{ settings.popup_border_thickness }}px;
+    --popup-border-opacity: {{ settings.popup_border_opacity | divided_by: 100.0 }};
+    --popup-corner-radius: {{ settings.popup_corner_radius }}px;
+    --popup-shadow-opacity: {{ settings.popup_shadow_opacity | divided_by: 100.0 }};
+    --popup-shadow-horizontal-offset: {{ settings.popup_shadow_horizontal_offset }}px;
+    --popup-shadow-vertical-offset: {{ settings.popup_shadow_vertical_offset }}px;
+    --popup-shadow-blur-radius: {{ settings.popup_shadow_blur }}px;
   }
 </style>

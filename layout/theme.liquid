@@ -21,10 +21,7 @@
     <script type="module">
       import '{{ "liquid-ajax-cart-v2.1.1.js" | asset_url }}';
     </script>
-    {% comment %} Styling for Product card component & Price component {% endcomment %}
-    {{ 'component-price.css' | asset_url | stylesheet_tag }}
-    {{ 'component-card-product.css' | asset_url | stylesheet_tag }}
-
+    
     {% comment %} Theme Styles {% endcomment %}
     <link rel="stylesheet" href=" {{'global.css' | asset_url }} ">
     {%- render 'css-variables' -%}
