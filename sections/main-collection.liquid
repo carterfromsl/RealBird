@@ -208,6 +208,39 @@
   /*====================================
   END COLLECTION FILTERS & GRID STYLING
   ======================================*/
+
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+
+  #product-grid-{{ section.id }} {
+    position: relative;
+  }
+
+  .loading-overlay__spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(var(--color-foreground), 0.1);
+    border-top-color: rgb(var(--color-foreground));
+    border-radius: 100%;
+    animation: spin 0.6s infinite linear;
+    display: none;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 {%- endstyle -%}
 
 {% comment %} COMPONENT STYLES {% endcomment %}
@@ -312,10 +345,11 @@
                         {{ collection.products_count }} of {{ collection.all_products_count }}
                       {% endif %}
                     </div>
+                    <div id="loading-spinner-{{ section.id }}" class="loading-overlay__spinner"></div>
                   </div>
                 </div>
-
                 <div id="product-grid-{{ section.id }}">
+                  <div id="loading-overlay-{{ section.id }}" class="loading-overlay"></div>
                   <div class="product-grid">
                     {%- if collection.products.size == 0 -%}
                       <p>Nothing Here</p>
@@ -395,11 +429,11 @@
           }
         };
 
-        updateSection = (html) => {
-          this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
-          this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
-          this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
+        updateURL(searchParams) {
+          history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
+        }
 
+        updateFilters = (html) => {
           const filtersFromFetch = html.querySelectorAll('#collection-form .js-filter');
           const filtersFromDom = document.querySelectorAll('#collection-form .js-filter');
 
@@ -415,14 +449,34 @@
           });
         };
 
+        showLoadingOverlay = () => {
+          this.querySelector(`#loading-overlay-${this.dataset.section}`).style.display = 'flex';
+          this.querySelector(`#loading-spinner-${this.dataset.section}`).style.display = 'block';
+          this.querySelector(`#results-count-${this.dataset.section}`).style.display = 'none';
+        };
+
+        hideLoadingOverlay = () => {
+          this.querySelector(`#loading-overlay-${this.dataset.section}`).style.display = 'none';
+          this.querySelector(`#loading-spinner-${this.dataset.section}`).style.display = 'none';
+          this.querySelector(`#results-count-${this.dataset.section}`).style.display = 'block';
+        };
+
         fetchSection = (searchParams) => {
-          console.log(searchParams.split('&'));
+          this.showLoadingOverlay();
           fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
             .then((response) => response.text())
             .then((responseText) => {
-              history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
               let html = new DOMParser().parseFromString(responseText, 'text/html');
-              this.updateSection(html);
+              this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
+              this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
+              this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
+              this.updateFilters(html);
+              this.updateURL(searchParams);
+              this.hideLoadingOverlay();
+            })
+            .catch((error) => {
+              console.error(error);
+              this.hideLoadingOverlay();
             });
         };
       }

@@ -592,7 +592,7 @@
             {%- when 'variant_picker' -%}
               <div class="product__variants" {{ block.shopify_attributes }}>
                 {% unless product.has_only_default_variant %}
-                  <variant-selector data-picker-type="{{ block.settings.picker_type }}">
+                  <variant-selector id="variant-selector-{{ section.id }}" data-picker-type="{{ block.settings.picker_type }}">
                     {%- if block.settings.picker_type == 'dropdown' -%}
                       <div class="variant-block__dropdown">
                         {% for option in product.options_with_values %}
@@ -709,23 +709,25 @@
                 <ajax-cart-product-form>
                   {% form 'product', product, id: product_form_id, novalidate: 'novalidate' %}
                     <input type="hidden" name="id" value="{{ selected_variant.id }}">
-                    <button
-                      id="AddToCart-{{ section.id }}"
-                      type="submit"
-                      name="add"
-                      class="{% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
-                      {% if selected_variant == null or selected_variant.available == false %}
-                        disabled
-                      {% endif %}
-                    >
-                      {% if selected_variant == null %}
-                        Unavailable
-                      {% elsif selected_variant.available == false %}
-                        Sold out
-                      {% else %}
-                        Add to cart
-                      {% endif %}
-                    </button>
+                    <div id="add-to-cart-container-{{ section.id }}">
+                      <button
+                        id="AddToCart-{{ section.id }}"
+                        type="submit"
+                        name="add"
+                        class="{% if block.settings.show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+                        {% if selected_variant == null or selected_variant.available == false %}
+                          disabled
+                        {% endif %}
+                      >
+                        {% if selected_variant == null %}
+                          Unavailable
+                        {% elsif selected_variant.available == false %}
+                          Sold out
+                        {% else %}
+                          Add to cart
+                        {% endif %}
+                      </button>
+                    </div>
                     {%- if block.settings.show_dynamic_checkout -%}
                       {{ form | payment_button }}
                     {%- endif -%}
@@ -870,13 +872,6 @@
       }
     }
 
-    // get selectedOptionValues() {
-    //   const list = Array.from(this.variantSelector.querySelectorAll('select option[selected], fieldset input:checked')).map(
-    //     ({ dataset }) => dataset.optionValueId
-    //   );
-    //   return list;
-    // }
-
     getSelectedVariant(html) {
       const selectedVariant = html.querySelector('[data-selected-variant]')?.innerHTML;
       return !!selectedVariant ? JSON.parse(selectedVariant) : null;
@@ -918,23 +913,13 @@
       window.history.replaceState({}, '', `${this.dataset.url}${variantId ? `?variant=${variantId}` : ''}`);
     }
 
-    updatePrice(html) {
-      const oldPrice = document.getElementById(`price-${this.dataset.section}`);
-      const newPrice = html.getElementById(`price-${this.dataset.section}`);
-      if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
-    }
-
-    updateVariantSelector(html) {
-      const oldVariantSelector = document.querySelector('variant-selector');
-      const newVariantSelector = html.querySelector('variant-selector');
-      if (oldVariantSelector && newVariantSelector) oldVariantSelector.innerHTML = newVariantSelector.innerHTML;
-    }
-
-    updateSubmitButton(html) {
-      const oldSubmitButton = document.getElementById(`AddToCart-${this.dataset.section}`);
-      const newSubmitButton = html.getElementById(`AddToCart-${this.dataset.section}`);
-      if (oldSubmitButton && newSubmitButton) oldSubmitButton.replaceWith(newSubmitButton);
-    }
+    updateSourceFromDestination = (html, id) => {
+      const source = html.getElementById(`${id}`);
+      const destination = this.querySelector(`#${id}`);
+      if (source && destination) {
+        destination.innerHTML = source.innerHTML;
+      }
+    };
 
     updateVariantInputs(variantId) {
       this.querySelectorAll(`#product-form-${this.dataset.section}, #product-form-installment-${this.dataset.section}`).forEach(
@@ -943,18 +928,6 @@
           input.value = variantId ?? '';
         }
       );
-    }
-
-    updateSku(html) {
-      const oldSku = document.getElementById(`sku-${this.dataset.section}`);
-      const newSku = html.getElementById(`sku-${this.dataset.section}`);
-      if (oldSku && newSku) oldSku.innerHTML = newSku.innerHTML;
-    }
-
-    updateInventory(html) {
-      const oldInventory = document.getElementById(`inventory-${this.dataset.section}`);
-      const newInventory = html.getElementById(`inventory-${this.dataset.section}`);
-      if (oldInventory && newInventory) oldInventory.innerHTML = newInventory.innerHTML;
     }
 
     renderSection() {
@@ -968,15 +941,14 @@
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const variant = this.getSelectedVariant(html);
-          this.updateVariantSelector(html);
           this.updateMedia(variant?.featured_media?.id);
           this.updateURL(variant?.id);
-          this.updatePrice(html);
-
-          this.updateSubmitButton(html);
           this.updateVariantInputs(variant?.id);
-          this.updateSku(html);
-          this.updateInventory(html);
+          this.updateSourceFromDestination(html, `add-to-cart-container-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `variant-selector-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `price-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `sku-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `inventory-${this.dataset.section}`);
         })
         .catch((error) => {
           if (error.name === 'AbortError') {
