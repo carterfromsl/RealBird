@@ -76,5 +76,7 @@
     --popup-shadow-horizontal-offset: {{ settings.popup_shadow_horizontal_offset }}px;
     --popup-shadow-vertical-offset: {{ settings.popup_shadow_vertical_offset }}px;
     --popup-shadow-blur-radius: {{ settings.popup_shadow_blur }}px;
+
+    --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
   }
 </style>

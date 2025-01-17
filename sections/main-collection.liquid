@@ -27,7 +27,7 @@
     width: 100%;
     align-items: flex-start;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     gap: 30px;
   }
 
@@ -131,6 +131,14 @@
     pointer-events: none
   }
 
+  .item-counts-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 70px;
+    position: relative;
+  }
+
   .results-count {
     width: max-content;
     font-size: 14px;
@@ -192,16 +200,16 @@
   }
 
   @media screen and (max-width: 750px) {
-    .small-hide {
-      display: none !important;
-    }
-
     .product-grid {
       gap: 5px;
     }
 
     .results-count{
       font-size: 14px;
+    }
+
+    .active-filter-item span{
+      font-size: 12px;
     }
   }
 
@@ -234,6 +242,11 @@
     border-radius: 100%;
     animation: spin 0.6s infinite linear;
     display: none;
+    position: absolute;
+  }
+
+  .product-grid-wrapper{
+    margin-top: 15px;
   }
 
   @keyframes spin {
@@ -270,15 +283,17 @@
               {% endif %}
               <div class="product-grid-container">
                 <div class="sorting-wrapper">
-                  <div class="horizontal-filters__parent-wrapper small-hide">
-                    {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
+                  <div class="horizontal-filters__parent-wrapper {% if section.settings.filter_type == 'horizontal' %}small-hide{% endif %}">
+                    {%- if section.settings.filter_type == 'horizontal' or section.settings.filter_type == 'drawer' -%}
                       {% render 'filters',
                         results: collection,
                         collapse_filters: section.settings.collapse_filters,
-                        filter_type: section.settings.filter_type
+                        filter_type: section.settings.filter_type,
+                        enable_filtering: section.settings.enable_filtering,
+                        enable_sorting: section.settings.enable_sorting
                       %}
                     {% endif %}
-                    {%- if section.settings.enable_filtering -%}
+                    {%- if section.settings.enable_filtering and section.settings.filter_type != 'drawer' -%}
                       <div id="active-filter-group-{{ section.id }}" class="active-filter-group__item-wrapper">
                         {% liquid
                           assign has_active_filters = false
@@ -311,7 +326,6 @@
                       </div>
                     {%- endif -%}
                   </div>
-
                   <div class="child-sorting-wrapper">
                     {%- if section.settings.enable_sorting -%}
                       {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
@@ -338,17 +352,53 @@
                         </select>
                       </div>
                     {%- endif -%}
-                    <div id="results-count-{{ section.id }}" class="results-count">
-                      {%- if collection.products_count == collection.all_products_count -%}
-                        {{ collection.products_count }} products
-                      {% else %}
-                        {{ collection.products_count }} of {{ collection.all_products_count }}
-                      {% endif %}
+                    <div class="item-counts-wrapper">
+                      <div id="results-count-{{ section.id }}" class="results-count">
+                        {%- if collection.products_count == collection.all_products_count -%}
+                          {{ collection.products_count }} products
+                        {% else %}
+                          {{ collection.products_count }} of {{ collection.all_products_count }}
+                        {% endif %}
+                      </div>
+                      <div id="loading-spinner-{{ section.id }}" class="loading-overlay__spinner"></div>
                     </div>
-                    <div id="loading-spinner-{{ section.id }}" class="loading-overlay__spinner"></div>
                   </div>
                 </div>
-                <div id="product-grid-{{ section.id }}">
+
+                {%- if section.settings.filter_type == 'drawer' -%}
+                  <div id="active-filter-group-{{ section.id }}" class="active-filter-group__item-wrapper">
+                    {% liquid
+                      assign has_active_filters = false
+                      for f in collection.filters
+                        if f.active_values.size > 0
+                          assign has_active_filters = true
+                        endif
+                      endfor
+                    %}
+
+                    {%- for f in collection.filters -%}
+                      {% for v in f.active_values %}
+                        <div class="filter active-filter-item">
+                          <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
+                          <div
+                            class="filter-close"
+                            data-render-section-url="{{ v.url_to_remove }}"
+                          >
+                            {{- 'icon-close.svg' | inline_asset_content -}}
+                          </div>
+                        </div>
+                      {% endfor %}
+                    {%- endfor -%}
+
+                    {% if has_active_filters %}
+                      <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ collection.url }}">
+                        <span>Clear all filters</span>
+                      </div>
+                    {% endif %}
+                  </div>
+                {%- endif -%}
+
+                <div class="product-grid-wrapper" id="product-grid-{{ section.id }}">
                   <div id="loading-overlay-{{ section.id }}" class="loading-overlay"></div>
                   <div class="product-grid">
                     {%- if collection.products.size == 0 -%}
