@@ -25,6 +25,10 @@
     {% comment %} Theme Styles {% endcomment %}
     <link rel="stylesheet" href=" {{'global.css' | asset_url }} ">
     {%- render 'css-variables' -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
   </head>
 
   <body>
@@ -35,5 +39,9 @@
     </main>
 
     {% section 'main-footer' %}
+
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
   </body>
 </html>
