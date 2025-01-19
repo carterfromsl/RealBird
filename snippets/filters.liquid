@@ -384,7 +384,6 @@
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-  
 {%- endstyle -%}
 
 {% if filter_type == 'vertical' %}
@@ -595,7 +594,7 @@
         </div>
       </div>
 
-      <div class="drawer__facets-wrapper" x-data="{ openFilter: true }">
+      <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true).as('openFilter') }">
         <div class="drawer__child-facets-wrapper">
           {%- for f in results.filters -%}
             <div class="single-facet__link">
