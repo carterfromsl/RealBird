@@ -13,6 +13,7 @@ class PredictiveSearch extends HTMLElement {
         }
 
         this.input.addEventListener('input', this.debounce(() => this.onChange(), 300));
+        this.addEventListener('search-input-cleared', () => this.onChange());
     }
 
     onChange() {

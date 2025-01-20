@@ -46,7 +46,7 @@
           class="nav-{{ nav_style }} color-{{ section.settings.menu_color_scheme }} gradient"
           x-transition
           role="list"
-          style="display: none;"
+          x-cloak
         >
           {%- for childlink in link.links -%}
             <li>
@@ -74,7 +74,7 @@
                   class="nav-dropdown_child"
                   x-transition
                   role="list"
-                  style="display: none;"
+                  x-cloak
                 >
                   {%- for grandchildlink in childlink.links -%}
                     <li>
