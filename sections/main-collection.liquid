@@ -503,12 +503,16 @@
           this.querySelector(`#loading-overlay-${this.dataset.section}`).style.display = 'flex';
           this.querySelector(`#loading-spinner-${this.dataset.section}`).style.display = 'block';
           this.querySelector(`#results-count-${this.dataset.section}`).style.display = 'none';
+          this.querySelector(`#drawer-results-count-${this.dataset.section}`)?.style.display = 'none';
+          this.querySelector(`#drawer-loading-spinner-${this.dataset.section}`)?.style.display = 'block';
         };
 
         hideLoadingOverlay = () => {
           this.querySelector(`#loading-overlay-${this.dataset.section}`).style.display = 'none';
           this.querySelector(`#loading-spinner-${this.dataset.section}`).style.display = 'none';
           this.querySelector(`#results-count-${this.dataset.section}`).style.display = 'block';
+          this.querySelector(`#drawer-results-count-${this.dataset.section}`)?.style.display = 'block';
+          this.querySelector(`#drawer-loading-spinner-${this.dataset.section}`)?.style.display = 'none';
         };
 
         fetchSection = (searchParams) => {
@@ -519,6 +523,7 @@
               let html = new DOMParser().parseFromString(responseText, 'text/html');
               this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
+              this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
               this.updateFilters(html);
               this.updateURL(searchParams);

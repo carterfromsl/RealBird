@@ -542,7 +542,7 @@
 {% else %}
   <div
     x-data="{ open: false }"
-    class="drawer-main-wrapper js-filter color-{{ section.settings.color_scheme }} {% unless enable_filtering %}large-up-hide{% endunless %}"
+    class="drawer-main-wrapper color-{{ section.settings.color_scheme }} {% unless enable_filtering %}large-up-hide{% endunless %}"
     :class="{ 'drawer-active': open }"
     id="Details-{{ f.param_name | escape }}-{{ section.id }}"
   >
@@ -573,18 +573,19 @@
     </div>
 
     <div class="drawer__wrapper">
-      <div class="facets__header-drawer">
+      <div class="facets__header-drawer" >
         <div class="child-facets__header-wrapper">
           <div class="mobile-facets__header-inner">
             <h2 class="mobile-facets__heading medium-hide large-up-hide">{{ 'products.facets.filter_and_sort' | t }}</h2>
             <h2 class="mobile-facets__heading small-hide">{{ 'products.facets.filter_button' | t }}</h2>
-            <p class="mobile-facets__count">
+            <p class="mobile-facets__count" id="drawer-results-count-{{ section.id }}">
               {%- if collection.products_count == collection.all_products_count -%}
                 {{ collection.products_count }} products
               {% else %}
                 {{ collection.products_count }} of {{ collection.all_products_count }}
               {% endif %}
             </p>
+            <div id="drawer-loading-spinner-{{ section.id }}" class="loading-overlay__spinner"></div>
           </div>
           <div class="drawer-close-icon" @click="open = !open">
             <div class="svg-wrapper">
@@ -597,7 +598,7 @@
       <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true).as('openFilter') }">
         <div class="drawer__child-facets-wrapper">
           {%- for f in results.filters -%}
-            <div class="single-facet__link">
+            <div id="Details-{{ f.param_name | escape }}-{{ section.id }}" class="single-facet__link js-filter">
               <div class="mobile-facets__block" @click="openFilter = openFilter === {{ forloop.index }} ? null : {{ forloop.index }}">
                 <span>{{ f.label }}</span>
                 <span class="mobile-facets__arrow">
@@ -620,13 +621,7 @@
                 <div class="filter__values-wrapper">
                   {%- for v in f.values -%}
                     {%- assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index -%}
-                    <label
-                      class="facet-checkbox"
-                      {% if forloop.index > show_more_number %}
-                        x-show="showMore"
-                        x-transition
-                      {% endif %}
-                    >
+                    <label class="facet-checkbox">
                       <input
                         id="{{ input_id }}"
                         type="checkbox"
@@ -648,35 +643,10 @@
                     </label>
                   {%- endfor -%}
                 </div>
-                <div class="mobile-facets__footer">
-                  <div class="mobile-facets__clear-wrapper">
-                    <a
-                      class="mobile-facets__clear facet-reset"
-                      data-render-section-url="{{ f.url_to_remove }}"
-                      href="{{ f.url_to_remove }}"
-                      >Reset</a
-                    >
-                  </div>
-                  <button type="button" @click="open = !open">{{ 'products.facets.apply' | t }}</button>
-                </div>
               </div>
             </div>
           {%- endfor -%}
         </div>
-      </div>
-
-      <div class="mobile-facets__footer">
-        <div class="mobile-facets__clear-wrapper">
-          <a class="mobile-facets__clear active-filter-clear-all" data-render-section-url="{{ collection.url }}">
-            {{- 'products.facets.clear_all' | t -}}
-          </a>
-        </div>
-        <button
-          type="button"
-          @click="open = !open"
-        >
-          {{ 'products.facets.apply' | t }}
-        </button>
       </div>
     </div>
   </div>
