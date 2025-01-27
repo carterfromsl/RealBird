@@ -282,6 +282,202 @@
   }
 {%- endstyle -%}
 
+{%- style -%}
+  .filters-sidebar {
+    margin-bottom: 20px;
+    width: 260px;
+    margin-right: 30px;
+    flex-shrink: 0;
+  }
+
+  .facets__heading {
+    display: block;
+    color: rgba(var(--color-foreground), 0.85);
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  .filters-horizontal .facets__heading {
+    margin: 0px;
+    margin-right: 20px;
+    width: unset;
+  }
+
+  .filter-section {
+    border-top: 1px solid rgba(var(--color-foreground), 0.1);
+    margin-right: 0;
+  }
+
+  .facets__disclosure-vertical summary {
+    padding: 16.5px 17.5px 16.5px 0px;
+  }
+
+  .facets__disclosure-vertical details[open] summary .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .facets__disclosure-vertical summary .icon-caret {
+    position: absolute;
+    height: 6px;
+    right: 0px;
+    top: calc(50% - 2px);
+  }
+
+  .facets__display-vertical {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 12px 25px 0px;
+  }
+
+  .facet-checkbox {
+    padding: 10px 20px 10px 0;
+    flex-grow: 1;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    word-break: break-word;
+    cursor: pointer;
+  }
+
+  .facet-checkbox:hover {
+    color: rgba(var(--color-foreground), 1);
+    text-decoration: underline;
+  }
+
+  .facet-checkbox input[type='checkbox'] {
+    margin-right: 12px;
+    position: absolute;
+    opacity: 0;
+    width: 16px;
+    height: 16px;
+    top: 7px;
+    left: -4px;
+  }
+
+  .facet-checkbox > svg,
+  .facet-checkbox > .svg-wrapper {
+    background-color: rgb(var(--color-background));
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .facet-checkbox .svg-wrapper {
+    visibility: hidden;
+    position: absolute;
+    left: 3px;
+    z-index: 5;
+    top: 14px;
+    width: 11px;
+    height: 7px;
+  }
+
+  .facet-checkbox > input[type='checkbox']:checked ~ .svg-wrapper > .icon-checkmark {
+    visibility: visible;
+  }
+
+  .facet-checkbox:has(input:disabled) {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .filters__show-more {
+    background: white;
+    border: 1px solid;
+    padding: 10px 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    outline: 1px solid transparent;
+  }
+
+  .filters__show-more:hover {
+    outline: 1px solid black;
+  }
+
+  /* STYLES FOR HORIZONTAL FILTERS TYPE */
+
+  .filters-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    max-width: 700px;
+  }
+
+  .facets__wrapper {
+    position: relative;
+    margin-right: 40px;
+    margin-bottom: 15px;
+  }
+
+  .filter-button {
+    width: max-content;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(var(--color-foreground), 0.75);
+    padding: 0px;
+    margin-right: 5px;
+  }
+
+  .filter-button:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: rgba(var(--color-foreground), 1);
+  }
+
+  .filter-button .icon-caret {
+    height: 6px;
+    position: relative;
+    top: -1px;
+    right: -5px;
+  }
+
+  .filter-content {
+    border-width: var(--popup-border-width);
+    border-style: solid;
+    border-color: rgba(var(--color-foreground), var(--popup-border-opacity));
+    border-radius: var(--popup-corner-radius);
+    box-shadow: var(--popup-shadow-horizontal-offset) var(--popup-shadow-vertical-offset) var(--popup-shadow-blur-radius)
+      rgba(var(--color-shadow), var(--popup-shadow-opacity));
+    background-color: rgb(var(--color-background));
+    position: absolute;
+    top: calc(100% + 10px);
+    left: -12px;
+    width: 350px;
+    max-height: 550px;
+    overflow-y: auto;
+    z-index: 5;
+  }
+
+  .filter-content .facets__list {
+    padding: 7px 20px;
+    list-style-type: none;
+    margin: 0;
+  }
+
+  .facets__head-wrapper {
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.2);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    background-color: rgb(var(--color-background));
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+  }
+
+  .facet-reset {
+    text-transform: capitalize;
+    color: black;
+    cursor: pointer;
+    text-underline-offset: 3px;
+  }
+{%- endstyle -%}
+
 {% comment %} COMPONENT STYLES {% endcomment %}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-card-product.css' | asset_url | stylesheet_tag }}
@@ -298,20 +494,16 @@
     >
       <div class="filter-type-{{ section.settings.filter_type | escape | downcase }}">
         {%- paginate collection.products by section.settings.products_per_page -%}
-          <form id="collection-form" class="main-content">
+          <div class="main-content">
             <div class="collection-filters-wrapper">
               {%- if section.settings.enable_filtering and section.settings.filter_type == 'vertical' -%}
-                {% render 'filters',
-                  results: collection,
-                  collapse_filters: section.settings.collapse_filters,
-                  filter_type: section.settings.filter_type
-                %}
+                {% render 'component-filters-sidebar', results: collection, collapse_filters: section.settings.collapse_filters %}
               {% endif %}
               <div class="product-grid-container">
                 <div class="sorting-wrapper">
-                  {%- if section.settings.filter_type == 'vertical' -%}
+                  {%- if section.settings.enable_filtering and section.settings.filter_type == 'vertical' -%}
                     <div class="mobile-filters-drawer medium-hide large-up-hide">
-                      {%- render 'component-drawer-filters',
+                      {%- render 'component-filters-drawer',
                         results: collection,
                         enable_sorting: section.settings.enable_sorting,
                         enable_filtering: section.settings.enable_filtering
@@ -319,13 +511,20 @@
                     </div>
                   {%- endif -%}
                   <div class="horizontal-filters__parent-wrapper">
-                    {%- if section.settings.filter_type == 'horizontal' or section.settings.filter_type == 'drawer' -%}
-                      {% render 'filters',
+                    {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
+                      {% render 'component-filters-horizontal', results: collection %}
+                      <div class="mobile-horizontal-filter medium-hide large-up-hide">
+                        {%- render 'component-filters-drawer',
+                          results: collection,
+                          enable_sorting: section.settings.enable_sorting,
+                          enable_filtering: section.settings.enable_filtering
+                        -%}
+                      </div>
+                    {% elsif section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
+                      {% render 'component-filters-drawer',
                         results: collection,
-                        collapse_filters: section.settings.collapse_filters,
-                        filter_type: section.settings.filter_type,
-                        enable_filtering: section.settings.enable_filtering,
-                        enable_sorting: section.settings.enable_sorting
+                        enable_sorting: section.settings.enable_sorting,
+                        enable_filtering: section.settings.enable_filtering
                       %}
                     {% endif %}
                     {%- if section.settings.enable_filtering and section.settings.filter_type != 'drawer' -%}
@@ -369,8 +568,11 @@
                           <label for="SortBy">Sort by:</label>
                         </h2>
                         <select
-                          data-render-section
+                          data-render-section="filters-form"
                           name="sort_by"
+                          {% if section.settings.enable_filtering %}
+                            form="filters-form"
+                          {% endif %}
                           id="SortBy"
                           class="facet-filters__sort"
                         >
@@ -457,7 +659,7 @@
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         {%- endpaginate -%}
       </div>
     </collection-info>
@@ -497,7 +699,7 @@
         onChangeHandler = (event) => {
           if (!event.target.matches('[data-render-section]')) return;
 
-          const formData = new FormData(this.form);
+          const formData = new FormData(event.target.closest('form'));
           const searchParams = new URLSearchParams(formData).toString();
           this.fetchSection(searchParams);
         };
@@ -519,8 +721,8 @@
         }
 
         updateFilters = (html, className) => {
-          const filtersFromFetch = html.querySelectorAll(`#collection-form .${className}`);
-          const filtersFromDom = document.querySelectorAll(`#collection-form .${className}`);
+          const filtersFromFetch = html.querySelectorAll(`collection-info .${className}`);
+          const filtersFromDom = document.querySelectorAll(`collection-info .${className}`);
 
           // Remove filters that are no longer returned from the server
           Array.from(filtersFromDom).forEach((currentElement) => {
@@ -568,7 +770,7 @@
               this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
-              this.updateFilters(html, `js-filter-drawer`);
+              //this.updateFilters(html, `js-filter-drawer`);
               this.updateFilters(html, `js-filter`);
               this.updateURL(searchParams);
               this.hideLoadingOverlay();

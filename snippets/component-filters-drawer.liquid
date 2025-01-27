@@ -323,12 +323,14 @@
         </div>
       </div>
     </div>
-
-    <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true).as('openFilter') }">
-      {%- if enable_filtering -%}
+    <form id="filters-form-drawer">
+      <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true).as('openFilter') }">
         <div class="drawer__child-facets-wrapper">
           {%- for f in results.filters -%}
-            <div id="Details-{{ f.param_name | escape }}-{{ section.id }}" class="single-facet__link js-filter-drawer">
+            <div
+              id="Details-{{ f.param_name | escape }}-{{ section.id }}-Drawer"
+              class="single-facet__link js-filter"
+            >
               <div class="mobile-facets__block" @click="openFilter = openFilter === {{ forloop.index }} ? null : {{ forloop.index }}">
                 <span>{{ f.label }}</span>
                 <span class="mobile-facets__arrow">
@@ -350,14 +352,14 @@
                 </button>
                 <div class="filter__values-wrapper">
                   {%- for v in f.values -%}
-                    {%- assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index -%}
+                    {%- assign input_id = 'Filter-Drawer-' | append: f.param_name | escape | append: '-' | append: forloop.index -%}
                     <label class="facet-checkbox">
                       <input
                         id="{{ input_id }}"
                         type="checkbox"
                         name="{{ v.param_name }}"
                         value="{{ v.value }}"
-                        data-render-section
+                        data-render-section="filters-form-drawer"
                         {% if v.active %}
                           checked
                         {% endif -%}
@@ -377,34 +379,35 @@
             </div>
           {%- endfor -%}
         </div>
-      {%- endif -%}
-      {%- if enable_sorting -%}
-        <div class="drawer__child-sorting-wrapper">
-          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-          <div class="facet-filters__field large-up-hide">
-            <h2 class="facet-filters__label">
-              <label for="SortBy">Sort by:</label>
-            </h2>
-            <select
-              data-render-section
-              name="sort_by"
-              id="SortBy"
-              class="facet-filters__sort"
-            >
-              {%- for option in collection.sort_options -%}
-                <option
-                  value="{{ option.value | escape }}"
-                  {% if option.value == sort_by %}
-                    selected="selected"
-                  {% endif %}
-                >
-                  {{ option.name | escape }}
-                </option>
-              {%- endfor -%}
-            </select>
+
+        {%- if enable_sorting -%}
+          <div class="drawer__child-sorting-wrapper">
+            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+            <div class="facet-filters__field large-up-hide">
+              <h2 class="facet-filters__label">
+                <label for="SortBy">Sort by:</label>
+              </h2>
+              <select
+                data-render-section="filters-form-drawer"
+                name="sort_by"
+                id="SortBy"
+                class="facet-filters__sort"
+              >
+                {%- for option in collection.sort_options -%}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
           </div>
-        </div>
-      {%- endif -%}
-    </div>
+        {%- endif -%}
+      </div>
+    </form>
   </div>
 </div>
