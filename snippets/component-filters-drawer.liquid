@@ -4,12 +4,15 @@
     max-width: 370px;
   }
 
-  .drawer-main-wrapper:not(.drawer-active) .drawer-overlay,
-  .drawer-main-wrapper:not(.drawer-active) .drawer__wrapper {
+  .drawer-main-wrapper:not(.drawer-active) .drawer-overlay {
     opacity: 0;
     transition: opacity 0.4s, width 0s linear 0.4s, visibility 0s linear 0.4s;
     visibility: hidden;
     width: 0;
+  }
+
+  .drawer-main-wrapper:not(.drawer-active) .drawer__wrapper{
+    transform: translate(100%, 0px);
   }
 
   .drawer__facet-button-trigger {
@@ -164,7 +167,7 @@
     padding-top: 0px;
     overflow-y: scroll;
     height: 100%;
-    max-height: calc(100% - 130px);
+    max-height: calc(100% - 200px);
     display: block;
     padding-bottom: 50px;
   }
@@ -323,7 +326,7 @@
         </div>
       </div>
     </div>
-    <form id="filters-form-drawer">
+    <form id="filters-form-drawer" class="filters__drawer-form">
       <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true).as('openFilter') }">
         <div class="drawer__child-facets-wrapper">
           {%- for f in results.filters -%}

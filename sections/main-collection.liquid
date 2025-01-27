@@ -27,8 +27,8 @@
     width: 100%;
     align-items: flex-start;
     justify-content: flex-end;
-    margin-bottom: 15px;
     gap: 30px;
+    margin-bottom: 5px;
   }
 
   .child-sorting-wrapper {
@@ -135,7 +135,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    min-width: 70px;
+    min-width: 80px;
     position: relative;
   }
 
@@ -147,8 +147,12 @@
   .active-filter-group__item-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     width: 100%;
+  }
+
+  .active-filter-group__item-wrapper .active-filter-item {
+    margin-top: 12px;
+    margin-right: 12px;
   }
 
   .filter-close .icon-close {
@@ -172,21 +176,17 @@
     width: 100%;
   }
 
-  .filter-type-horizontal .active-filter-group__item-wrapper {
-    gap: 0px;
-  }
-
-  .filter-type-horizontal .filter.active-filter-item {
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, .2);
-    color: black;
-    margin-top: 15px;
-    margin-right: 15px;
-  }
-
   .filter-type-horizontal .filter-close .icon-close {
     width: 10px;
     height: 10px;
+  }
+
+  .filter-type-horizontal .active-filter-group__item-wrapper {
+    gap: 15px;
+  }
+
+  .filter-type-horizontal .active-filter-group__item-wrapper .active-filter-item {
+    margin: 0px;
   }
 
   .filter-type-horizontal .filter.active-filter-item.active-filter-clear-all {
@@ -204,12 +204,25 @@
       gap: 5px;
     }
 
+    .sorting-wrapper {
+      margin-bottom: 0px;
+    }
+
     .results-count{
       font-size: 14px;
     }
 
     .active-filter-item span{
       font-size: 12px;
+    }
+
+    .filter-type-horizontal .active-filter-group__item-wrapper {
+      gap: 0px;
+    }
+
+    .filter-type-horizontal .active-filter-group__item-wrapper .active-filter-item {
+      margin-top: 12px;
+      margin-right: 12px;
     }
   }
 
@@ -256,28 +269,6 @@
   @keyframes spin {
     to {
       transform: rotate(360deg);
-    }
-  }
-
-  @media screen and (max-width: 750px) {
-    .filter-type-vertical .sorting-wrapper {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: auto 1fr;
-      grid-column-gap: 0px;
-      grid-row-gap: 0px;
-    }
-
-    .filter-type-vertical .mobile-filters-drawer  {
-      grid-area: 1 / 1 / 2 / 2;
-    }
-
-    .filter-type-vertical .horizontal-filters__parent-wrapper {
-      grid-area: 2 / 1 / 3 / 3;
-    }
-
-    .filter-type-vertical .child-sorting-wrapper {
-      grid-area: 1 / 2 / 2 / 3;
     }
   }
 {%- endstyle -%}
@@ -510,56 +501,26 @@
                       -%}
                     </div>
                   {%- endif -%}
-                  <div class="horizontal-filters__parent-wrapper">
-                    {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
-                      {% render 'component-filters-horizontal', results: collection %}
-                      <div class="mobile-horizontal-filter medium-hide large-up-hide">
-                        {%- render 'component-filters-drawer',
+                  {%- if section.settings.filter_type != 'vertical' -%}
+                    <div class="horizontal-filters__parent-wrapper">
+                      {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
+                        {% render 'component-filters-horizontal', results: collection %}
+                        <div class="mobile-horizontal-filter medium-hide large-up-hide">
+                          {%- render 'component-filters-drawer',
+                            results: collection,
+                            enable_sorting: section.settings.enable_sorting,
+                            enable_filtering: section.settings.enable_filtering
+                          -%}
+                        </div>
+                      {% elsif section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
+                        {% render 'component-filters-drawer',
                           results: collection,
                           enable_sorting: section.settings.enable_sorting,
                           enable_filtering: section.settings.enable_filtering
-                        -%}
-                      </div>
-                    {% elsif section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
-                      {% render 'component-filters-drawer',
-                        results: collection,
-                        enable_sorting: section.settings.enable_sorting,
-                        enable_filtering: section.settings.enable_filtering
-                      %}
-                    {% endif %}
-                    {%- if section.settings.enable_filtering and section.settings.filter_type != 'drawer' -%}
-                      <div id="active-filter-group-{{ section.id }}" class="active-filter-group__item-wrapper">
-                        {% liquid
-                          assign has_active_filters = false
-                          for f in collection.filters
-                            if f.active_values.size > 0
-                              assign has_active_filters = true
-                            endif
-                          endfor
                         %}
-
-                        {%- for f in collection.filters -%}
-                          {% for v in f.active_values %}
-                            <div class="filter active-filter-item">
-                              <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
-                              <div
-                                class="filter-close"
-                                data-render-section-url="{{ v.url_to_remove }}"
-                              >
-                                {{- 'icon-close.svg' | inline_asset_content -}}
-                              </div>
-                            </div>
-                          {% endfor %}
-                        {%- endfor -%}
-
-                        {% if has_active_filters %}
-                          <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ collection.url }}">
-                            <span>Clear all filters</span>
-                          </div>
-                        {% endif %}
-                      </div>
-                    {%- endif -%}
-                  </div>
+                      {% endif %}
+                    </div>
+                  {%- endif -%}
                   <div class="child-sorting-wrapper">
                     {%- if section.settings.enable_sorting -%}
                       {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
@@ -602,38 +563,36 @@
                   </div>
                 </div>
 
-                {%- if section.settings.filter_type == 'drawer' -%}
-                  <div id="active-filter-group-{{ section.id }}" class="active-filter-group__item-wrapper">
-                    {% liquid
-                      assign has_active_filters = false
-                      for f in collection.filters
-                        if f.active_values.size > 0
-                          assign has_active_filters = true
-                        endif
-                      endfor
-                    %}
+                <div id="active-filter-group-{{ section.id }}" class="active-filter-group__item-wrapper">
+                  {% liquid
+                    assign has_active_filters = false
+                    for f in collection.filters
+                      if f.active_values.size > 0
+                        assign has_active_filters = true
+                      endif
+                    endfor
+                  %}
 
-                    {%- for f in collection.filters -%}
-                      {% for v in f.active_values %}
-                        <div class="filter active-filter-item">
-                          <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
-                          <div
-                            class="filter-close"
-                            data-render-section-url="{{ v.url_to_remove }}"
-                          >
-                            {{- 'icon-close.svg' | inline_asset_content -}}
-                          </div>
+                  {%- for f in collection.filters -%}
+                    {% for v in f.active_values %}
+                      <div class="filter active-filter-item">
+                        <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
+                        <div
+                          class="filter-close"
+                          data-render-section-url="{{ v.url_to_remove }}"
+                        >
+                          {{- 'icon-close.svg' | inline_asset_content -}}
                         </div>
-                      {% endfor %}
-                    {%- endfor -%}
-
-                    {% if has_active_filters %}
-                      <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ collection.url }}">
-                        <span>Clear all filters</span>
                       </div>
-                    {% endif %}
-                  </div>
-                {%- endif -%}
+                    {% endfor %}
+                  {%- endfor -%}
+
+                  {% if has_active_filters %}
+                    <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ collection.url }}">
+                      <span>Clear all filters</span>
+                    </div>
+                  {% endif %}
+                </div>
 
                 <div class="product-grid-wrapper" id="product-grid-{{ section.id }}">
                   <div id="loading-overlay-{{ section.id }}" class="loading-overlay"></div>
@@ -770,7 +729,6 @@
               this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
-              //this.updateFilters(html, `js-filter-drawer`);
               this.updateFilters(html, `js-filter`);
               this.updateURL(searchParams);
               this.hideLoadingOverlay();
