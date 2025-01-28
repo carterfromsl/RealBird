@@ -501,37 +501,39 @@
                       -%}
                     </div>
                   {%- endif -%}
-                  {%- if section.settings.filter_type != 'vertical' -%}
+                  {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
                     <div class="horizontal-filters__parent-wrapper">
-                      {%- if section.settings.enable_filtering and section.settings.filter_type == 'horizontal' -%}
-                        {% render 'component-filters-horizontal', results: collection %}
-                        <div class="mobile-horizontal-filter medium-hide large-up-hide">
-                          {%- render 'component-filters-drawer',
-                            results: collection,
-                            enable_sorting: section.settings.enable_sorting,
-                            enable_filtering: section.settings.enable_filtering
-                          -%}
-                        </div>
-                      {% elsif section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
-                        {% render 'component-filters-drawer',
+                      {% render 'component-filters-horizontal', results: collection %}
+                      <div class="mobile-horizontal-filter medium-hide large-up-hide">
+                        {%- render 'component-filters-drawer',
                           results: collection,
                           enable_sorting: section.settings.enable_sorting,
                           enable_filtering: section.settings.enable_filtering
-                        %}
-                      {% endif %}
+                        -%}
+                      </div>
                     </div>
-                  {%- endif -%}
+                  {% elsif section.settings.enable_filtering and section.settings.filter_type == 'drawer' %}
+                    <div class="horizontal-filters__parent-wrapper">
+                      {% render 'component-filters-drawer',
+                        results: collection,
+                        enable_sorting: section.settings.enable_sorting,
+                        enable_filtering: section.settings.enable_filtering
+                      %}
+                    </div>
+                  {% endif %}
                   <div class="child-sorting-wrapper">
                     {%- if section.settings.enable_sorting -%}
                       {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-                      <div class="facet-filters__field small-hide">
+                      <div id="sort-by-{{ section.id }}" class="facet-filters__field small-hide">
                         <h2 class="facet-filters__label">
                           <label for="SortBy">Sort by:</label>
                         </h2>
                         <select
                           data-render-section="filters-form"
                           name="sort_by"
-                          {% if section.settings.enable_filtering %}
+                          {% if section.settings.filter_type == 'drawer' %}
+                            form="filters-form-drawer"
+                          {% elsif section.settings.filter_type == 'horizontal' or section.settings.filter_type == 'vertical' %}
                             form="filters-form"
                           {% endif %}
                           id="SortBy"
@@ -657,8 +659,8 @@
 
         onChangeHandler = (event) => {
           if (!event.target.matches('[data-render-section]')) return;
-
-          const formData = new FormData(event.target.closest('form'));
+          const form = event.target.closest('form') || document.querySelector('#filters-form') || document.querySelector('#filters-form-drawer');
+          const formData = new FormData(form);
           const searchParams = new URLSearchParams(formData).toString();
           this.fetchSection(searchParams);
         };
@@ -729,6 +731,8 @@
               this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
+              this.updateSourceFromDestination(html, `sort-by-drawer-${this.dataset.section}`);
+              this.updateSourceFromDestination(html, `sort-by-${this.dataset.section}`);
               this.updateFilters(html, `js-filter`);
               this.updateURL(searchParams);
               this.hideLoadingOverlay();

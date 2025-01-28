@@ -11,7 +11,7 @@
     width: 0;
   }
 
-  .drawer-main-wrapper:not(.drawer-active) .drawer__wrapper{
+  .drawer-main-wrapper:not(.drawer-active) .drawer__wrapper {
     transform: translate(100%, 0px);
   }
 
@@ -382,11 +382,10 @@
             </div>
           {%- endfor -%}
         </div>
-
         {%- if enable_sorting -%}
           <div class="drawer__child-sorting-wrapper">
             {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-            <div class="facet-filters__field large-up-hide">
+            <div id="sort-by-drawer-{{ section.id }}" class="facet-filters__field large-up-hide">
               <h2 class="facet-filters__label">
                 <label for="SortBy">Sort by:</label>
               </h2>
