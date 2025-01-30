@@ -9,11 +9,24 @@
         aria-haspopup="listbox"
         aria-autocomplete="list"
         placeholder="Search"
+        x-model="searchTerm"
         x-ref="searchInput"
         x-show="searchOpen"
         @focus="$event.target.select()"
       >
       <input name="options[prefix]" type="hidden" value="last">
+      
+      <button 
+        type="reset" 
+        class="reset__button" 
+        aria-label="Clear search term" 
+        @click="$refs.searchInput.value = ''; searchTerm = ''; $dispatch('search-input-cleared');" 
+        x-show="searchTerm.length > 0"
+        x-transition
+        x-cloak
+      >
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </button>
       <button aria-label="Search">
         {{- 'icon-search.svg' | inline_asset_content -}}
       </button>

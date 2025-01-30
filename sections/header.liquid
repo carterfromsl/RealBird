@@ -168,6 +168,7 @@
     height: 40px;
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     padding-inline: 10px;
   }
   #header-search form input {
@@ -184,6 +185,30 @@
       display: none;
       width: 0;
       height: 0;
+  }
+  #header-search .reset__button {
+    position: relative;
+    border: 1px solid rgba(var(--color-foreground),.2) !important;
+    border-radius: 10rem;
+    min-width: 16px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    align-self: center;
+    margin: 0;
+    margin-right: 15px;
+  }
+  #header-search .reset__button::before {
+    content: '';
+    position: absolute;
+    right: -15px;
+    width: 1px;
+    height: calc(100% + 10px);
+    background: rgba(var(--color-foreground),.08);
+  }
+  #header-search .reset__button svg.icon-close {
+    width: 10px !important;
+    height: auto;
   }
 
   /* clears the 'X' from Chrome */
@@ -245,7 +270,7 @@
 {% endcapture %}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
-  <header id="main-header" x-data="{ searchOpen: false }" @click.outside="searchOpen = false">
+  <header id="main-header" x-data="{ searchOpen: false, searchTerm: '' }" @click.outside="searchOpen = false" @input="searchTerm = $event.target.value">
     {% render 'nav-drawer' %}
 
     {% if section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
@@ -312,10 +337,22 @@
             name="q"
             value="{{ search.terms | escape }}"
             placeholder="Search"
+            x-model="searchTerm"
             x-ref="searchInput"
             x-show="searchOpen"
             @focus="$event.target.select()"
           >
+          <button 
+            type="reset" 
+            class="reset__button" 
+            aria-label="Clear search term" 
+            @click="$refs.searchInput.value = ''; searchTerm = ''; $dispatch('search-input-cleared');" 
+            x-show="searchTerm.length > 0"
+            x-transition
+            x-cloak
+          >
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </button>
           <button aria-label="Search">
             {{- 'icon-search.svg' | inline_asset_content -}}
           </button>
