@@ -40,6 +40,9 @@
             class="facets__display-vertical"
             x-data="{ showMore : $persist(false).as('sm-{{ f.param_name }}') }"
           >
+            {% if f.type == 'price_range' %}
+                {% render 'price-facet', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}          
+            {% else %}
             {% for v in f.values %}
               {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
               <label
@@ -69,7 +72,8 @@
                 {{- v.label }} ({{ v.count }})
               </label>
             {% endfor %}
-            {%- if f.values.size > show_more_number -%}
+          {% endif %}
+            {%- if f.type != 'price_range' and f.values.size > show_more_number -%}
               <button
                 type="button"
                 class="filters__show-more"

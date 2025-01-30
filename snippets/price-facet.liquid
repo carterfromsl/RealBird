@@ -1,0 +1,21 @@
+<div class="price-range-main" currency-symbol="{{ cart.currency.symbol }}">
+    <div class="price-range-subcontainer">
+        <div class="price-input-container">
+            <div class="price-input">
+                <div class="price-field">
+                    <span class="min_price">{{ cart.currency.symbol }}0</span>
+                </div>
+                <div class="price-field">
+                    <span class="max_price">{{ filter.range_max | money | strip_html | escape }}</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <div class="price-slider"></div>
+            </div>
+        </div>
+        <div class="range-input">
+            <input type="range" class="min-range" min="0" max="{{ filter.range_max | money_without_currency }}" value="1" step="1" name="filter.v.price.gte" data-render-section>
+            <input type="range" class="max-range" min="0" max="{{ filter.range_max | money_without_currency  }}" value="{{ filter.range_max | money_without_currency }}" step="1"  name="filter.v.price.lte" data-render-section>
+        </div>
+    </div>
+</div>
