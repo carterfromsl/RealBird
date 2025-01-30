@@ -1,5 +1,4 @@
-#cart-drawer:not(.cart-open) .drawer-overlay,
-#cart-drawer:not(.cart-open) .drawer__wrapper {
+#cart-drawer:not(.cart-open) .drawer-overlay {
   opacity: 0;
   transition:
     opacity 0.4s,
@@ -8,6 +7,11 @@
   visibility: hidden;
   width: 0;
 }
+
+#cart-drawer:not(.cart-open) .drawer__wrapper {
+  transform: translate(100%, 0px);
+}
+
 .cart-header {
   display: flex;
   justify-content: space-between;
