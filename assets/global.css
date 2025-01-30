@@ -29,16 +29,10 @@ main#MainContent {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.page-wrapper {
+.page-width {
   max-width: var(--page-width);
   margin-inline: auto;
   padding-inline: 20px;
-}
-
-.page-width {
-  max-width: var(--page-width);
-  margin: 0 auto;
-  padding: 0px 20px;
 }
 
 body .hidden, .visually-hidden {

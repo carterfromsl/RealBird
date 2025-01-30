@@ -6,7 +6,7 @@
     width: 100%;
     margin-top: 1px;
   }
-  #main-header .nav-megamenu .page-wrapper {
+  #main-header .nav-megamenu .page-width {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     margin-inline: auto;
@@ -41,7 +41,7 @@
           {{- 'icon-caret.svg' | inline_asset_content -}}
         </button>
         <div x-show="menuOpen" x-transition x-cloak class="nav-megamenu color-{{ section.settings.menu_color_scheme }} gradient">
-          <ul class="page-wrapper" role="list">
+          <ul class="page-width" role="list">
             {%- for childlink in link.links -%}
               <li>
                 <a
