@@ -846,7 +846,11 @@
         // Add the CSS class to the "body" tag
         document.body.classList.add('js-show-ajax-cart');
         // dispatch a custom event
-        this.dispatchEvent(new CustomEvent('product-info-updated'));
+        document.dispatchEvent(
+          new CustomEvent('item-added-to-cart', {
+            detail: requestState?.responseData?.body,
+          })
+        );
       }
     }
 

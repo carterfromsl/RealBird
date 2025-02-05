@@ -719,7 +719,7 @@ input[type="range"]::-webkit-slider-thumb {
                       <p>Nothing Here</p>
                     {%- else -%}
                       {%- for product in collection.products -%}
-                        {% render 'card-product',
+                        {% render 'component-card-product',
                           card_product: product,
                           show_vendor: section.settings.show_vendor,
                           enable_swatches: section.settings.enable_swatches,
