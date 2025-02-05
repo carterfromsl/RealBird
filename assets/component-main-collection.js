@@ -29,7 +29,14 @@ if (!customElements.get('collection-info')) {
                 if (!event.target.matches('[data-render-section]')) return;
                 const form = event.target.closest('form') || document.querySelector('#filters-form') || document.querySelector('#filters-form-drawer');
                 const formData = new FormData(form);
-                const searchParams = new URLSearchParams(formData).toString();
+                let searchParams = new URLSearchParams(formData).toString();
+                if (window.location.search.includes('?q=')) {
+                    const existingParams = new URLSearchParams(window.location.search);
+                    const qValue = existingParams.get('q');
+                    
+                    searchParams = `q=${qValue}&${searchParams}`;
+                    console.log('searchParams', searchParams);
+                }
                 this.fetchSection(searchParams);
             };
 
@@ -90,6 +97,7 @@ if (!customElements.get('collection-info')) {
             };
 
             fetchSection = (searchParams) => {
+                console.log('searchParams', searchParams); 
                 this.showLoadingOverlay();
                 fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
                     .then((response) => response.text())

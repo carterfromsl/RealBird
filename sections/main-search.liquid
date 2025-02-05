@@ -283,7 +283,11 @@
                                     {%- endfor -%}
 
                                     {% if has_active_filters %}
-                                    <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ search.url }}">
+                                      {%- liquid
+                                          assign terms = search.terms | escape
+                                          assign results_url = '?q=' | append: terms
+                                      -%}
+                                    <div class="filter active-filter-item active-filter-clear-all" data-render-section-url="{{ results_url }}">
                                         <span>Clear all filters</span>
                                     </div>
                                     {% endif %}
