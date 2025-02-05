@@ -467,118 +467,6 @@
     cursor: pointer;
     text-underline-offset: 3px;
   }
-
-  /* PRICE RANGE FILTER STYLING */
-
-  .price-input-container {
-    width: 100%;
-  }
-
-  .price-input .price-field {
-    display: flex;
-    margin-bottom: 22px;
-  }
-
-  .price-field input {
-    height: 35px;
-    font-size: 15px;
-    border-radius: 9px;
-    text-align: center;
-    border: 0px;
-    background: #e4e4e4;
-    width: 50px;
-  }
-
-  .price-input {
-    width: 100%;
-    font-size: 14px;
-    color: #555;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .slider-container {
-    width: 100%;
-  }
-
-  .slider-container {
-    height: 6px;
-    position: relative;
-    background: #e4e4e4;
-    border-radius: 5px;
-  }
-
-  .slider-container .price-slider {
-    height: 100%;
-    left: 0%;
-    right: 0%;
-    position: absolute;
-    border-radius: 5px;
-    background: #000;
-  }
-
-  .range-input {
-    position: relative;
-  }
-
-  .range-input input {
-    position: absolute;
-    width: 100%;
-    height: 5px;
-    background: none;
-    top: -5px;
-    pointer-events: none;
-    cursor: pointer;
-    -webkit-appearance: none;
-  }
-
-  /* Styles for the range thumb in WebKit browsers */
-  input[type='range']::-webkit-slider-thumb {
-    height: 18px;
-    width: 18px;
-    border-radius: 70%;
-    background: #555;
-    pointer-events: auto;
-    -webkit-appearance: none;
-  }
-
-  @media screen and (max-width: 768px) {
-    .price-range-main {
-      width: 80%;
-      margin-right: 5px;
-    }
-
-    .price-range-subcontainer {
-      width: 100%;
-      left: 0;
-      padding: 0 10px;
-    }
-
-    .projtitle {
-      width: 100%;
-      position: relative;
-      right: 26px;
-    }
-
-    .price-input {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .price-field {
-      margin-bottom: 10px;
-    }
-  }
-
-  /*====================================
-  END OF PRICE RANGE FILTER STYLING
-  ======================================*/
 {%- endstyle -%}
 
 {% comment %} COMPONENT STYLES {% endcomment %}
@@ -760,9 +648,6 @@
           this.addEventListener('change', this.debounceOnChange.bind(this));
           this.addEventListener('click', this.onClickHandler.bind(this));
         }
-        connectedCallback() {
-          this.initPriceRange();
-        }
 
         onClickHandler = (event) => {
           if (event.target.matches('[data-render-section-url]')) {
@@ -843,6 +728,7 @@
             .then((response) => response.text())
             .then((responseText) => {
               let html = new DOMParser().parseFromString(responseText, 'text/html');
+              this.updateURL(searchParams);
               this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
@@ -850,56 +736,14 @@
               this.updateSourceFromDestination(html, `sort-by-drawer-${this.dataset.section}`);
               this.updateSourceFromDestination(html, `sort-by-${this.dataset.section}`);
               this.updateFilters(html, `js-filter`);
-              this.updateURL(searchParams);
+              
               this.hideLoadingOverlay();
-              this.initPriceRange();
             })
             .catch((error) => {
               console.error(error);
               this.hideLoadingOverlay();
             });
         };
-
-        getMinMax(rangeInputs) {
-          const urlParams = new URLSearchParams(window.location.search);
-          const urlMin = urlParams.get('filter.v.price.gte');
-          const urlMax = urlParams.get('filter.v.price.lte');
-          const minVal = urlMin ? parseInt(urlMin, 10) : rangeInputs[0].value;
-          const maxVal = urlMax ? parseInt(urlMax, 10) : rangeInputs[1].value;
-
-          return { minVal, maxVal };
-        }
-
-        initPriceRange() {
-          const rangeInputs = this.querySelectorAll('.range-input input');
-          const rangeSlider = this.querySelector('.slider-container .price-slider');
-          const minPriceText = this.querySelector('.min_price');
-          const maxPriceText = this.querySelector('.max_price');
-
-          const currencySymbol = this.querySelector('.price-range-main')?.getAttribute('currency-symbol');
-          const { minVal, maxVal } = this.getMinMax(rangeInputs);
-          this.updateSliderUI(minVal, maxVal, rangeInputs, rangeSlider, minPriceText, maxPriceText, currencySymbol);
-
-          rangeInputs.forEach((input) => {
-            input.addEventListener('input', () => {
-              const newMin = parseInt(rangeInputs[0].value, 10);
-              const newMax = parseInt(rangeInputs[1].value, 10);
-
-              if (newMin <= newMax) {
-                this.updateSliderUI(newMin, newMax, rangeInputs, rangeSlider, minPriceText, maxPriceText, currencySymbol);
-              }
-            });
-          });
-        }
-        //function to update the slider UI and update price text as well
-        updateSliderUI(min, max, rangeInputs, rangeSlider, minPriceText, maxPriceText, currencySymbol) {
-          minPriceText.textContent = `${currencySymbol}${min}`;
-          maxPriceText.textContent = `${currencySymbol}${max}`;
-          rangeSlider.style.left = `${(min / rangeInputs[0].max) * 100}%`;
-          rangeSlider.style.right = `${100 - (max / rangeInputs[1].max) * 100}%`;
-          rangeInputs[0].value = min;
-          rangeInputs[1].value = max;
-        }
       }
     );
   }

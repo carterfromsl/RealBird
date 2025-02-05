@@ -41,7 +41,7 @@
             x-data="{ showMore : $persist(false).as('sm-{{ f.param_name }}') }"
           >
             {% if f.type == 'price_range' %}
-              {% render 'price-facet', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
+              {% render 'component-filters-price-range', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
             {% else %}
               {% for v in f.values %}
                 {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
