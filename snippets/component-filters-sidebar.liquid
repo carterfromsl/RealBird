@@ -41,38 +41,38 @@
             x-data="{ showMore : $persist(false).as('sm-{{ f.param_name }}') }"
           >
             {% if f.type == 'price_range' %}
-                {% render 'price-facet', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}          
+              {% render 'price-facet', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
             {% else %}
-            {% for v in f.values %}
-              {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
-              <label
-                class="facet-checkbox"
-                {% if forloop.index > show_more_number %}
-                  x-show="showMore"
-                  x-transition
-                {% endif %}
-              >
-                <input
-                  id="{{ input_id }}"
-                  type="checkbox"
-                  name="{{ v.param_name }}"
-                  value="{{ v.value }}"
-                  data-render-section="filters-form"
-                  {% if v.active %}
-                    checked
-                  {% endif -%}
-                  {% if v.count == 0 and v.active == false %}
-                    disabled
-                  {% endif -%}
+              {% for v in f.values %}
+                {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
+                <label
+                  class="facet-checkbox"
+                  {% if forloop.index > show_more_number %}
+                    x-show="showMore"
+                    x-transition
+                  {% endif %}
                 >
-                {{- 'icon-square.svg' | inline_asset_content -}}
-                <div class="svg-wrapper">
-                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
-                </div>
-                {{- v.label }} ({{ v.count }})
-              </label>
-            {% endfor %}
-          {% endif %}
+                  <input
+                    id="{{ input_id }}"
+                    type="checkbox"
+                    name="{{ v.param_name }}"
+                    value="{{ v.value }}"
+                    data-render-section="filters-form"
+                    {% if v.active %}
+                      checked
+                    {% endif -%}
+                    {% if v.count == 0 and v.active == false %}
+                      disabled
+                    {% endif -%}
+                  >
+                  {{- 'icon-square.svg' | inline_asset_content -}}
+                  <div class="svg-wrapper">
+                    {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                  </div>
+                  {{- v.label }} ({{ v.count }})
+                </label>
+              {% endfor %}
+            {% endif %}
             {%- if f.type != 'price_range' and f.values.size > show_more_number -%}
               <button
                 type="button"
