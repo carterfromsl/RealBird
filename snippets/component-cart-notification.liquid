@@ -210,7 +210,7 @@
   }
 
   // Listen for the custom event to update the cart notification
-  document.addEventListener('cart-notification-updated', function (event) {
+  document.addEventListener('item-added-to-cart', function (event) {
     updateCartNotification(event.detail);
   });
 </script>
