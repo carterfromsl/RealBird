@@ -9,9 +9,8 @@
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     {{ content_for_header }}
     
-    {% comment %} Alpine Plugins {% endcomment %}
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="{{ 'alpinejs-persist@3.14.8.min.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'alpinejs@3.14.8.min.js' | asset_url }}" defer="defer"></script>
 
     {% comment %} liquid-ajax-cart.js.org {% endcomment %}
     <script type="application/json" data-ajax-cart-initial-state>
