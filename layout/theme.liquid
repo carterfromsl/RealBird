@@ -27,7 +27,7 @@
     {%- render 'css-variables' -%}
 
     {%- if settings.predictive_search_enabled -%}
-      {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
+      {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
   </head>
 
@@ -41,7 +41,7 @@
     {% section 'main-footer' %}
 
     {%- if settings.predictive_search_enabled -%}
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'component-predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
   </body>
 </html>

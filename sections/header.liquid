@@ -348,7 +348,7 @@
 
     <div id="header-search" :class="{ 'active': searchOpen }">
       {%- if settings.predictive_search_enabled -%}
-        {%- render 'predictive-search', context: 'header' -%}
+        {%- render 'component-predictive-search', context: 'header' -%}
       {%- else -%}
         <form action="{{ routes.search_url }}" method="get" role="search">
           <input
