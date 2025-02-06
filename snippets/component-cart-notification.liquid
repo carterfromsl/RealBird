@@ -1,6 +1,7 @@
 <style>
   .cart-notification-wrapper {
     position: relative;
+    display: block;
   }
   .cart-notification:not(.cart-notification-open) {
     display: none;
@@ -129,7 +130,7 @@
   }
 </style>
 
-<div class="cart-notification-wrapper{% if desktop_menu_type != 'drawer' %} page-width{% endif %}">
+<cart-notification class="cart-notification-wrapper{% if desktop_menu_type != 'drawer' %} page-width{% endif %}">
   <div
     id="cart-notification"
     class="cart-notification {% if color_scheme %} color-{{ color_scheme }} gradient{% endif %}"
@@ -147,7 +148,6 @@
         type="button"
         class="cart-notification__close"
         aria-label="{{ 'accessibility.close' | t }}"
-        onclick="hideCartNotification()"
       >
         {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
@@ -165,52 +165,62 @@
           {{ 'sections.cart.checkout' | t }}
         </button>
       </form>
-      <button class="cart-notification-continue_shopping" type="button" onclick="hideCartNotification()">
+      <button class="cart-notification-continue_shopping" type="button">
         {{ 'general.continue_shopping' | t }}
       </button>
     </div>
   </div>
-</div>
+</cart-notification>
 
 <script>
-  function updateCartNotification(updatedCartNotification) {
-    const cartNotificationProduct = document.querySelector('#cart-notification-product');
+  class CartNotification extends HTMLElement {
+    constructor() {
+      super();
 
-    // Map over options_with_values to create dynamic HTML for product options
-    const optionsHTML = updatedCartNotification.options_with_values
-      .map((option) => {
-        return `<div class="product-option"><dt>${option.name}: </dt><dd>${option.value}</dd></div>`;
-      })
-      .join('');
+      this.hideNotification = this.hideNotification.bind(this);
+    }
 
-    // Construct the complete HTML using the data from updatedCartNotification
-    const productHTML = `
-      <div class="cart-notification-product__image">
-        <img src="${updatedCartNotification.image}" alt="${updatedCartNotification.featured_image.alt}" width="70" height="70">
-      </div>
-      <div>
-        <p class="caption-with-letter-spacing">Shopify</p>
-        <h3 class="cart-notification-product__name h4">${updatedCartNotification.product_title}</h3>
-        <dl>
-          ${optionsHTML}
-        </dl>
-      </div>
-    `;
+    connectedCallback() {
+      this.querySelector('.cart-notification-continue_shopping').addEventListener('click', () => this.hideNotification);
+      this.querySelector('.cart-notification__close').addEventListener('click', () => this.hideNotification);
+      document.addEventListener('item-added-to-cart', (event) => this.updateNotification(event.detail));
+    }
 
-    // Update the innerHTML of the selected element with the constructed HTML
-    cartNotificationProduct.innerHTML = productHTML;
-    
-    document.getElementById('cart-notification-count').innerText = updatedCartNotification.quantity;
-    document.getElementById('cart-notification').classList.add('cart-notification-open');
+    disconnectedCallback() {
+      this.querySelector('.cart-notification-continue_shopping').removeEventListener('click', this.hideNotification);
+      this.querySelector('.cart-notification__close').removeEventListener('click', this.hideNotification);
+    }
+
+    updateNotification(updatedCartNotification) {
+      const productElement = this.querySelector('#cart-notification-product');
+      const optionsHTML = updatedCartNotification.options_with_values
+        .map(option => `<div class="product-option"><dt>${option.name}: </dt><dd>${option.value}</dd></div>`)
+        .join('');
+
+      const productHTML = `
+        <div class="cart-notification-product__image">
+          <img src="${updatedCartNotification.image}" alt="${updatedCartNotification.featured_image.alt}" width="70" height="70">
+        </div>
+        <div>
+          <p class="caption-with-letter-spacing">Shopify</p>
+          <h3 class="cart-notification-product__name h4">${updatedCartNotification.product_title}</h3>
+          <dl>${optionsHTML}</dl>
+        </div>
+      `;
+
+      productElement.innerHTML = productHTML;
+      this.querySelector('#cart-notification-count').innerText = updatedCartNotification.quantity;
+      this.showNotification();
+    }
+
+    showNotification() {
+      this.querySelector('#cart-notification').classList.add('cart-notification-open');
+    }
+
+    hideNotification() {
+      this.querySelector('#cart-notification').classList.remove('cart-notification-open');
+    }
   }
 
-  function hideCartNotification() {
-    const cartNotification = document.getElementById('cart-notification');
-    cartNotification.classList.remove('cart-notification-open');
-  }
-
-  // Listen for the custom event to update the cart notification
-  document.addEventListener('item-added-to-cart', function (event) {
-    updateCartNotification(event.detail);
-  });
+  customElements.define('cart-notification', CartNotification);
 </script>

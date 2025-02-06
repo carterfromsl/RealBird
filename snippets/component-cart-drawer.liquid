@@ -5,13 +5,13 @@
   class="color-{{ settings.cart_color_scheme }} gradient"
   :class="{ 'cart-open': cartOpen }"
 >
-  <button class="drawer-overlay" @click="cartOpen = !cartOpen">
+  <button class="drawer-overlay" @click="toggleCartDrawer">
     <span hidden>Close</span>
   </button>
   <div class="drawer__wrapper" data-ajax-cart-section>
     {%- if cart == empty -%}
       <div class="cart-header cart-header--empty">
-        <div class="cart-drawer__close" @click="cartOpen = !cartOpen">
+        <div class="cart-drawer__close" @click="toggleCartDrawer">
           {{- 'icon-close.svg' | inline_asset_content -}}
         </div>
       </div>
@@ -220,3 +220,21 @@
     {%- endif -%}
   </div>
 </div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('cartDrawer', () => ({
+          cartOpen: false,
+      
+          toggleCartDrawer() {
+              this.cartOpen = ! this.cartOpen
+          },
+
+          init() {
+            document.addEventListener('item-added-to-cart', () => {
+                this.toggleCartDrawer();
+            });
+          }
+        }))
+    })
+</script>
