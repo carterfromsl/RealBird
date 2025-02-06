@@ -91,7 +91,7 @@
     <div class="menu-drawer_action">
       {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
         <div class="menu-drawer_localization">
-          {%- render 'localization-form',
+          {%- render 'component-localization-form',
             enable_country_selector: section.settings.enable_country_selector,
             enable_language_selector: section.settings.enable_language_selector
           -%}
