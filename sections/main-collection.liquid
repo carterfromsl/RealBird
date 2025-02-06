@@ -470,8 +470,12 @@
 {%- endstyle -%}
 
 {% comment %} COMPONENT STYLES {% endcomment %}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-card-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
+
+
 
 <div class="color-{{ section.settings.color_scheme }} page-width">
   <div class="collection-hero color-{{ section.settings.color_scheme }}">
@@ -603,7 +607,7 @@
                       <p>Nothing Here</p>
                     {%- else -%}
                       {%- for product in collection.products -%}
-                        {% render 'component-card-product',
+                        {% render 'component-product-card',
                           card_product: product,
                           show_vendor: section.settings.show_vendor,
                           enable_swatches: section.settings.enable_swatches,
@@ -615,7 +619,7 @@
                     {%- endif -%}
                   </div>
                   {%- if paginate.pages > 1 -%}
-                    {% render 'pagination', paginate: paginate, anchor: '' %}
+                    {% render 'component-pagination', paginate: paginate, anchor: '' %}
                   {%- endif -%}
                 </div>
               </div>
@@ -626,159 +630,10 @@
     </collection-info>
   </div>
 </div>
+<script src="{{ 'component-collection-info.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-product-card.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-filters-price-range.js' | asset_url }}" defer="defer"></script>
 
-<script
-  type="text/javascript"
->
-  function debounce(fn, wait) {
-    let t;
-    return (...args) => {
-      clearTimeout(t);
-      t = setTimeout(() => fn.apply(this, args), wait);
-    };
-  }
-
-  if (!customElements.get('collection-info')) {
-    customElements.define(
-      'collection-info',
-      class CollectionInfo extends HTMLElement {
-        constructor() {
-          super();
-          this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 800);
-          this.addEventListener('change', this.debounceOnChange.bind(this));
-          this.addEventListener('click', this.onClickHandler.bind(this));
-        }
-
-        onClickHandler = (event) => {
-          if (event.target.matches('[data-render-section-url]')) {
-            event.preventDefault();
-            const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split('?')[1]).toString();
-            this.fetchSection(searchParams);
-          }
-        };
-
-        onChangeHandler = (event) => {
-          if (!event.target.matches('[data-render-section]')) return;
-          const form =
-            event.target.closest('form') || document.querySelector('#filters-form') || document.querySelector('#filters-form-drawer');
-          const formData = new FormData(form);
-          const searchParams = new URLSearchParams(formData).toString();
-          this.fetchSection(searchParams);
-        };
-
-        get form() {
-          return this.querySelector('collection-info form');
-        }
-
-        updateSourceFromDestination = (html, id) => {
-          const source = html.getElementById(`${id}`);
-          const destination = this.querySelector(`#${id}`);
-          if (source && destination) {
-            destination.innerHTML = source.innerHTML;
-          }
-        };
-
-        updateURL(searchParams) {
-          history.pushState({}, '', `${window.location.pathname}?${searchParams}`);
-        }
-
-        updateFilters = (html, className) => {
-          const filtersFromFetch = html.querySelectorAll(`collection-info .${className}`);
-          const filtersFromDom = document.querySelectorAll(`collection-info .${className}`);
-
-          // Remove filters that are no longer returned from the server
-          Array.from(filtersFromDom).forEach((currentElement) => {
-            if (!Array.from(filtersFromFetch).some(({ id }) => currentElement.id === id)) {
-              currentElement.remove();
-            }
-          });
-
-          Array.from(filtersFromFetch).forEach((elementToRender, index) => {
-            document.getElementById(elementToRender.id).innerHTML = elementToRender.innerHTML;
-          });
-        };
-
-        showLoadingOverlay = () => {
-          this.querySelector(`#loading-overlay-${this.dataset.section}`).style.display = 'flex';
-          this.querySelector(`#loading-spinner-${this.dataset.section}`).style.display = 'block';
-          this.querySelector(`#results-count-${this.dataset.section}`).style.display = 'none';
-          if (this.querySelector(`#drawer-results-count-${this.dataset.section}`)) {
-            this.querySelector(`#drawer-results-count-${this.dataset.section}`).style.display = 'none';
-          }
-          if (this.querySelector(`#drawer-loading-spinner-${this.dataset.section}`)) {
-            this.querySelector(`#drawer-loading-spinner-${this.dataset.section}`).style.display = 'block';
-          }
-        };
-
-        hideLoadingOverlay = () => {
-          this.querySelector(`#loading-overlay-${this.dataset.section}`).style.display = 'none';
-          this.querySelector(`#loading-spinner-${this.dataset.section}`).style.display = 'none';
-          this.querySelector(`#results-count-${this.dataset.section}`).style.display = 'block';
-          if (this.querySelector(`#drawer-results-count-${this.dataset.section}`)) {
-            this.querySelector(`#drawer-results-count-${this.dataset.section}`).style.display = 'block';
-          }
-          if (this.querySelector(`#drawer-loading-spinner-${this.dataset.section}`)) {
-            this.querySelector(`#drawer-loading-spinner-${this.dataset.section}`).style.display = 'none';
-          }
-        };
-
-        fetchSection = (searchParams) => {
-          this.showLoadingOverlay();
-          fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
-            .then((response) => response.text())
-            .then((responseText) => {
-              let html = new DOMParser().parseFromString(responseText, 'text/html');
-              this.updateURL(searchParams);
-              this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
-              this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
-              this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
-              this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
-              this.updateSourceFromDestination(html, `sort-by-drawer-${this.dataset.section}`);
-              this.updateSourceFromDestination(html, `sort-by-${this.dataset.section}`);
-              this.updateFilters(html, `js-filter`);
-              
-              this.hideLoadingOverlay();
-            })
-            .catch((error) => {
-              console.error(error);
-              this.hideLoadingOverlay();
-            });
-        };
-      }
-    );
-  }
-</script>
-<script>
-  class ProductCard extends HTMLElement {
-    constructor() {
-      super();
-    }
-
-    connectedCallback() {
-      this.querySelectorAll('.color-swatch').forEach((s) => s.addEventListener('click', this.onSwatchClick.bind(this)));
-    }
-
-    onSwatchClick(event) {
-      const swatch = event.target;
-      const productImage = this.querySelector(`[data-product-image="${this.dataset.productId}"]`);
-      const swatchImageElement = swatch.querySelector('.data-variant-image');
-      const newImageUrl = swatchImageElement ? swatchImageElement.getAttribute('src') : null;
-      const newSrcset = swatchImageElement ? swatchImageElement.getAttribute('srcset') : null;
-
-      this.querySelectorAll('.color-swatch').forEach((s) => s.classList.remove('selected'));
-      swatch.classList.add('selected');
-
-      if (productImage && swatchImageElement) {
-        productImage.src = newImageUrl;
-        productImage.srcset = newSrcset;
-      }
-    }
-  }
-
-  if (!customElements.get('product-card')) {
-    customElements.define('product-card', ProductCard);
-  }
-</script>
 
 {% schema %}
 {

@@ -8,7 +8,7 @@
           data-media-id="{{ selected_variant.featured_media.id }}"
           data-media-index="{{ media_index }}"
         >
-          {% render 'product-media', media: selected_variant.featured_media, loop: video_looping %}
+          {% render 'component-product-media', media: selected_variant.featured_media, loop: video_looping %}
         </div>
         {% assign media_index = media_index | plus: 1 %}
       {% endif %}
@@ -19,7 +19,7 @@
             data-media-id="{{ media.id }}"
             data-media-index="{{ media_index }}"
           >
-            {% render 'product-media', media: media, loop: video_looping %}
+            {% render 'component-product-media', media: media, loop: video_looping %}
           </div>
           {% assign media_index = media_index | plus: 1 %}
         {% endunless %}
