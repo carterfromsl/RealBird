@@ -276,7 +276,7 @@
     @click.outside="searchOpen = false"
     @input="searchTerm = $event.target.value"
   >
-    {% render 'nav-drawer' %}
+    {% render 'component-nav-drawer' %}
 
     {% if section.settings.logo_position == 'top-center' or section.settings.menu == blank %}
       {{ header_search }}
@@ -295,9 +295,9 @@
     {% if section.settings.menu != blank and section.settings.menu_type_desktop != 'drawer' %}
       <nav>
         {% if section.settings.menu_type_desktop == 'dropdown' %}
-          {% render 'nav-dropdown', nav_style: 'dropdown' %}
+          {% render 'component-nav-dropdown', nav_style: 'dropdown' %}
         {% elsif section.settings.menu_type_desktop != 'drawer' %}
-          {% render 'nav-megamenu' %}
+          {% render 'component-nav-megamenu' %}
         {% endif %}
       </nav>
     {% endif %}

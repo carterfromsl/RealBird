@@ -86,7 +86,7 @@
     {{- 'icon-close.svg' | inline_asset_content -}}
   </button>
   <div id="menu-drawer" class="color-{{ section.settings.menu_color_scheme }} gradient" :class="{ 'drawer-open': drawerOpen }">
-    {% render 'nav-dropdown', nav_style: 'drawer' %}
+    {% render 'component-nav-dropdown', nav_style: 'drawer' %}
 
     <div class="menu-drawer_action">
       {% if section.settings.enable_country_selector or section.settings.enable_language_selector %}
