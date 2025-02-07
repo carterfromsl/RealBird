@@ -32,8 +32,8 @@
 
         {%- if settings.cart_drawer_collection != blank -%}
           <div class="cart-collection">
-            {%  assign card_collection = settings.cart_drawer_collection %}
-            <a href="" >
+            {% assign card_collection = settings.cart_drawer_collection %}
+            <a href="">
               {{ card_collection.featured_image | image_url: width: 1500 | image_tag }}
               <div class="cart-collection__title">
                 {{ card_collection.title }}
@@ -45,7 +45,6 @@
       </div>
 
     {%- else -%}
-
       <div class="cart-header">
         <h2>Your cart ({{ cart.item_count }})</h2>
         <div class="cart-drawer__close" @click="cartOpen = !cartOpen">
@@ -176,22 +175,21 @@
                   </span>
                 {%- endif -%}
               </div>
-
             </div>
             <div data-ajax-cart-errors="{{ line_item.key }}"></div>
           </div>
         {% endfor %}
       </div>
-      
+
       <div class="cart-footer">
         {%- if settings.show_cart_note -%}
-          <div class="cart-note" x-data="{ noteOpen: false }">            
-              <label for="CartNote" :class="{ 'note-open': noteOpen }" @click="noteOpen = !noteOpen">Order special instructions</label>
-              <textarea
-                name="note"
-                form="cart"
-                id="CartNote"
-              >{{ cart.note }}</textarea>
+          <div class="cart-note" x-data="{ noteOpen: false }">
+            <label for="CartNote" :class="{ 'note-open': noteOpen }" @click="noteOpen = !noteOpen">Order special instructions</label>
+            <textarea
+              name="note"
+              form="cart"
+              id="CartNote"
+            >{{ cart.note }}</textarea>
           </div>
         {%- endif -%}
 
@@ -207,11 +205,13 @@
                 {% endfor %}
               </ul>
             {% endif %}
-    
-            <div class="cart-total"><span>Estimated total</span> <span>{{ cart.total_price | money }}</span></div>
+
+            <div class="cart-total">
+              <span>Estimated total</span> <span>{{ cart.total_price | money }}</span>
+            </div>
             <small>Taxes, discounts and shipping calculated at checkout.</small>
           </div>
-    
+
           {% form 'cart', cart, id: 'my-ajax-cart-form' %}
             <button type="submit" name="checkout">Checkout</button>
           {% endform %}
@@ -222,19 +222,19 @@
 </div>
 
 <script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('cartDrawer', () => ({
-          cartOpen: false,
-      
-          toggleCartDrawer() {
-              this.cartOpen = ! this.cartOpen
-          },
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('cartDrawer', () => ({
+      cartOpen: false,
 
-          init() {
-            document.addEventListener('item-added-to-cart', () => {
-                this.toggleCartDrawer();
-            });
-          }
-        }))
-    })
+      toggleCartDrawer() {
+        this.cartOpen = !this.cartOpen;
+      },
+
+      init() {
+        document.addEventListener('item-added-to-cart', () => {
+          this.toggleCartDrawer();
+        });
+      },
+    }));
+  });
 </script>

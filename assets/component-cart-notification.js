@@ -1,13 +1,9 @@
 class CartNotification extends HTMLElement {
   constructor() {
     super();
-
     this.hideNotification = this.hideNotification.bind(this);
-  }
-
-  connectedCallback() {
-    this.querySelector('.cart-notification-continue_shopping').addEventListener('click', () => this.hideNotification);
-    this.querySelector('.cart-notification__close').addEventListener('click', () => this.hideNotification);
+    this.querySelector('.cart-notification-continue_shopping').addEventListener('click', () => this.hideNotification());
+    this.querySelector('.cart-notification__close').addEventListener('click', () => this.hideNotification());
     document.addEventListener('item-added-to-cart', (event) => this.updateNotification(event.detail));
   }
 
@@ -34,7 +30,6 @@ class CartNotification extends HTMLElement {
       `;
 
     productElement.innerHTML = productHTML;
-    this.querySelector('#cart-notification-count').innerText = updatedCartNotification.quantity;
     this.showNotification();
   }
 
