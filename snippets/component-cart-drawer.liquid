@@ -176,7 +176,11 @@
                 {%- endif -%}
               </div>
             </div>
-            <div data-ajax-cart-errors="{{ line_item.key }}"></div>
+            
+            <div class="cart-item__errors">
+              <div data-ajax-cart-errors="{{ line_item.key }}"></div>
+              {{- 'icon-info.svg' | inline_asset_content -}}
+            </div>
           </div>
         {% endfor %}
       </div>
