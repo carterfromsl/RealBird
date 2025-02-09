@@ -354,6 +354,9 @@
                   <span>{{ f.label }}</span>
                 </button>
                 <div class="filter__values-wrapper">
+                  {% if f.type == 'price_range' %}
+                    {% render 'component-filters-price-range', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
+                  {% else %}
                   {%- for v in f.values -%}
                     {%- assign input_id = 'Filter-Drawer-' | append: f.param_name | escape | append: '-' | append: forloop.index -%}
                     <label class="facet-checkbox">
@@ -377,6 +380,7 @@
                       {{- v.label }} ({{ v.count }})
                     </label>
                   {%- endfor -%}
+                {% endif %}
                 </div>
               </div>
             </div>
