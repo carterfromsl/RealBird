@@ -336,7 +336,7 @@
       <a
         id="header-cart-bubble"
         {%- if settings.cart_type == 'drawer' -%}
-          @click.prevent="cartOpen = !cartOpen"
+          @click.prevent="toggleCartDrawer"
         {%- else -%}
           href="{{ routes.cart_url }}"
         {%- endif -%}

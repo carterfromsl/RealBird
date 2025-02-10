@@ -1,6 +1,7 @@
 <style>
   .cart-notification-wrapper {
     position: relative;
+    display: block;
   }
   .cart-notification:not(.cart-notification-open) {
     display: none;
@@ -10,7 +11,8 @@
     top: 100%;
     right: 0;
     border: 1px solid rgba(var(--color-foreground), var(--popup-border-opacity));
-    box-shadow: var(--popup-shadow-horizontal-offset) var(--popup-shadow-vertical-offset) var(--popup-shadow-blur-radius) rgba(var(--color-shadow), var(--popup-shadow-opacity));
+    box-shadow: var(--popup-shadow-horizontal-offset) var(--popup-shadow-vertical-offset) var(--popup-shadow-blur-radius)
+      rgba(var(--color-shadow), var(--popup-shadow-opacity));
     padding: 1.5rem 2rem;
     max-width: 350px;
     box-sizing: border-box;
@@ -19,7 +21,7 @@
   }
   .cart-notification.cart-notification-open {
     transform: translateY(0);
-    transition: transform 200ms ease,visibility 0s;
+    transition: transform 200ms ease, visibility 0s;
     visibility: visible;
   }
   .cart-notification__header {
@@ -129,7 +131,7 @@
   }
 </style>
 
-<div class="cart-notification-wrapper{% if desktop_menu_type != 'drawer' %} page-width{% endif %}">
+<cart-notification class="cart-notification-wrapper{% if desktop_menu_type != 'drawer' %} page-width{% endif %}">
   <div
     id="cart-notification"
     class="cart-notification {% if color_scheme %} color-{{ color_scheme }} gradient{% endif %}"
@@ -147,7 +149,6 @@
         type="button"
         class="cart-notification__close"
         aria-label="{{ 'accessibility.close' | t }}"
-        onclick="hideCartNotification()"
       >
         {{- 'icon-close.svg' | inline_asset_content -}}
       </button>
@@ -158,59 +159,17 @@
         href="{{ routes.cart_url }}"
         class="cart-notification-button"
       >
-        {{ 'general.cart.view_empty_cart' | t }} (<span id="cart-notification-count"></span>)
+        {{ 'general.cart.view_empty_cart' | t }} (<span data-ajax-cart-bind="item_count" id="cart-notification-count"></span>)
       </a>
       <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form">
         <button name="checkout">
           {{ 'sections.cart.checkout' | t }}
         </button>
       </form>
-      <button class="cart-notification-continue_shopping" type="button" onclick="hideCartNotification()">
+      <button class="cart-notification-continue_shopping" type="button">
         {{ 'general.continue_shopping' | t }}
       </button>
     </div>
   </div>
-</div>
-
-<script>
-  function updateCartNotification(updatedCartNotification) {
-    const cartNotificationProduct = document.querySelector('#cart-notification-product');
-
-    // Map over options_with_values to create dynamic HTML for product options
-    const optionsHTML = updatedCartNotification.options_with_values
-      .map((option) => {
-        return `<div class="product-option"><dt>${option.name}: </dt><dd>${option.value}</dd></div>`;
-      })
-      .join('');
-
-    // Construct the complete HTML using the data from updatedCartNotification
-    const productHTML = `
-      <div class="cart-notification-product__image">
-        <img src="${updatedCartNotification.image}" alt="${updatedCartNotification.featured_image.alt}" width="70" height="70">
-      </div>
-      <div>
-        <p class="caption-with-letter-spacing">Shopify</p>
-        <h3 class="cart-notification-product__name h4">${updatedCartNotification.product_title}</h3>
-        <dl>
-          ${optionsHTML}
-        </dl>
-      </div>
-    `;
-
-    // Update the innerHTML of the selected element with the constructed HTML
-    cartNotificationProduct.innerHTML = productHTML;
-    
-    document.getElementById('cart-notification-count').innerText = updatedCartNotification.quantity;
-    document.getElementById('cart-notification').classList.add('cart-notification-open');
-  }
-
-  function hideCartNotification() {
-    const cartNotification = document.getElementById('cart-notification');
-    cartNotification.classList.remove('cart-notification-open');
-  }
-
-  // Listen for the custom event to update the cart notification
-  document.addEventListener('item-added-to-cart', function (event) {
-    updateCartNotification(event.detail);
-  });
-</script>
+</cart-notification>
+<script src="{{ 'component-cart-notification.js' | asset_url }}" defer="defer"></script>

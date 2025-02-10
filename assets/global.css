@@ -42,16 +42,17 @@ main#MainContent {
   padding: 0px 20px;
 }
 
-body .hidden, .visually-hidden {
+body .hidden,
+.visually-hidden {
   display: none;
 }
 
 @keyframes spinner {
   from {
-      transform:rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-      transform:rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -100,7 +101,7 @@ body .hidden, .visually-hidden {
   flex-direction: column;
   background: inherit;
   transform: translate(0%, 0px);
-  transition: transform .2s;
+  transition: transform 0.2s;
   box-sizing: border-box;
   z-index: 20;
 }

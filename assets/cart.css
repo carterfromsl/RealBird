@@ -58,6 +58,22 @@
   margin-bottom: 0;
   padding: 0;
 }
+.cart-item__errors {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+  gap: 5px;
+  font-size: 12px;
+  grid-column: span 2;
+  letter-spacing: 0;
+}
+.cart-item__errors svg {
+  flex-shrink: 0;
+}
+[data-ajax-cart-errors]:empty + svg {
+  display: none;
+}
 .cart-item__media img {
   width: 100%;
   height: auto;
