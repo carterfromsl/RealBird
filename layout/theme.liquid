@@ -1,5 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}" {% if settings.cart_type == 'drawer' %}x-data="cartDrawer"{% endif %}>
+<html
+  class="no-js"
+  lang="{{ request.locale.iso_code }}"
+  {% if settings.cart_type == 'drawer' %}
+    x-data="cartDrawer"
+  {% endif %}
+>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +13,29 @@
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
     {{ content_for_header }}
-    
+
     <script src="{{ 'alpinejs-persist@3.14.8.min.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'alpinejs@3.14.8.min.js' | asset_url }}" defer="defer"></script>
 
@@ -20,11 +47,11 @@
     <script type="module">
       import '{{ "liquid-ajax-cart-v2.1.1.js" | asset_url }}';
     </script>
-    
+
     {% comment %} Theme Styles {% endcomment %}
     <link rel="stylesheet" href=" {{'global.css' | asset_url }} ">
     {%- render 'css-variables' -%}
-
+    {{ 'base.css' | asset_url | stylesheet_tag }}
     {%- if settings.predictive_search_enabled -%}
       {{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
