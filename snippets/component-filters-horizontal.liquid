@@ -34,6 +34,9 @@
           {% endif %}
         </div>
         <ul class="facets__list">
+          {% if f.type == 'price_range' %}
+            {% render 'component-filters-price-range', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
+          {% else %}
           {%- for v in f.values -%}
             {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
             <li class="facets__item">
@@ -59,6 +62,7 @@
               >
             </li>
           {%- endfor -%}
+        {% endif %}
         </ul>
       </div>
     </div>

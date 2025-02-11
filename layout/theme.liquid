@@ -49,7 +49,7 @@
     </script>
 
     {% comment %} Theme Styles {% endcomment %}
-    <link rel="stylesheet" href=" {{'global.css' | asset_url }} ">
+  
     {%- render 'css-variables' -%}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {%- if settings.predictive_search_enabled -%}
