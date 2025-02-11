@@ -5,7 +5,7 @@
       "settings": {}
     },
     "fist-of-collections": {
-      "type": "list-of-collections",
+      "type": "main-list-collections",
       "settings": {}
     }
   },
