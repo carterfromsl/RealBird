@@ -17,10 +17,6 @@ body {
   min-height: 100%;
 }
 
-main#MainContent {
-  min-height: 100%;
-}
-
 .container {
   padding: 20px;
   width: 90%;

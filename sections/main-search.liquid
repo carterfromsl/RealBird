@@ -152,7 +152,7 @@
         </h1>
         <div class="template-search__search" x-data="{ searchTerm: '' }" @input="searchTerm = $event.target.value">
           {%- if settings.predictive_search_enabled -%}
-            {%- render 'predictive-search', context: 'search-page' -%}
+            {%- render 'component-predictive-search', context: 'search-page' -%}
           {%- endif -%}
         </div>
         {%- if search.performed -%}
@@ -297,9 +297,13 @@
                                     <div id="loading-overlay-{{ section.id }}" class="loading-overlay"></div>
                                     <div class="product-grid">
                                       {%- for item in search.results -%}
+                                        {% assign lazy_load = false %}
+                                        {%- if forloop.index > 2 -%}
+                                          {%- assign lazy_load = true -%}
+                                        {%- endif -%}
                                         {%- case item.object_type -%}
                                             {%- when 'product' -%}
-                                            {% render 'card-product',
+                                            {% render 'component-product-card',
                                               card_product: item,
                                               show_vendor: section.settings.show_vendor,
                                               enable_swatches: section.settings.enable_swatches,
@@ -308,7 +312,15 @@
                                               media_aspect_ratio: section.settings.image_ratio
                                             %}
                                             {%- when 'article' -%}
-                                                {{ item.title | truncate: 50 | escape }}
+                                              {% render 'component-article-card',
+                                                article: item,
+                                                show_image: true,
+                                                show_date: section.settings.article_show_date,
+                                                show_author: section.settings.article_show_author,
+                                                show_badge: true,
+                                                media_aspect_ratio: 1,
+                                                lazy_load: lazy_load
+                                              %}
                                             {%- when 'page' -%}
                                                 <div class="article-card-wrapper card-wrapper underline-links-hover">
                                                   <div
@@ -335,7 +347,7 @@
                                       {%- endfor -%}
                                     </div>
                                     {%- if paginate.pages > 1 -%}
-                                      {% render 'pagination', paginate: paginate, anchor: '' %}
+                                      {% render 'component-pagination', paginate: paginate, anchor: '' %}
                                     {%- endif -%}
                                 </div>
                             </div>
