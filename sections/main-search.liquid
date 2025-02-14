@@ -1,147 +1,52 @@
 {% comment %} COMPONENT STYLES {% endcomment %}
-{{ 'component-main-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-search.css' | asset_url | stylesheet_tag }}
 
+{% comment %} DYNAMIC STYLES {% endcomment %}
 {%- style -%}
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    }
-  
-    @media screen and (min-width: 750px) {
-      .section-{{ section.id }}-padding {
-        padding-top: {{ section.settings.padding_top }}px;
-        padding-bottom: {{ section.settings.padding_bottom }}px;
-      }
-    }
-  
-    /*====================================
-    START COLLECTION FILTERS & GRID STYLING
-    ======================================*/
-  
-    .collection-filters-wrapper {
-        display: flex;
-        {%- if section.settings.enable_filtering and section.settings.filter_type == "vertical" -%}
-        flex-direction: row;
-        {%- elsif section.settings.enable_filtering and section.settings.filter_type == "horizontal" -%}
-        flex-direction: column;
-        {% else %}
-        flex-direction: column;
-        {%- endif -%}
-    }
-
-    #product-grid-{{ section.id }} {
-        position: relative;
-    }
-
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-        gap: 10px;
-    }
-
-    @media screen and (max-width: 990px) {
-        .product-grid {
-        grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-        }
-    }
-{%- endstyle -%}
-
-<style>
-.template-search__header {
-    position: relative;
-    text-align: center;
-    margin-bottom: 3rem;
-    z-index: 2;
-}
-.template-search__header predictive-search {
-    position: relative;
+  .collection-filters-wrapper {
     display: flex;
-    width: min(750px, calc(100% - 3.5rem));
-    margin-inline: auto;
-}
-#predictive-search-wrapper {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: rgb(var(--color-background));
-      border: 1px solid rgba(var(--color-foreground),var(--popup-border-opacity));
-      border-top: 0;
-      width: calc(100% - 2px);
-      max-height: 80vh;
-      overflow-y: auto;
-}
-.template-search__header form {
-    position: relative;
-    border: 1px solid rgb(var(--color-foreground), 0.2);
-    width: min(750px, 100%);
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    padding-inline: 10px;
+    {%- if section.settings.enable_filtering and section.settings.filter_type == "vertical" -%}
+      flex-direction: row;
+    {%- elsif section.settings.enable_filtering and section.settings.filter_type == "horizontal" -%}
+      flex-direction: column;
+    {% else %}
+      flex-direction: column;
+    {%- endif -%}
   }
-  .template-search__header form input {
-    width: 100%;
-    border: 0;
-    font-size: 15px;
-    color: inherit;
-    background: transparent;
-    outline: none;
-  }
-  /* clears the 'X' from Internet Explorer */
-  .template-search__header form input[type='search']::-ms-clear,
-  .template-search__header form input[type='search']::-ms-reveal {
-      display: none;
-      width: 0;
-      height: 0;
-  }
-  .template-search__header .reset__button {
-    position: relative;
-    border: 1px solid rgba(var(--color-foreground),.2) !important;
-    border-radius: 10rem;
-    min-width: 16px;
-    height: 16px;
+
+  .product-grid {
     display: grid;
-    place-items: center;
-    align-self: center;
-    margin: 0;
-    margin-right: 15px;
-  }
-  .template-search__header .reset__button::before {
-    content: '';
-    position: absolute;
-    right: -15px;
-    width: 1px;
-    height: calc(100% + 10px);
-    background: rgba(var(--color-foreground),.08);
-  }
-  .template-search__header .reset__button svg.icon-close {
-    width: 10px !important;
-    height: auto;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 10px;
   }
 
-  /* clears the 'X' from Chrome */
-  .template-search__header form input[type='search']::-webkit-search-decoration,
-  .template-search__header form input[type='search']::-webkit-search-cancel-button,
-  .template-search__header form input[type='search']::-webkit-search-results-button,
-  .template-search__header form input[type='search']::-webkit-search-results-decoration {
-      display: none;
+  #product-grid-{{ section.id }} {
+    position: relative;
   }
-  .template-search__header button {
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    padding: 0;
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-  .template-search__header svg {
-    width: 20px;
-    color: rgb(var(--color-foreground));
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
-</style>
+
+  @media screen and (max-width: 990px) {
+    .product-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    }
+  }
+{%- endstyle -%}
 
 <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
     <div class="template-search__header color-{{ section.settings.color_scheme }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
@@ -362,7 +267,9 @@
     {%- endif -%}
 </div>
 
-<script src="{{ 'component-main-collection.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-collection-info.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-product-card.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-filters-price-range.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
   {

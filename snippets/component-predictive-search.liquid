@@ -8,7 +8,7 @@
       aria-controls="predictive-search-results"
       aria-haspopup="listbox"
       aria-autocomplete="list"
-      placeholder="Search"
+      placeholder="{% if search.terms != blank %}{{ search.terms | escape }}{% else %}Search{% endif %}"
       x-model="searchTerm"
       x-ref="searchInput"
       @focus="$event.target.select()"
