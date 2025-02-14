@@ -28,9 +28,9 @@
   {% endif %};
     align-items: center;
     gap: 0 1.5rem;
-    max-width: var(--page-width);
     margin-inline: auto;
-    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
   }
   #main-header .header-shop_name {
     font-size: 24px;
@@ -271,6 +271,7 @@
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
   <header
+  class="page-width"
     id="main-header"
     x-data="{ searchOpen: false, searchTerm: '' }"
     @click.outside="searchOpen = false"
