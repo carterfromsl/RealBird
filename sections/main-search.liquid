@@ -2,6 +2,8 @@
 {{ 'component-main-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
     .section-{{ section.id }}-padding {
@@ -505,6 +507,20 @@
         "id": "enable_sorting",
         "default": true,
         "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+      }, {
+        "type": "header",
+        "content": "t:sections.main-search.settings.header__2.content",
+        "info": "t:sections.main-search.settings.header__2.info"
+      }, {
+        "type": "checkbox",
+        "id": "article_show_date",
+        "default": true,
+        "label": "t:sections.main-search.settings.article_show_date.label"
+      }, {
+        "type": "checkbox",
+        "id": "article_show_author",
+        "default": false,
+        "label": "t:sections.main-search.settings.article_show_author.label"
       }, {
         "type": "header",
         "content": "t:sections.main-collection-product-grid.settings.header_mobile.content"
