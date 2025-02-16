@@ -1,3 +1,90 @@
+{%- style -%}
+  .filters-horizontal .facets__heading {
+    margin: 0px;
+    margin-right: 20px;
+    width: unset;
+  }
+
+  .filters-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    max-width: 700px;
+  }
+
+  .facets__wrapper {
+    position: relative;
+    margin-right: 40px;
+    margin-bottom: 15px;
+  }
+
+  .filter-button {
+    width: max-content;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: rgba(var(--color-foreground), 0.75);
+    padding: 0px;
+    margin-right: 5px;
+  }
+
+  .filter-button:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: rgba(var(--color-foreground), 1);
+  }
+
+  .filter-button .icon-caret {
+    height: 6px;
+    position: relative;
+    top: -1px;
+    right: -5px;
+  }
+
+  .filter-content {
+    border-width: var(--popup-border-width);
+    border-style: solid;
+    border-color: rgba(var(--color-foreground), var(--popup-border-opacity));
+    border-radius: var(--popup-corner-radius);
+    box-shadow: var(--popup-shadow-horizontal-offset) var(--popup-shadow-vertical-offset) var(--popup-shadow-blur-radius)
+      rgba(var(--color-shadow), var(--popup-shadow-opacity));
+    background-color: rgb(var(--color-background));
+    position: absolute;
+    top: calc(100% + 10px);
+    left: -12px;
+    width: 350px;
+    max-height: 550px;
+    overflow-y: auto;
+    z-index: 5;
+  }
+
+  .filter-content .facets__list {
+    padding: 7px 20px;
+    list-style-type: none;
+    margin: 0;
+  }
+
+  .facets__head-wrapper {
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.2);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    background-color: rgb(var(--color-background));
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+  }
+
+  .facet-reset {
+    text-transform: capitalize;
+    color: black;
+    cursor: pointer;
+    text-underline-offset: 3px;
+  }
+{%- endstyle -%}
+
 <form id="filters-form" class="filters-horizontal small-hide">
   <h2 class="facets__heading">Filter:</h2>
   {%- for f in results.filters -%}
@@ -37,32 +124,32 @@
           {% if f.type == 'price_range' %}
             {% render 'component-filters-price-range', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
           {% else %}
-          {%- for v in f.values -%}
-            {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
-            <li class="facets__item">
-              <label class="facet-checkbox">
-                <input
-                  type="checkbox"
-                  id="{{ input_id }}"
-                  name="{{ v.param_name }}"
-                  value="{{ v.value }}"
-                  data-render-section="filters-form"
-                  {% if v.active %}
-                    checked
-                  {% endif -%}
-                  {% if v.count == 0 and v.active == false %}
-                    disabled
-                  {% endif -%}
+            {%- for v in f.values -%}
+              {% assign input_id = 'Filter-' | append: f.param_name | escape | append: '-' | append: forloop.index %}
+              <li class="facets__item">
+                <label class="facet-checkbox">
+                  <input
+                    type="checkbox"
+                    id="{{ input_id }}"
+                    name="{{ v.param_name }}"
+                    value="{{ v.value }}"
+                    data-render-section="filters-form"
+                    {% if v.active %}
+                      checked
+                    {% endif -%}
+                    {% if v.count == 0 and v.active == false %}
+                      disabled
+                    {% endif -%}
+                  >
+                  {{- 'icon-square.svg' | inline_asset_content -}}
+                  <div class="svg-wrapper">
+                    {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                  </div>
+                  {{- v.label }} ({{ v.count }})</label
                 >
-                {{- 'icon-square.svg' | inline_asset_content -}}
-                <div class="svg-wrapper">
-                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
-                </div>
-                {{- v.label }} ({{ v.count }})</label
-              >
-            </li>
-          {%- endfor -%}
-        {% endif %}
+              </li>
+            {%- endfor -%}
+          {% endif %}
         </ul>
       </div>
     </div>

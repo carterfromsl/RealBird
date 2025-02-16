@@ -372,9 +372,6 @@ shopify-buy-it-now-button .shopify-payment-button__button {
 }
 
 @media screen and (min-width: 750px) {
-  product-info .page-width {
-    padding: 0 50px;
-  }
 
   .product--right .product__media-wrapper {
     order: 1;

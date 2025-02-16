@@ -1,3 +1,60 @@
+{%- style -%}
+  .filters-sidebar {
+    margin-bottom: 20px;
+    width: 260px;
+    margin-right: 30px;
+    flex-shrink: 0;
+  }
+
+  .facets__heading {
+    display: block;
+    color: rgba(var(--color-foreground), 0.85);
+    font-size: 14px;
+    margin-bottom: 15px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-section {
+    border-top: 1px solid rgba(var(--color-foreground), 0.1);
+    margin-right: 0;
+  }
+
+  .facets__disclosure-vertical summary {
+    padding: 16.5px 17.5px 16.5px 0px;
+  }
+
+  .facets__disclosure-vertical details[open] summary .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .facets__disclosure-vertical summary .icon-caret {
+    position: absolute;
+    height: 6px;
+    right: 0px;
+    top: calc(50% - 2px);
+  }
+
+  .facets__display-vertical {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 12px 25px 0px;
+  }
+
+  .filters__show-more {
+    background: white;
+    border: 1px solid;
+    padding: 10px 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    outline: 1px solid transparent;
+  }
+
+  .filters__show-more:hover {
+    outline: 1px solid black;
+  }
+{%- endstyle -%}
+
 {% assign show_more_number = 10 %}
 <aside class="filters-sidebar small-hide">
   {% liquid
