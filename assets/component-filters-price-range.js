@@ -32,6 +32,7 @@ class PriceRange extends HTMLElement {
 
         if (newMin <= newMax) {
           this.updateUI(newMin, newMax);
+          this.updateURL(newMin, newMax);
         }
       });
     });
@@ -44,6 +45,13 @@ class PriceRange extends HTMLElement {
     this.rangeSlider.style.right = `${100 - (max / this.rangeInputs[1].max) * 100}%`;
     this.rangeInputs[0].value = min;
     this.rangeInputs[1].value = max;
+  }
+
+  updateURL(min, max) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('filter.v.price.gte', min);
+    urlParams.set('filter.v.price.lte', max);
+    history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
   }
 }
 
