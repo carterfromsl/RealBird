@@ -237,4 +237,122 @@ This creates a seamless cart experience where:
 - All components stay in sync
 - The user gets immediate feedback
 
+### Collection Page Implementation
+
+The collection page tells an interesting story of how filtering, sorting, and pagination work together through two main event handlers. Let's follow the flow:
+
+#### Event Handling Flow
+
+The `<collection-info>` element manages two primary events:
+
+```js
+class CollectionInfo extends HTMLElement {
+  constructor() {
+    super();
+    this.debounceOnChange = debounce((event) => this.onChangeHandler(event), 800);
+    this.addEventListener('change', this.debounceOnChange.bind(this));
+    this.addEventListener('click', this.onClickHandler.bind(this));
+  }
+}
+```
+
+1. **Filter Changes (`onChangeHandler`)**
+   - Triggered by filter form changes (checkboxes, price range, etc.)
+   - The filters are wrapped in form elements:
+   ```liquid
+   <form id="filters-form">
+     {% for f in results.filters %}
+       <!-- Filter inputs -->
+     {% endfor %}
+   </form>
+   ```
+   - Collects all filter values from the form
+   - Converts them to URL parameters
+   - Preserves search query if present (`?q=` parameter)
+
+2. **Navigation Changes (`onClickHandler`)**
+   - Handles sorting and pagination clicks
+   - Looks for elements with `data-render-section-url`
+   - Uses the URL from the element's data attribute
+
+Both events ultimately call `fetchSection`, which updates the page:
+
+```js
+fetchSection(searchParams) {
+  // Show loading state
+  this.showLoadingOverlay();
+  
+  // Fetch updated section content
+  fetch(`${window.location.pathname}?section_id=${this.dataset.section}&${searchParams}`)
+    .then((response) => response.text())
+    .then((responseText) => {
+      const html = new DOMParser().parseFromString(responseText, 'text/html');
+      
+      // Update multiple sections of the page
+      this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
+      this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
+      this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
+      // ... update other sections
+      
+      this.updateURL(searchParams);
+      this.hideLoadingOverlay();
+    });
+}
+```
+
+#### Filter UI with Alpine.js
+
+The theme offers three filter layouts, each powered by Alpine.js for state management:
+
+1. **Drawer Filters**
+```liquid
+<div
+  x-data="{ open: false }"
+  class="drawer-main-wrapper"
+  :class="{ 'drawer-active': open }"
+>
+  <!-- Drawer content -->
+  <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true) }">
+    <!-- Filter groups -->
+  </div>
+</div>
+```
+
+2. **Sidebar Filters**
+```liquid
+<div class="filter-section" x-data="{ open: {{ collapse_filters }} }">
+  <details x-bind:open="open" @toggle="open = $event.target.open">
+    <!-- Filter content -->
+    <div x-data="{ showMore: $persist(false).as('sm-{{ f.param_name }}') }">
+      <!-- Filter values with show more/less -->
+    </div>
+  </details>
+</div>
+```
+
+3. **Horizontal Filters**
+```liquid
+<div class="facets__wrapper" x-data="{ open: false }">
+  <button x-on:click="open = !open">
+    {{ f.label }}
+  </button>
+  <div x-show="open" @click.away="open = false" x-transition>
+    <!-- Filter content -->
+  </div>
+</div>
+```
+
+Alpine.js provides:
+- Persistent filter group state (`$persist`)
+- Show/hide filter values
+- Smooth transitions
+- Click-outside handling
+- Mobile-friendly drawer interactions
+
+This implementation creates a seamless filtering experience where:
+1. Filter changes immediately trigger section updates
+2. The URL reflects the current filter state
+3. The UI stays responsive with loading states
+4. Filter preferences persist between page loads
+
 

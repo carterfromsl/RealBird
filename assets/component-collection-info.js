@@ -38,7 +38,7 @@ if (!customElements.get('collection-info')) {
 
           searchParams = `q=${qValue}&${searchParams}`;
         }
-        
+
         this.fetchSection(searchParams);
       };
 
