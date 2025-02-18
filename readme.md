@@ -24,10 +24,12 @@ This theme is a work in progress, built with a focus on creating clean, efficien
 ### Built From Scratch
 - Header
 - Cart drawer
+- Cart notification
 - Cart page
 - Collection page
 - Product page
-- Search functionality
+- Search page
+- Predictive search
 
 ### Currently Using Dawn Components
 - Blog and article pages
