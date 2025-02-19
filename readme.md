@@ -1,4 +1,4 @@
-# Base
+# Base Theme
 
 A developer-first Shopify theme that prioritizes clean code, maintainability, and straightforward customization. Built with the modern developer workflow in mind, this theme serves as an ideal starting point for your Shopify projects.
 
