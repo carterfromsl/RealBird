@@ -260,22 +260,69 @@ class CollectionInfo extends HTMLElement {
 
 1. **Filter Changes (`onChangeHandler`)**
    - Triggered by filter form changes (checkboxes, price range, etc.)
-   - The filters are wrapped in form elements:
-   ```liquid
-   <form id="filters-form">
-     {% for f in results.filters %}
-       <!-- Filter inputs -->
-     {% endfor %}
-   </form>
+   - Debounced to prevent rapid consecutive updates
+   ```js
+   onChangeHandler = (event) => {
+     if (!event.target.matches('[data-render-section]')) return;
+
+     const form = event.target.closest('form') || document.querySelector('#filters-form') || document.querySelector('#filters-form-drawer');
+     const formData = new FormData(form);
+     let searchParams = new URLSearchParams(formData).toString();
+
+     // Preserve search query if it exists
+     if (window.location.search.includes('?q=')) {
+       const existingParams = new URLSearchParams(window.location.search);
+       const qValue = existingParams.get('q');
+       searchParams = `q=${qValue}&${searchParams}`;
+     }
+
+     this.fetchSection(searchParams);
+   };
    ```
-   - Collects all filter values from the form
-   - Converts them to URL parameters
-   - Preserves search query if present (`?q=` parameter)
+   This handler:
+   - Checks if the changed element is meant to trigger a section update
+   - Finds the closest filter form (supports multiple form locations)
+   - Collects all filter values and converts to URL parameters
+   - Preserves search query if present
+   - Triggers section update with new parameters
 
 2. **Navigation Changes (`onClickHandler`)**
-   - Handles sorting and pagination clicks
-   - Looks for elements with `data-render-section-url`
-   - Uses the URL from the element's data attribute
+   - Handles sorting and pagination and active filters badges clicks through data attributes
+   ```js
+   onClickHandler = (event) => {
+     if (event.target.matches('[data-render-section-url]')) {
+       event.preventDefault();
+       const searchParams = new URLSearchParams(event.target.dataset.renderSectionUrl.split('?')[1]).toString()
+       
+       this.fetchSection(searchParams);
+     }
+   };
+   ```
+   This handler:
+   - Checks for elements with `data-render-section-url` attribute
+   - Extracts search parameters from the URL in the data attribute
+   - Prevents default link behavior
+   - Triggers section update with the extracted parameters
+
+   Used by elements like active filters and pagination:
+   ```liquid
+   <!-- Active filter removal -->
+   <div class="filter active-filter-item"
+     data-render-section-url="{{ v.url_to_remove }}"
+   >
+     <span>{{ f.label }}: {{ v.label }}</span>
+     <div class="filter-close">
+       {{- 'icon-close.svg' | inline_asset_content -}}
+     </div>
+   </div>
+
+   <!-- Clear all filters -->
+   <div class="filter active-filter-item active-filter-clear-all"
+     data-render-section-url="{{ collection.url }}"
+   >
+     <span>Clear all filters</span>
+   </div>
+   ```
 
 Both events ultimately call `fetchSection`, which updates the page:
 
