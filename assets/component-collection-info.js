@@ -96,14 +96,14 @@ if (!customElements.get('collection-info')) {
           .then((response) => response.text())
           .then((responseText) => {
             let html = new DOMParser().parseFromString(responseText, 'text/html');
+            this.updateURL(searchParams);
             this.updateSourceFromDestination(html, `product-grid-${this.dataset.section}`);
             this.updateSourceFromDestination(html, `results-count-${this.dataset.section}`);
             this.updateSourceFromDestination(html, `drawer-results-count-${this.dataset.section}`);
             this.updateSourceFromDestination(html, `active-filter-group-${this.dataset.section}`);
             this.updateSourceFromDestination(html, `sort-by-drawer-${this.dataset.section}`);
             this.updateSourceFromDestination(html, `sort-by-${this.dataset.section}`);
-            this.updateFilters(html, `js-filter`);
-            this.updateURL(searchParams);
+            this.updateFilters(html, `js-filter`);            
             this.hideLoadingOverlay();
           })
           .catch((error) => {
