@@ -14,7 +14,8 @@
   .product-grid {
     display: grid;
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    gap: 10px;
+    row-gap: var(--grid-desktop-horizontal-spacing);
+    column-gap: var(--grid-desktop-vertical-spacing);
   }
 
   #product-grid-{{ section.id }} {

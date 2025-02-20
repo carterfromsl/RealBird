@@ -223,6 +223,7 @@ product-info .product__info-wrapper form > *:last-child {
   width: 100%;
   font-size: 16px;
   color: currentColor;
+  font-family: var(--font-body-family);
 }
 
 .product__quantity quantity-selector input::-webkit-outer-spin-button,
@@ -257,6 +258,11 @@ product-info .product__info-wrapper form > *:last-child {
 }
 
 shopify-buy-it-now-button .shopify-payment-button__button {
+  background: black;
+  color: white;
+}
+
+.shopify-payment-button__button--unbranded:hover:not([disabled]){
   background: black;
 }
 
