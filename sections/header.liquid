@@ -1,5 +1,5 @@
 <style>
-    #shopify-section-{{ section.id }} {
+  #shopify-section-{{ section.id }} {
       position: {% unless section.settings.sticky_header_type == 'none' %}sticky{% else %}relative{% endunless %};
     top: 0;
     background: #fff;
@@ -279,9 +279,14 @@
   </div>
 {% endcapture %}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
+<div
+  class="color-{{ section.settings.color_scheme }} gradient"
+  {% if settings.cart_type == 'drawer' %}
+    x-data="cartDrawer"
+  {% endif %}
+>
   <header
-  class="page-width"
+    class="page-width"
     id="main-header"
     x-data="{ searchOpen: false, searchTerm: '' }"
     @click.outside="searchOpen = false"
