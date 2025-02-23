@@ -581,5 +581,75 @@ This creates a robust cart experience where:
 4. The cart total and discounts update automatically
 5. All changes sync across all cart instances (page, drawer, notifications)
 
+### Cart Drawer Implementation
+
+The cart drawer demonstrates how Alpine.js can be used to manage state across multiple components. Here's how the header and drawer work together:
+
+#### Alpine.js State Management
+
+The header initializes the cart drawer state when cart type is set to drawer:
+
+File: `sections/header.liquid`
+```liquid
+<div
+  class="color-{{ section.settings.color_scheme }} gradient"
+  {% if settings.cart_type == 'drawer' %}
+    x-data="cartDrawer"
+  {% endif %}
+>
+```
+
+The cart bubble in the header uses this state to toggle the drawer:
+
+File: `sections/header.liquid`
+```liquid
+<a
+  id="header-cart-bubble"
+  {%- if settings.cart_type == 'drawer' -%}
+    @click.prevent="toggleCartDrawer"
+  {%- else -%}
+    href="{{ routes.cart_url }}"
+  {%- endif -%}
+>
+```
+
+The drawer component defines its Alpine.js behavior:
+
+File: `snippets/component-cart-drawer.liquid`
+```js
+document.addEventListener('alpine:init', () => {
+  Alpine.data('cartDrawer', () => ({
+    cartOpen: false,
+
+    toggleCartDrawer() {
+      this.cartOpen = !this.cartOpen;
+    },
+
+    init() {
+      document.addEventListener('item-added-to-cart', () => {
+        this.toggleCartDrawer();
+      });
+    },
+  }));
+});
+```
+
+The drawer's visibility is controlled by the `cartOpen` state:
+
+File: `snippets/component-cart-drawer.liquid`
+```liquid
+<div
+  id="cart-drawer"
+  class="color-{{ settings.cart_color_scheme }} gradient"
+  :class="{ 'cart-open': cartOpen }"
+>
+```
+
+This creates a seamless interaction where:
+1. The header and drawer share the same Alpine.js data store (`cartDrawer`)
+2. Clicking the cart bubble toggles the drawer state
+3. Adding items to cart automatically opens the drawer through event listening
+4. The drawer's visibility is reactively updated based on the shared state
+
 
 
