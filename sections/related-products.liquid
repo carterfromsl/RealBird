@@ -35,9 +35,10 @@
           <li class="grid__item">
             {% render 'component-product-card',
               card_product: recommendation,
-              image_shape: section.settings.image_shape,
               show_vendor: section.settings.show_vendor,
-              enable_swatches: true,
+              enable_swatches: section.settings.enable_swatches,
+              swatch_trigger: section.settings.swatch_trigger,
+              swatch_type: section.settings.swatch_type,
               media_aspect_ratio: section.settings.image_ratio
             %}
           </li>
@@ -109,6 +110,37 @@
       "step": 1,
       "default": 4,
       "label": "t:sections.related-products.settings.columns_desktop.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_swatches",
+      "default": true,
+      "label": "Enable swatches",
+      "info": "Show variant swatches on product cards"
+    },
+    {
+      "type": "select",
+      "id": "swatch_type",
+      "label": "Swatch type",
+      "options": [
+        {
+          "value": "color",
+          "label": "Color based"
+        },
+        {
+          "value": "image",
+          "label": "Image based"
+        }
+      ],
+      "default": "image",
+      "info": "Display swatches based on color values or variant images"
+    },
+    {
+      "type": "text",
+      "id": "swatch_trigger",
+      "label": "Swatch trigger",
+      "default": "Color",
+      "info": "Enter the product option name to use for variant swatches (e.g. 'Color', 'Size', etc.)"
     },
     {
       "type": "color_scheme",
