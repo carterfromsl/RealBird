@@ -36,7 +36,9 @@
         "button"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
+        "image": "shopify://shop_images/flatlay-of-jade-face-roller-laying-on-a-grey-stone.jpg",
+        "image_2": "shopify://shop_images/wooden-toothbrushes-lined-up-against-a-green-background.jpg",
+        "image_overlay_opacity": 30,
         "image_height": "large",
         "desktop_content_position": "bottom-center",
         "show_text_box": false,
@@ -46,16 +48,6 @@
         "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
         "show_text_below": false
-      }
-    },
-    "fist-of-collections": {
-      "type": "main-list-collections",
-      "settings": {
-        "title": "Collections",
-        "sort": "alphabetical",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "columns_mobile": "2"
       }
     },
     "image_with_text_UnGP37": {
@@ -104,11 +96,21 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "fist-of-collections": {
+      "type": "main-list-collections",
+      "settings": {
+        "title": "Collections",
+        "sort": "alphabetical",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "columns_mobile": "2"
+      }
     }
   },
   "order": [
     "image_banner",
-    "fist-of-collections",
-    "image_with_text_UnGP37"
+    "image_with_text_UnGP37",
+    "fist-of-collections"
   ]
 }
