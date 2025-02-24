@@ -67,6 +67,14 @@
             "text_style": "body"
           }
         },
+        "caption_epYF98": {
+          "type": "caption",
+          "settings": {
+            "caption": "Add a tagline",
+            "text_style": "subtitle",
+            "text_size": "large"
+          }
+        },
         "button_eXxq6Y": {
           "type": "button",
           "settings": {
@@ -79,6 +87,7 @@
       "block_order": [
         "heading_M7BE4Y",
         "text_WRhMqM",
+        "caption_epYF98",
         "button_eXxq6Y"
       ],
       "settings": {
