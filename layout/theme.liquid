@@ -36,6 +36,10 @@
     <script src="{{ 'alpinejs-persist@3.14.8.min.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'alpinejs@3.14.8.min.js' | asset_url }}" defer="defer"></script>
 
+    {%- if settings.animations_reveal_on_scroll -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    
     {% comment %} liquid-ajax-cart.js.org {% endcomment %}
     <script type="application/json" data-ajax-cart-initial-state>
       {{ cart | json }}
