@@ -122,7 +122,7 @@
     "predictive_search_show_vendor": true,
     "predictive_search_show_price": true,
     "currency_code_enabled": true,
-    "cart_type": "drawer",
+    "cart_type": "notification",
     "show_vendor": true,
     "show_cart_note": true,
     "cart_drawer_collection": "frontpage",
@@ -133,7 +133,7 @@
         "settings": {
           "logo_position": "middle-left",
           "menu": "main-menu",
-          "menu_type_desktop": "dropdown",
+          "menu_type_desktop": "drawer",
           "sticky_header_type": "on-scroll-up",
           "show_line_separator": true,
           "color_scheme": "",
