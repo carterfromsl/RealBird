@@ -162,11 +162,28 @@
             "settings": {
               "show_social": false
             }
+          },
+          "text_8tHiXG": {
+            "type": "text",
+            "settings": {
+              "heading": "Heading",
+              "subtext": "<p>Share contact information, store details, and brand content with your customers.</p>"
+            }
+          },
+          "image_ignBDg": {
+            "type": "image",
+            "settings": {
+              "image": "shopify://shop_images/young-woman-model-portrait.jpg",
+              "image_width": 100,
+              "alignment": "center"
+            }
           }
         },
         "block_order": [
           "link_list_tRGQXg",
-          "brand_information_mfQiAe"
+          "brand_information_mfQiAe",
+          "text_8tHiXG",
+          "image_ignBDg"
         ],
         "settings": {
           "color_scheme": "",
