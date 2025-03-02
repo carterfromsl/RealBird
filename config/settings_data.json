@@ -106,8 +106,8 @@
     "badge_corner_radius": 40,
     "sale_badge_color_scheme": "scheme-5",
     "sold_out_badge_color_scheme": "scheme-3",
-    "brand_headline": "",
-    "brand_description": "<p></p>",
+    "brand_headline": "Discover the Story Behind the Brand - Your Trusted Source for Quality Info.",
+    "brand_description": "<p>Discover the benefits of our products through accurate descriptions based on scientific research and expert knowledge.</p>",
     "brand_image_width": 100,
     "social_facebook_link": "xxx",
     "social_instagram_link": "xxx",
@@ -156,10 +156,17 @@
               "heading": "Quick links",
               "menu": "footer"
             }
+          },
+          "brand_information_mfQiAe": {
+            "type": "brand_information",
+            "settings": {
+              "show_social": false
+            }
           }
         },
         "block_order": [
-          "link_list_tRGQXg"
+          "link_list_tRGQXg",
+          "brand_information_mfQiAe"
         ],
         "settings": {
           "color_scheme": "",
