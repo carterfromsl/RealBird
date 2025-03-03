@@ -6,6 +6,8 @@ A developer-first Shopify theme that prioritizes clean code, maintainability, an
 
 StarterTheme is crafted for developers who appreciate clean, well-structured code and minimal complexity. This theme strips away the bloat commonly found in marketplace themes to provide a solid foundation that you can build upon. The theme leverages custom web components for 90% of its JavaScript functionality, providing a modern, encapsulated, and maintainable approach to component development.
 
+🔗 **Demo Store**: [View the theme in action](https://blackmamba4.myshopify.com/)
+
 ### Developer Benefits
 
 - **Clean Architecture**: Organized, logical file structure with clear separation of concerns
