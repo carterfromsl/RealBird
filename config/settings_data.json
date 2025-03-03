@@ -166,9 +166,9 @@
           "image_ignBDg": {
             "type": "image",
             "settings": {
-              "image": "shopify://shop_images/young-woman-model-portrait.jpg",
-              "image_width": 50,
-              "alignment": "right"
+              "image": "shopify://shop_images/design-graphic.png",
+              "image_width": 65,
+              "alignment": "center"
             }
           }
         },
