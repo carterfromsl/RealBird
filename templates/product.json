@@ -146,6 +146,7 @@
         "button_MThgdj"
       ],
       "settings": {
+        "image": "shopify://shop_images/newborn-photography.jpg",
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "image_first",
