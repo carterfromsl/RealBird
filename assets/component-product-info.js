@@ -3,6 +3,10 @@ class ProductInfo extends HTMLElement {
 
   constructor() {
     super();
+    this.init();
+  }
+
+  init() {
     this.variantSelector?.addEventListener('change', this.onVariantChange.bind(this));
     this.quantitySelector.addEventListener('change', this.onQuantitySelectorEvent.bind(this));
     this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
@@ -68,7 +72,9 @@ class ProductInfo extends HTMLElement {
   }
 
   onVariantChange(e) {
-    this.renderSection();
+    const hasDifferentProductUrl = e.target?.dataset?.productUrl ? (e.target?.dataset?.productUrl !== this.dataset.url) : false;
+    const productUrl = e.target?.dataset?.productUrl || this.dataset.url;
+    this.renderSection(hasDifferentProductUrl, productUrl);
   }
 
   onQuantitySelectorEvent(e) {
@@ -120,25 +126,33 @@ class ProductInfo extends HTMLElement {
     );
   }
 
-  renderSection() {
+  renderSection(hasDifferentProductUrl, productUrl) {
     this.abortController?.abort();
     this.abortController = new AbortController();
 
-    fetch(`${this.dataset.url}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`, {
+    fetch(`${productUrl}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`, {
       signal: this.abortController.signal,
     })
       .then((response) => response.text())
       .then((responseText) => {
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const variant = this.getSelectedVariant(html);
-        this.updateMedia(variant?.featured_media?.id);
-        this.updateURL(variant?.id);
-        this.updateVariantInputs(variant?.id);
-        this.updateSourceFromDestination(html, `add-to-cart-container-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `variant-selector-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `price-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `sku-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `inventory-${this.dataset.section}`);
+        if (hasDifferentProductUrl) {
+          const mainProduct = html.querySelector('product-info');
+          this.replaceWith(mainProduct);
+          mainProduct.updateURL(variant?.id);
+          mainProduct.init();
+          mainProduct.initSwiper();
+        } else {
+          this.updateMedia(variant?.featured_media?.id);
+          this.updateURL(variant?.id);
+          this.updateVariantInputs(variant?.id);
+          this.updateSourceFromDestination(html, `add-to-cart-container-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `variant-selector-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `price-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `sku-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `inventory-${this.dataset.section}`);
+        }
       })
       .catch((error) => {
         if (error.name === 'AbortError') {
