@@ -12,7 +12,7 @@ if (!customElements.get('product-modal')) {
             if (modal) modal.showModal(slide);
           });
         });
-        this.querySelector('[id^="ModalClose-"]').addEventListener('click', this.hideModal());
+        this.querySelector('[id^="ModalClose-"]').addEventListener('click', this.hideModal.bind(this, false));
         this.addEventListener('pointerup', (event) => {
           if (event.pointerType === 'mouse') this.hideModal();
         });
