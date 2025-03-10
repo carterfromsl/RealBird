@@ -100,4 +100,7 @@
     #predictive-results__wrapper {
         flex-direction: column;
     }
+    .predictive-search__image {
+      height: 100%;
+    }
   }
