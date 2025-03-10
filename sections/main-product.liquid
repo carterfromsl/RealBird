@@ -1,6 +1,9 @@
 {{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-price.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.image_zoom != 'none' -%}
+  {{ 'component-product-modal.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -33,7 +36,8 @@
         {% render 'component-product-media-gallery',
           product_media: product.media,
           selected_variant: selected_variant,
-          video_looping: section.settings.enable_video_looping
+          video_looping: section.settings.enable_video_looping,
+          is_zoom: section.settings.image_zoom
         %}
       </div>
       <div class="product__info-wrapper flex__item {% if section.settings.enable_sticky_info %}product__info-sticky {% endif %}">
@@ -321,9 +325,18 @@
       </div>
     </div>
   </div>
+  {%- if section.settings.image_zoom != 'none' -%}
+    {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+    {% render 'component-product-media-modal', variant_images: variant_images %}
+  {%- endif -%}
 </product-info>
+
 <script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
 <script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+
+{%- if section.settings.image_zoom != 'none' -%}
+  <script src="{{ 'component-product-modal.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {% schema %}
 {
