@@ -206,6 +206,7 @@ ul.cart-discounts {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
+  gap: 8px;
 }
 .cart-charges {
   margin-bottom: 1rem;
