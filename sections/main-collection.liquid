@@ -162,6 +162,20 @@
                         </div>
                       </div>
                     {% endfor %}
+                    {% if f.type == 'price_range' and f.min_value.value or f.max_value.value %}
+                      {% assign min = f.min_value.value %}
+                      {% assign max = f.max_value.value %}
+                      
+                      <div class="filter active-filter-item">
+                        <span>{{ f.label | escape }}: {{ min | money -}} - {{ max | money -}}</span>
+                        <div
+                          class="filter-close"
+                          data-render-section-url="{{ f.url_to_remove }}"
+                        >
+                          {{- 'icon-close.svg' | inline_asset_content -}}
+                        </div>
+                      </div>
+                    {% endif %}
                   {%- endfor -%}
 
                   {% if has_active_filters %}
