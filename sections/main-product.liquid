@@ -1,3 +1,10 @@
+<product-info
+  data-url="{{ product.url}}"
+  data-section="{{ section.id }}"
+  data-update-url="true"
+  class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
+>
+
 {{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-price.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
@@ -22,11 +29,6 @@
 
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
-<product-info
-  data-url="{{ product.url}}"
-  data-section="{{ section.id }}"
-  class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
->
   <div class="page-width">
     <div class="product flex product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} {% if section.settings.constrain_to_viewport %}constrain-height{% endif %}">
       <div class="product__media-wrapper flex__item media-{{ section.settings.media_fit }}">
@@ -236,6 +238,9 @@
                         {% else %}
                           Add to cart
                         {% endif %}
+                        <span class="loading__spinner hidden">
+                          {{ 'icon-loader.svg' | inline_asset_content }}
+                        </span>
                       </button>
                     </div>
                     {%- if block.settings.show_dynamic_checkout -%}
@@ -321,9 +326,9 @@
       </div>
     </div>
   </div>
-</product-info>
 <script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
 <script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+</product-info>
 
 {% schema %}
 {

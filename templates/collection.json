@@ -18,7 +18,7 @@
         "image_ratio": "portrait",
         "show_vendor": true,
         "show_rating": false,
-        "quick_add": "none",
+        "quick_add": "standard",
         "enable_swatches": true,
         "swatch_type": "color",
         "swatch_trigger": "Color",

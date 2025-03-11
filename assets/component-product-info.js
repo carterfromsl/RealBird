@@ -1,3 +1,4 @@
+if (!customElements.get('product-info')) {
 class ProductInfo extends HTMLElement {
   abortController = undefined;
 
@@ -100,6 +101,7 @@ class ProductInfo extends HTMLElement {
     // this.querySelector('share-button')?.updateUrl(
     //   `${window.shopUrl}${url}${variantId ? `?variant=${variantId}` : ''}`
     // );
+    if (this.dataset.updateUrl === 'false') return;
     window.history.replaceState({}, '', `${this.dataset.url}${variantId ? `?variant=${variantId}` : ''}`);
   }
 
@@ -151,3 +153,4 @@ class ProductInfo extends HTMLElement {
 }
 
 customElements.define('product-info', ProductInfo);
+}
