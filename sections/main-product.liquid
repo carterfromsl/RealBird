@@ -336,7 +336,7 @@
                             <legend>
                               {{ block.settings.supporting_text_title }}
                             </legend>
-                            <div class="selling_options_container">
+                            <div class="selling_options_container {% unless product.requires_selling_plan == false %}selling_options_container--no-one-time{% endunless %}">
                               {% unless product.requires_selling_plan %}
                                 <div>
                                   <label>
