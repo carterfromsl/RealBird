@@ -317,6 +317,8 @@
               {% render 'component-product-share-button', block: block, share_link: share_url %}
               <script src="{{ 'component-product-share-button.js' | asset_url }}" defer="defer"></script>
             {% when 'subscription' %}
+              <div class="subscriptions_app_embed_block"></div>
+
               <div class="product__subscription">
                 {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
                 {% if product.selling_plan_groups.size > 0 %}

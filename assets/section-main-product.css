@@ -403,6 +403,10 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   display: none;
 }
 
+.subscriptions_app_embed_block{
+  display: none;
+}
+
 @media screen and (min-width: 750px) {
   .product--right .product__media-wrapper {
     order: 1;
