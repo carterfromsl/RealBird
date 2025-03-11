@@ -3,16 +3,22 @@ class ProductInfo extends HTMLElement {
 
   constructor() {
     super();
-    this.init();
   }
 
-  init() {
+  setupEventListeners() {
     this.variantSelector?.addEventListener('change', this.onVariantChange.bind(this));
     this.quantitySelector.addEventListener('change', this.onQuantitySelectorEvent.bind(this));
     this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
     this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
     document.getElementById('swiper-script').addEventListener('load', this.initSwiper.bind(this));
     document.addEventListener('liquid-ajax-cart:request-end', this.onCartUpdate.bind(this));
+  }
+
+  connectedCallback() {
+    this.setupEventListeners();
+    if (typeof Swiper !== 'undefined') {
+      this.initSwiper();
+    }
   }
 
   initSwiper() {
@@ -83,11 +89,11 @@ class ProductInfo extends HTMLElement {
     const minValue = parseInt(quantityInput.getAttribute('min')) || 0;
     const maxValue = parseInt(quantityInput.getAttribute('max')) || Infinity;
 
-    if (event.target.name === 'minus' && currentValue > minValue) {
+    if (e.target.name === 'minus' && currentValue > minValue) {
       quantityInput.value = currentValue - 1;
-    } else if (event.target.name === 'plus' && currentValue < maxValue) {
+    } else if (e.target.name === 'plus' && currentValue < maxValue) {
       quantityInput.value = currentValue + 1;
-    } else if (event.type === 'change') {
+    } else if (e.type === 'change') {
       if (currentValue < minValue) {
         quantityInput.value = minValue;
       } else if (currentValue > maxValue) {
@@ -138,11 +144,9 @@ class ProductInfo extends HTMLElement {
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const variant = this.getSelectedVariant(html);
         if (hasDifferentProductUrl) {
-          const mainProduct = html.querySelector('product-info');
-          this.replaceWith(mainProduct);
-          mainProduct.updateURL(variant?.id);
-          mainProduct.init();
-          mainProduct.initSwiper();
+          const productInfo = html.querySelector('product-info');
+          this.replaceWith(productInfo);
+          productInfo.updateURL(variant?.id);
         } else {
           this.updateMedia(variant?.featured_media?.id);
           this.updateURL(variant?.id);
