@@ -262,7 +262,7 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   color: white;
 }
 
-.shopify-payment-button__button--unbranded:hover:not([disabled]){
+.shopify-payment-button__button--unbranded:hover:not([disabled]) {
   background: black;
 }
 
@@ -377,8 +377,29 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   align-items: center;
 }
 
-@media screen and (min-width: 750px) {
+.selling_plan_theme_integration--hidden {
+  display: none;
+}
 
+.product__subscription ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product__subscription fieldset {
+  padding: 0;
+}
+
+.selling_options_container > hr {
+  margin: 0;
+}
+
+.selling_options_container > div {
+  padding: 10px;
+}
+
+@media screen and (min-width: 750px) {
   .product--right .product__media-wrapper {
     order: 1;
   }
