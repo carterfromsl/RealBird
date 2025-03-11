@@ -5,13 +5,13 @@
   class="color-{{ settings.cart_color_scheme }} gradient"
   :class="{ 'cart-open': cartOpen }"
 >
-  <button class="drawer-overlay" @click="toggleCartDrawer">
+  <button class="drawer-overlay" @click="closeCartDrawer">
     <span hidden>Close</span>
   </button>
   <div class="drawer__wrapper" data-ajax-cart-section>
     {%- if cart == empty -%}
       <div class="cart-header cart-header--empty">
-        <div class="cart-drawer__close" @click="toggleCartDrawer">
+        <div class="cart-drawer__close" @click="closeCartDrawer">
           {{- 'icon-close.svg' | inline_asset_content -}}
         </div>
       </div>
@@ -232,6 +232,10 @@
 
       toggleCartDrawer() {
         this.cartOpen = !this.cartOpen;
+      },
+
+      closeCartDrawer() {
+        this.cartOpen = false;
       },
 
       init() {
