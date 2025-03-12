@@ -140,13 +140,13 @@
           type="range"
           class="min-range"
           min="0"
-          max="{{ filter.range_max | money_without_currency }}"
+          max="{{ filter.range_max | divided_by: 100 }}"
           {%- if filter.min_value.value -%}
-            value="{{ filter.min_value.value | money_without_currency }}"
+            value="{{ filter.min_value.value | divided_by: 100 }}"
           {%- else -%}
             value="0"
           {%- endif -%}
-          step="1"
+          step="any"
           name="{{ filter.min_value.param_name }}"
           data-render-section
         >
@@ -154,13 +154,13 @@
           type="range"
           class="max-range"
           min="0"
-          max="{{ filter.range_max | money_without_currency  }}"
+          max="{{ filter.range_max | divided_by: 100 }}"
           {%- if filter.max_value.value -%}
-            value="{{ filter.max_value.value | money_without_currency }}"
+            value="{{ filter.max_value.value | divided_by: 100 }}"
           {%- else -%}
-            value="{{ filter.range_max | money_without_currency }}"
+            value="{{ filter.range_max | divided_by: 100 }}"
           {%- endif -%}
-          step="1"
+          step="any"
           name="{{ filter.max_value.param_name }}"
           data-render-section
         >
