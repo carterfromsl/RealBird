@@ -326,8 +326,8 @@
                     <script src="{{ 'selling-plans-integration.js' | asset_url }}" defer></script>
                     {% for variant in product.variants %}
                       {% liquid
-                        assign variantPrice = variant.price | money_with_currency | escape
-                        assign variantComparedAtPrice = variant.compare_at_price | money_with_currency | escape
+                        assign variant_price = variant.price | money_with_currency | escape
+                        assign variant_compared_at_price = variant.compare_at_price | money_with_currency | escape
                       %}
                       {% if variant.selling_plan_allocations.size > 0 %}
                         <div
@@ -343,7 +343,7 @@
                                 <div>
                                   <label>
                                     <input
-                                      aria-label="One-time purchase. Product price {{ variantPrice }}"
+                                      aria-label="One-time purchase. Product price {{ variant_price }}"
                                       type="radio"
                                       name="purchaseOption_{{ section.id }}_{{ variant.id }}"
                                       {% if variant.available == false %}
@@ -352,8 +352,8 @@
                                       id="{{ section.id }}_one_time_purchase"
                                       data-radio-type="one_time_purchase"
                                       data-variant-id="{{ variant.id }}"
-                                      data-variant-price="{{ variantPrice }}"
-                                      data-variant-compare-at-price="{{ variantComparedAtPrice }}"
+                                      data-variant-price="{{ variant_price }}"
+                                      data-variant-compare-at-price="{{ variant_compared_at_price }}"
                                       checked
                                     >
                                     One-time purchase
@@ -384,8 +384,8 @@
                                         else
                                           assign plan_checked = null
                                         endif
-                                        assign allocationPrice = allocation.price | money_with_currency | escape
-                                        assign allocationComparedAtPrice = allocation.compare_at_price | money_with_currency | escape
+                                        assign allocation_price = allocation.price | money_with_currency | escape
+                                        assign allocation_compared_at_price = allocation.compare_at_price | money_with_currency | escape
                                       %}
                                       <li>
                                         <label>
@@ -394,14 +394,14 @@
                                             {% if variant.available == false %}
                                               disabled
                                             {% endif %}
-                                            aria-label="{{ allocation.selling_plan.name }}. Product price {{ allocationPrice }}"
+                                            aria-label="{{ allocation.selling_plan.name }}. Product price {{ allocation_price }}"
                                             name="purchaseOption_{{ section.id }}_{{ variant.id }}"
                                             data-radio-type="selling_plan"
                                             data-selling-plan-id="{{ allocation.selling_plan.id }}"
                                             data-selling-plan-group-id="{{ section.id }}_{{ group_id }}_{{ variant.id }}"
                                             data-selling-plan-adjustment="{{ allocation.selling_plan.price_adjustments.size }}"
-                                            data-variant-price="{{ allocationPrice }}"
-                                            data-variant-compare-at-price="{{ allocationComparedAtPrice }}"
+                                            data-variant-price="{{ allocation_price }}"
+                                            data-variant-compare-at-price="{{ allocation_compared_at_price }}"
                                             {{ plan_checked }}
                                           >
                                           {{ allocation.selling_plan.name }}
