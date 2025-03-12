@@ -48,6 +48,12 @@
             "swatch_shape": "circle"
           }
         },
+        "subscription_AbipnR": {
+          "type": "subscription",
+          "settings": {
+            "supporting_text_title": "Purchase options"
+          }
+        },
         "quantity_selector_cwaLFj": {
           "type": "quantity_selector",
           "settings": {}
@@ -77,6 +83,7 @@
         "sku_m7MALE",
         "inventory_aTTemW",
         "variant_picker_NWh8q7",
+        "subscription_AbipnR",
         "quantity_selector_cwaLFj",
         "share_ybFkAW",
         "description_RxGjaP",
