@@ -1,7 +1,7 @@
-if (!customElements.get('product-modal')) {
+if (!customElements.get('product-media-modal')) {
   customElements.define(
-    'product-modal',
-    class ProductModal extends HTMLElement {
+    'product-media-modal',
+    class ProductMediaModal extends HTMLElement {
       constructor() {
         super();
         const mediaSlides = document.querySelectorAll('media-gallery .swiper-slide');

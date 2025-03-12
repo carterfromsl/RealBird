@@ -9,7 +9,7 @@
   {% render 'product-media-modal' %}
 {% endcomment %}
 
-<product-modal id="ProductModal-{{ section.id }}" class="product-media-modal media-modal">
+<product-media-modal id="ProductModal-{{ section.id }}" class="product-media-modal media-modal">
   <div
     class="product-media-modal__dialog color-{{ section.settings.color_scheme }} gradient"
     role="dialog"
@@ -54,4 +54,4 @@
       {%- endfor -%}
     </div>
   </div>
-</product-modal>
+</product-media-modal>
