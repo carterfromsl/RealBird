@@ -58,7 +58,7 @@
   }
   .predictive-search__image {
     width: 100%;
-    height: auto;
+    height: 100%;
     aspect-ratio: 1 /1;
     object-fit: cover;
   }
@@ -100,8 +100,5 @@
   @media (max-width: 768px) {
     #predictive-results__wrapper {
         flex-direction: column;
-    }
-    .predictive-search__image {
-      height: 100%;
     }
   }
