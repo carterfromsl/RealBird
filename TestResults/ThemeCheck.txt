@@ -1,0 +1,11 @@
+Unexpected setting: excludeSnippets for check UndefinedObject found in configuration
+Unexpected setting: configType for check UndefinedObject found in configuration
+╭─ success ────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  Theme Check Summary.                                                        │
+│                                                                              │
+│  117 files inspected with no offenses found.                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Theme Check checked All files. Check TestResults/ThemeCheck.txt for details.

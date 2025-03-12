@@ -99,18 +99,30 @@ class ModalOpener extends HTMLElement {
 customElements.define('modal-opener', ModalOpener);
 
 
+function onCartUpdate(e) {
+  try {
+    const { requestState } = e?.detail || {};
+    
+    if (!requestState) return;
 
-document.addEventListener('liquid-ajax-cart:request-end', function(e) {
-    const { requestState } = e.detail;
-    // If the "add to cart" request is successful
     if (requestState.requestType === 'add' && requestState.responseData?.ok) {
-      // Add the CSS class to the "body" tag
       document.body.classList.add('js-show-ajax-cart');
-      // dispatch a custom event
+      document.body.classList.remove('overflow-hidden');
+      
+      document.querySelectorAll('quick-add-modal').forEach((modal) => {
+        modal.removeAttribute('open');
+        modal.modalContent.innerHTML = '';
+      });
+
       document.dispatchEvent(
         new CustomEvent('item-added-to-cart', {
-          detail: requestState?.responseData?.body,
+          detail: requestState?.responseData?.body || null,
         })
       );
     }
-});
+  } catch (error) {
+    console.error('Error handling cart update:', error);
+  }
+}
+
+document.addEventListener('liquid-ajax-cart:request-end', onCartUpdate);

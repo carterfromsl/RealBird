@@ -27,6 +27,7 @@ class ProductInfo extends HTMLElement {
   }
 
   onCartUpdate(e) {
+    if (this.dataset.updateUrl === 'false') return;
     const { requestState } = e.detail;
     // If the "add to cart" request is successful
     if (requestState.requestType === 'add' && requestState.responseData?.ok) {
