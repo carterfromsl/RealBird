@@ -3,12 +3,22 @@ class ProductInfo extends HTMLElement {
 
   constructor() {
     super();
+  }
+
+  setupEventListeners() {
     this.variantSelector?.addEventListener('change', this.onVariantChange.bind(this));
     this.quantitySelector.addEventListener('change', this.onQuantitySelectorEvent.bind(this));
     this.quantitySelector.querySelector('button[name="plus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
     this.quantitySelector.querySelector('button[name="minus"]').addEventListener('click', this.onQuantitySelectorEvent.bind(this));
     document.getElementById('swiper-script').addEventListener('load', this.initSwiper.bind(this));
     document.addEventListener('liquid-ajax-cart:request-end', this.onCartUpdate.bind(this));
+  }
+
+  connectedCallback() {
+    this.setupEventListeners();
+    if (typeof Swiper !== 'undefined') {
+      this.initSwiper();
+    }
   }
 
   initSwiper() {
@@ -68,7 +78,9 @@ class ProductInfo extends HTMLElement {
   }
 
   onVariantChange(e) {
-    this.renderSection();
+    const hasDifferentProductUrl = e.target?.dataset?.productUrl ? (e.target?.dataset?.productUrl !== this.dataset.url) : false;
+    const productUrl = e.target?.dataset?.productUrl || this.dataset.url;
+    this.renderSection(hasDifferentProductUrl, productUrl);
   }
 
   onQuantitySelectorEvent(e) {
@@ -77,11 +89,11 @@ class ProductInfo extends HTMLElement {
     const minValue = parseInt(quantityInput.getAttribute('min')) || 0;
     const maxValue = parseInt(quantityInput.getAttribute('max')) || Infinity;
 
-    if (event.target.name === 'minus' && currentValue > minValue) {
+    if (e.target.name === 'minus' && currentValue > minValue) {
       quantityInput.value = currentValue - 1;
-    } else if (event.target.name === 'plus' && currentValue < maxValue) {
+    } else if (e.target.name === 'plus' && currentValue < maxValue) {
       quantityInput.value = currentValue + 1;
-    } else if (event.type === 'change') {
+    } else if (e.type === 'change') {
       if (currentValue < minValue) {
         quantityInput.value = minValue;
       } else if (currentValue > maxValue) {
@@ -120,25 +132,31 @@ class ProductInfo extends HTMLElement {
     );
   }
 
-  renderSection() {
+  renderSection(hasDifferentProductUrl, productUrl) {
     this.abortController?.abort();
     this.abortController = new AbortController();
 
-    fetch(`${this.dataset.url}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`, {
+    fetch(`${productUrl}?option_values=${this.selectedOptionValues}&section_id=${this.dataset.section}`, {
       signal: this.abortController.signal,
     })
       .then((response) => response.text())
       .then((responseText) => {
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         const variant = this.getSelectedVariant(html);
-        this.updateMedia(variant?.featured_media?.id);
-        this.updateURL(variant?.id);
-        this.updateVariantInputs(variant?.id);
-        this.updateSourceFromDestination(html, `add-to-cart-container-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `variant-selector-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `price-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `sku-${this.dataset.section}`);
-        this.updateSourceFromDestination(html, `inventory-${this.dataset.section}`);
+        if (hasDifferentProductUrl) {
+          const productInfo = html.querySelector('product-info');
+          this.replaceWith(productInfo);
+          productInfo.updateURL(variant?.id);
+        } else {
+          this.updateMedia(variant?.featured_media?.id);
+          this.updateURL(variant?.id);
+          this.updateVariantInputs(variant?.id);
+          this.updateSourceFromDestination(html, `add-to-cart-container-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `variant-selector-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `price-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `sku-${this.dataset.section}`);
+          this.updateSourceFromDestination(html, `inventory-${this.dataset.section}`);
+        }
       })
       .catch((error) => {
         if (error.name === 'AbortError') {
