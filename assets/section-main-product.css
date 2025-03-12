@@ -232,6 +232,11 @@ product-info .product__info-wrapper form > *:last-child {
   margin: 0;
 }
 
+.product__quantity quantity-selector input {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
 .product__info-wrapper .product-form__buttons {
   margin-top: 27px;
 }
