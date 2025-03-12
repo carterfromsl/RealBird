@@ -165,6 +165,15 @@ ajax-cart-quantity input {
   background: transparent;
   color: rgba(var(--color-foreground));
 }
+ajax-cart-quantity input::-webkit-outer-spin-button,
+ajax-cart-quantity input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+ajax-cart-quantity input {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
 ajax-cart-quantity svg {
   width: 14px;
   height: auto;
