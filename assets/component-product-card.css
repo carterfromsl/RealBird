@@ -197,6 +197,17 @@
   transform: scale(1.03);
 }
 
+.card-media-child.card-media-no-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-media-child.card-media-no-image .card-media-no-image-text {
+  text-align: center;
+  color: rgb(var(--color-foreground));
+}
+
 .card-badge-wrapper {
   display: flex;
   width: 100%;
