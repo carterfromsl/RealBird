@@ -55,7 +55,7 @@
             | escape
           }}
         {% else %}
-          <span class="card-media-no-image-text">This product has no image</span>
+          {{ 'product-1' | placeholder_svg_tag }}
         {% endif %}
       </div>
       <div class="card-badge-wrapper {{ settings.badge_position }}">
