@@ -2,6 +2,25 @@
 {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-share-button.css' | asset_url | stylesheet_tag }}
 
+<style>
+  .article-template__title {
+    color: {{ section.settings.title_color }};
+    text-align: {{ section.settings.title_alignment }};
+    font-weight: {{ section.settings.title_font_weight }};
+    font-size: {{ section.settings.title_font_size }}px;
+  }
+
+  .article-template__content * {
+    color: {{ section.settings.content_color }};
+    text-align: {{ section.settings.content_alignment }};
+    font-weight: {{ section.settings.content_font_weight }};
+  }
+
+  .article-template__link {
+    justify-content: {{ section.settings.back_button_alignment }};
+  }
+</style>
+
 <article class="article-template">
   {%- for block in section.blocks -%}
     {%- case block.type -%}
@@ -84,7 +103,7 @@
     {%- endcase -%}
   {%- endfor -%}
 
-  <div class="article-template__back element-margin-top center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+  <div class="article-template__back element-margin-top page-width center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
     <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
       <span class="icon-wrap">
         <span class="svg-wrapper">
@@ -301,6 +320,130 @@
   "name": "t:sections.main-article.name",
   "tag": "section",
   "class": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "t:sections.main-article.settings.title_color.label",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "t:sections.main-article.settings.title_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.main-article.settings.title_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.main-article.settings.title_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.main-article.settings.title_alignment.options__3.label"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "t:sections.main-article.settings.title_font_size.label",
+      "min": 16,
+      "max": 72,
+      "step": 1,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "t:sections.main-article.settings.title_font_weight.label",
+      "options": [
+        {
+          "value": "300",
+          "label": "t:sections.main-article.settings.title_font_weight.options__1.label"
+        },
+        {
+          "value": "500",
+          "label": "t:sections.main-article.settings.title_font_weight.options__2.label"
+        },
+        {
+          "value": "700",
+          "label": "t:sections.main-article.settings.title_font_weight.options__3.label"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "t:sections.main-article.settings.content_color.label",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:sections.main-article.settings.content_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.main-article.settings.content_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.main-article.settings.content_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.main-article.settings.content_alignment.options__3.label"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "content_font_weight",
+      "label": "t:sections.main-article.settings.content_font_weight.label",
+      "options": [
+        {
+          "value": "300",
+          "label": "t:sections.main-article.settings.content_font_weight.options__1.label"
+        },
+        {
+          "value": "500",
+          "label": "t:sections.main-article.settings.content_font_weight.options__2.label"
+        },
+        {
+          "value": "700",
+          "label": "t:sections.main-article.settings.content_font_weight.options__3.label"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "back_button_alignment",
+      "label": "t:sections.main-article.settings.back_button_alignment.label",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:sections.main-article.settings.back_button_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.main-article.settings.back_button_alignment.options__2.label"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:sections.main-article.settings.back_button_alignment.options__3.label"
+        }
+      ],
+      "default": "center"
+    }
+  ],
   "blocks": [
     {
       "type": "@app"

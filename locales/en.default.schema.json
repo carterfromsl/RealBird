@@ -1669,6 +1669,77 @@
     },
     "main-article": {
       "name": "Blog post",
+      "settings": {
+        "title_color": {
+          "label": "Title Color"
+        },
+        "title_alignment": {
+          "label": "Title Alignment",
+          "options__1": {
+            "label": "Left"
+          },
+          "options__2": {
+            "label": "Center"
+          },
+          "options__3": {
+            "label": "Right"
+          }
+        },
+        "title_font_size": {
+          "label": "Title Font Size"
+        },
+        "title_font_weight": {
+          "label": "Title Font Weight",
+          "options__1": {
+            "label": "Light"
+          },
+          "options__2": {
+            "label": "Medium"
+          },
+          "options__3": {
+            "label": "Bold"
+          }
+        },
+        "content_color": {
+          "label": "Content Color"
+        },
+        "content_alignment": {
+          "label": "Content Alignment",
+          "options__1": {
+            "label": "Left"
+          },
+          "options__2": {
+            "label": "Center"
+          },
+          "options__3": {
+            "label": "Right"
+          }
+        },
+        "content_font_weight": {
+          "label": "Content Font Weight",
+          "options__1": {
+            "label": "Light"
+          },
+          "options__2": {
+            "label": "Medium"
+          },
+          "options__3": {
+            "label": "Bold"
+          }
+        },
+        "back_button_alignment": {
+          "label": "Back Button Alignment",
+          "options__1": {
+            "label": "Left"
+          },
+          "options__2": {
+            "label": "Center"
+          },
+          "options__3": {
+            "label": "Right"
+          }
+        }
+      },
       "blocks": {
         "featured_image": {
           "name": "Featured image",
