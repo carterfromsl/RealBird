@@ -1670,63 +1670,6 @@
     "main-article": {
       "name": "Blog post",
       "settings": {
-        "title_color": {
-          "label": "Title Color"
-        },
-        "title_alignment": {
-          "label": "Title Alignment",
-          "options__1": {
-            "label": "Left"
-          },
-          "options__2": {
-            "label": "Center"
-          },
-          "options__3": {
-            "label": "Right"
-          }
-        },
-        "title_font_size": {
-          "label": "Title Font Size"
-        },
-        "title_font_weight": {
-          "label": "Title Font Weight",
-          "options__1": {
-            "label": "Light"
-          },
-          "options__2": {
-            "label": "Medium"
-          },
-          "options__3": {
-            "label": "Bold"
-          }
-        },
-        "content_color": {
-          "label": "Content Color"
-        },
-        "content_alignment": {
-          "label": "Content Alignment",
-          "options__1": {
-            "label": "Left"
-          },
-          "options__2": {
-            "label": "Center"
-          },
-          "options__3": {
-            "label": "Right"
-          }
-        },
-        "content_font_weight": {
-          "label": "Content Font Weight",
-          "options__1": {
-            "label": "Light"
-          },
-          "options__2": {
-            "label": "Medium"
-          },
-          "options__3": {
-            "label": "Bold"
-          }
-        },
         "back_button_alignment": {
           "label": "Back Button Alignment",
           "options__1": {
@@ -1758,13 +1701,43 @@
               "options__4": {
                 "label": "Large"
               },
-              "info": "For best results, use an image with a 16:9 aspect ratio. [Learn more](https:\/\/help.shopify.com\/manual\/shopify-admin\/productivity-tools\/image-editor#understanding-image-aspect-ratio)"
+              "info": "For best results, use an image with a 16:9 aspect ratio"
             }
           }
         },
         "title": {
           "name": "Title",
           "settings": {
+            "title_color": {
+              "label": "Title Color"
+            },
+            "title_alignment": {
+              "label": "Title Alignment",
+              "options__1": {
+                "label": "Left"
+              },
+              "options__2": {
+                "label": "Center"
+              },
+              "options__3": {
+                "label": "Right"
+              }
+            },
+            "title_font_size": {
+              "label": "Title Font Size"
+            },
+            "title_font_weight": {
+              "label": "Title Font Weight",
+              "options__1": {
+                "label": "Light"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Bold"
+              }
+            },
             "blog_show_date": {
               "label": "Show date"
             },
@@ -1774,7 +1747,36 @@
           }
         },
         "content": {
-          "name": "Content"
+          "name": "Content",
+          "settings": {
+            "content_color": {
+              "label": "Content Color"
+            },
+            "content_alignment": {
+              "label": "Content Alignment",
+              "options__1": {
+                "label": "Left"
+              },
+              "options__2": {
+                "label": "Center"
+              },
+              "options__3": {
+                "label": "Right"
+              }
+            },
+            "content_font_weight": {
+              "label": "Content Font Weight",
+              "options__1": {
+                "label": "Light"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Bold"
+              }
+            }
+          }
         },
         "share": {
           "name": "Share",
@@ -1784,10 +1786,10 @@
               "default": "Share"
             },
             "featured_image_info": {
-              "content": "If you include a link in social media posts, the page’s featured image will be shown as the preview image. [Learn more](https:\/\/help.shopify.com\/manual\/online-store\/images\/showing-social-media-thumbnail-images)."
+              "content": "If you include a link in social media posts, the page's featured image will be shown as the preview image."
             },
             "title_info": {
-              "content": "A store title and description are included with the preview image. [Learn more](https:\/\/help.shopify.com\/manual\/promoting-marketing\/seo\/adding-keywords#set-a-title-and-description-for-your-online-store)."
+              "content": "A store title and description are included with the preview image."
             }
           }
         }
