@@ -2100,6 +2100,15 @@
             }
           }
         },
+        "subscription": {
+          "name": "Subscription",
+          "settings": {
+            "supporting_text_title": {
+              "label": "Supporting text title",
+              "default": "Purchase options"
+            }
+          }
+        },
         "collapsible_tab": {
           "name": "Collapsible row",
           "settings": {

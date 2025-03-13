@@ -8,6 +8,9 @@
 {{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-price.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.image_zoom != 'none' -%}
+  {{ 'component-product-media-modal.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -35,7 +38,8 @@
         {% render 'component-product-media-gallery',
           product_media: product.media,
           selected_variant: selected_variant,
-          video_looping: section.settings.enable_video_looping
+          video_looping: section.settings.enable_video_looping,
+          is_zoom: section.settings.image_zoom
         %}
       </div>
       <div class="product__info-wrapper flex__item {% if section.settings.enable_sticky_info %}product__info-sticky {% endif %}">
@@ -321,14 +325,130 @@
               {{ 'component-product-share-button.css' | asset_url | stylesheet_tag }}
               {% render 'component-product-share-button', block: block, share_link: share_url %}
               <script src="{{ 'component-product-share-button.js' | asset_url }}" defer="defer"></script>
+            {% when 'subscription' %}
+              <div class="product__subscription">
+                {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
+                {% if product.selling_plan_groups.size > 0 %}
+                  <div class="selling_plan_app_container" data-section-id="{{ section.id }}">
+                    <script src="{{ 'selling-plans-integration.js' | asset_url }}" defer></script>
+                    {% for variant in product.variants %}
+                      {% liquid
+                        assign variant_price = variant.price | money_with_currency | escape
+                        assign variant_compared_at_price = variant.compare_at_price | money_with_currency | escape
+                      %}
+                      {% if variant.selling_plan_allocations.size > 0 %}
+                        <div
+                          data-variant-id="{{ variant.id }}"
+                          class="selling_plan_theme_integration {% if variant.id != current_variant.id %}selling_plan_theme_integration--hidden{% endif %}"
+                        >
+                          <fieldset>
+                            <legend>
+                              {{ block.settings.supporting_text_title }}
+                            </legend>
+                            <div class="selling_options_container {% unless product.requires_selling_plan == false %}selling_options_container--no-one-time{% endunless %}">
+                              {% unless product.requires_selling_plan %}
+                                <div>
+                                  <label>
+                                    <input
+                                      aria-label="One-time purchase. Product price {{ variant_price }}"
+                                      type="radio"
+                                      name="purchaseOption_{{ section.id }}_{{ variant.id }}"
+                                      {% if variant.available == false %}
+                                        disabled
+                                      {% endif %}
+                                      id="{{ section.id }}_one_time_purchase"
+                                      data-radio-type="one_time_purchase"
+                                      data-variant-id="{{ variant.id }}"
+                                      data-variant-price="{{ variant_price }}"
+                                      data-variant-compare-at-price="{{ variant_compared_at_price }}"
+                                      checked
+                                    >
+                                    One-time purchase
+                                  </label>
+                                </div>
+                              {% endunless %}
+                              {% assign group_ids = variant.selling_plan_allocations | map: 'selling_plan_group_id' | uniq %}
+                              {% for group_id in group_ids %}
+                                {% liquid
+                                  assign group = product | map: 'selling_plan_groups' | where: 'id', group_id | first
+                                  assign allocations = variant | map: 'selling_plan_allocations' | where: 'selling_plan_group_id', group_id
+                                  if forloop.first
+                                    assign first_selling_plan_group = true
+                                  else
+                                    assign first_selling_plan_group = false
+                                  endif
+                                %}
+                                <hr>
+                                <div>
+                                  <div>
+                                    <label>{{ group.name }}</label>
+                                  </div>
+                                  <ul>
+                                    {% for allocation in allocations %}
+                                      {% liquid
+                                        if forloop.first and product.requires_selling_plan and first_selling_plan_group
+                                          assign plan_checked = 'checked'
+                                        else
+                                          assign plan_checked = null
+                                        endif
+                                        assign allocation_price = allocation.price | money_with_currency | escape
+                                        assign allocation_compared_at_price = allocation.compare_at_price | money_with_currency | escape
+                                      %}
+                                      <li>
+                                        <label>
+                                          <input
+                                            type="radio"
+                                            {% if variant.available == false %}
+                                              disabled
+                                            {% endif %}
+                                            aria-label="{{ allocation.selling_plan.name }}. Product price {{ allocation_price }}"
+                                            name="purchaseOption_{{ section.id }}_{{ variant.id }}"
+                                            data-radio-type="selling_plan"
+                                            data-selling-plan-id="{{ allocation.selling_plan.id }}"
+                                            data-selling-plan-group-id="{{ section.id }}_{{ group_id }}_{{ variant.id }}"
+                                            data-selling-plan-adjustment="{{ allocation.selling_plan.price_adjustments.size }}"
+                                            data-variant-price="{{ allocation_price }}"
+                                            data-variant-compare-at-price="{{ allocation_compared_at_price }}"
+                                            {{ plan_checked }}
+                                          >
+                                          {{ allocation.selling_plan.name }}
+                                        </label>
+                                      </li>
+                                    {% endfor %}
+                                  </ul>
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </fieldset>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <input
+                    name="selling_plan"
+                    class="selected-selling-plan-id"
+                    type="hidden"
+                  >
+                {% endif %}
+              </div>
           {%- endcase -%}
         {%- endfor -%}
       </div>
     </div>
   </div>
+  {%- if section.settings.image_zoom != 'none' -%}
+    {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+    {% render 'component-product-media-modal', variant_images: variant_images %}
+  {%- endif -%}
+</product-info>
+
 <script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
 <script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
 </product-info>
+
+{%- if section.settings.image_zoom != 'none' -%}
+  <script src="{{ 'component-product-media-modal.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -546,6 +666,19 @@
           "content": "t:sections.main-product.blocks.share.settings.title_info.content"
         }
       ]
+    },
+    {
+      "type": "subscription",
+      "name": "t:sections.main-product.blocks.subscription.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "supporting_text_title",
+          "label": "t:sections.main-product.blocks.subscription.settings.supporting_text_title.label",
+          "default": "t:sections.main-product.blocks.subscription.settings.supporting_text_title.default"
+        }
+      ],
+      "limit": 1
     },
     {
       "type": "custom_liquid",

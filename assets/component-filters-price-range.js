@@ -38,8 +38,8 @@ class PriceRange extends HTMLElement {
   }
 
   updateUI(min, max) {
-    this.minPriceText.textContent = `${this.currencySymbol}${min}`;
-    this.maxPriceText.textContent = `${this.currencySymbol}${max}`;
+    this.minPriceText.textContent = `${this.currencySymbol}${min}.00`;
+    this.maxPriceText.textContent = `${this.currencySymbol}${max}.00`;
     this.rangeSlider.style.left = `${(min / this.rangeInputs[0].max) * 100}%`;
     this.rangeSlider.style.right = `${100 - (max / this.rangeInputs[1].max) * 100}%`;
     this.rangeInputs[0].value = min;
