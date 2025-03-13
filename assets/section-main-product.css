@@ -237,10 +237,6 @@ product-info .product__info-wrapper form > *:last-child {
   -moz-appearance: textfield;
 }
 
-.product__info-wrapper .product-form__buttons {
-  margin-top: 27px;
-}
-
 .product-form__buttons button {
   width: 100%;
   background: transparent;
