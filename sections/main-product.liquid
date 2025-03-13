@@ -442,6 +442,9 @@
 
 {%- if section.settings.image_zoom != 'none' -%}
   <script src="{{ 'component-product-media-modal.js' | asset_url }}" defer="defer"></script>
+  {%- if section.settings.image_zoom == 'hover' -%}
+    <script src="{{ 'component-product-media-magnify.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
