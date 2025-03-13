@@ -52,6 +52,12 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "subscription_AbipnR": {
+          "type": "subscription",
+          "settings": {
+            "supporting_text_title": "Purchase options"
+          }
+        },
         "share_ybFkAW": {
           "type": "share",
           "settings": {
@@ -92,6 +98,7 @@
         "inventory_aTTemW",
         "variant_picker_NWh8q7",
         "quantity_selector_cwaLFj",
+        "subscription_AbipnR",
         "share_ybFkAW",
         "description_RxGjaP",
         "buy_buttons_JPDYXc",
