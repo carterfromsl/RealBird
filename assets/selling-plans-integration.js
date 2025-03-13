@@ -146,7 +146,7 @@ class SellingPlansWidget {
   }
 
   get selectedPurchaseOptionComparedAtPrice() {
-    return this.selectedPurchaseOption.dataset.variantCompareAtPrice;
+    return this.selectedPurchaseOption?.dataset.variantCompareAtPrice;
   }
 
   get price() {
