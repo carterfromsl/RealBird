@@ -2063,10 +2063,50 @@
           }
         },
         "title": {
-          "name": "Title"
+          "name": "Title",
+          "settings": {
+            "title_color": {
+              "label": "Title Color"
+            },
+            "title_font_size": {
+              "label": "Font Size"
+            },
+            "title_font_weight": {
+              "label": "Font Weight",
+              "options__1": {
+                "label": "Light"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Bold"
+              }
+            }
+          }
         },
         "price": {
-          "name": "Price"
+          "name": "Price",
+          "settings": {
+            "price_color": {
+              "label": "Price Color"
+            },
+            "price_font_size": {
+              "label": "Font Size"
+            },
+            "price_font_weight": {
+              "label": "Font Weight",
+              "options__1": {
+                "label": "Light"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Bold"
+              }
+            }
+          }
         },
         "inventory": {
           "name": "Inventory status",
@@ -2139,7 +2179,27 @@
           "name": "Pickup availability"
         },
         "description": {
-          "name": "Description"
+          "name": "Description",
+          "settings": {
+            "description_color": {
+              "label": "Text Color"
+            },
+            "description_font_size": {
+              "label": "Font Size"
+            },
+            "description_font_weight": {
+              "label": "Font Weight",
+              "options__1": {
+                "label": "Light"
+              },
+              "options__2": {
+                "label": "Medium"
+              },
+              "options__3": {
+                "label": "Bold"
+              }
+            }
+          }
         },
         "sku": {
           "name": "SKU",
@@ -2529,6 +2589,27 @@
         },
         "enable_video_looping": {
           "label": "Enable video looping"
+        },
+        "variant_label_header": {
+          "content": "Variant Label"
+        },
+        "variant_label_color": {
+          "label": "Color"
+        },
+        "variant_label_font_size": {
+          "label": "Font Size"
+        },
+        "variant_label_font_weight": {
+          "label": "Font Weight",
+          "options__1": {
+            "label": "Light"
+          },
+          "options__2": {
+            "label": "Medium"
+          },
+          "options__3": {
+            "label": "Bold"
+          }
         }
       }
     },
