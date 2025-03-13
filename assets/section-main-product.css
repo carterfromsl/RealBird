@@ -38,6 +38,10 @@ product-info {
   background: black;
 }
 
+.product__media-wrapper media-gallery{
+  cursor: pointer;
+}
+
 .product__media-wrapper .swiper-slide img,
 .product__media-wrapper .swiper-slide video,
 .product__media-wrapper .swiper-slide iframe {
@@ -57,6 +61,7 @@ product-info {
 .product__media-wrapper.media-cover .swiper-slide video,
 .product__media-wrapper.media-cover .swiper-slide iframe {
   object-fit: cover;
+  object-position: top;
 }
 
 .product__media-wrapper.media-contain .swiper-slide img,

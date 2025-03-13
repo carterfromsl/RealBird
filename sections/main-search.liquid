@@ -169,24 +169,47 @@
                     {% liquid
                       assign has_active_filters = false
                       for f in search.filters
-                        if f.active_values.size > 0
-                          assign has_active_filters = true
+                        if f.type == 'price_range'
+                          if f.min_value.value > 0 or f.max_value.value < f.range_max
+                            assign has_active_filters = true
+                          endif
+                        else
+                          if f.active_values.size > 0
+                            assign has_active_filters = true
+                          endif
                         endif
                       endfor
                     %}
 
                     {%- for f in search.filters -%}
-                      {% for v in f.active_values %}
+                      {% if f.type == 'price_range' and f.min_value.value > 0 or f.max_value.value < f.range_max %}
+                        {% assign min = f.min_value.value %}
+                        {% assign max = f.max_value.value %}
                         <div class="filter active-filter-item">
-                          <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
+                          <span>
+                            {{- f.label | escape }}: {{ min | money -}}
+                            - {{ max | money -}}
+                          </span>
                           <div
                             class="filter-close"
-                            data-render-section-url="{{ v.url_to_remove }}"
+                            data-render-section-url="{{ f.url_to_remove }}"
                           >
                             {{- 'icon-close.svg' | inline_asset_content -}}
                           </div>
                         </div>
-                      {% endfor %}
+                      {% else %}
+                        {% for v in f.active_values %}
+                          <div class="filter active-filter-item">
+                            <span>{{ f.label | escape }}: {{ v.label | escape -}}</span>
+                            <div
+                              class="filter-close"
+                              data-render-section-url="{{ v.url_to_remove }}"
+                            >
+                              {{- 'icon-close.svg' | inline_asset_content -}}
+                            </div>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
                     {%- endfor -%}
 
                     {% if has_active_filters %}
