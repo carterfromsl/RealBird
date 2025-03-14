@@ -21,7 +21,7 @@ class QuickAdd extends HTMLElement {
     this.addEventListener('click', (event) => {
       if (event.target === this) this.hide();
     });
-    
+
   }
 
   show(opener) {
@@ -40,10 +40,10 @@ class QuickAdd extends HTMLElement {
 
         this.preprocessContent(productElement);
         this.setContent(productElement.outerHTML);
-        
+
         document.body.classList.add('overflow-hidden');
         this.setAttribute('open', '');
-        
+
         if (window.Shopify?.PaymentButton) Shopify.PaymentButton.init();
         if (window.ProductModel) window.ProductModel.loadShopifyXR();
       })
@@ -77,11 +77,10 @@ class QuickAdd extends HTMLElement {
       oldScript.parentNode.replaceChild(newScript, oldScript);
     });
   }
-  
+
 }
 
 customElements.define('quick-add-modal', QuickAdd);
-
 
 class ModalOpener extends HTMLElement {
   constructor() {
@@ -98,17 +97,16 @@ class ModalOpener extends HTMLElement {
 }
 customElements.define('modal-opener', ModalOpener);
 
-
 function onCartUpdate(e) {
   try {
     const { requestState } = e?.detail || {};
-    
+
     if (!requestState) return;
 
     if (requestState.requestType === 'add' && requestState.responseData?.ok) {
       document.body.classList.add('js-show-ajax-cart');
       document.body.classList.remove('overflow-hidden');
-      
+
       document.querySelectorAll('quick-add-modal').forEach((modal) => {
         modal.removeAttribute('open');
         modal.modalContent.innerHTML = '';
