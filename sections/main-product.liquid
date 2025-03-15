@@ -328,8 +328,8 @@
               <div class="product__subscription">
                 {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
                 {% if product.selling_plan_groups.size > 0 %}
+                  <script src="{{ 'component-selling-plans.js' | asset_url }}" defer></script>
                   <selling-plans-widget data-section-id="{{ section.id }}">
-                    <script src="{{ 'selling-plans-integration.js' | asset_url }}" defer></script>
                     {% for variant in product.variants %}
                       {% liquid
                         assign variant_price = variant.price | money_with_currency | escape

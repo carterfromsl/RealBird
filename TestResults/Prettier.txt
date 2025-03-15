@@ -1,3 +1,0 @@
-.husky/pre-commit: 13: [[: not found
-.husky/pre-commit: 13: [[: not found
-Prettier checked 0 files. Check TestResults/Prettier.txt for details.
