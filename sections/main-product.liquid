@@ -328,7 +328,7 @@
               <div class="product__subscription">
                 {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
                 {% if product.selling_plan_groups.size > 0 %}
-                  <div class="selling_plan_app_container" data-section-id="{{ section.id }}">
+                  <selling-plans-widget data-section-id="{{ section.id }}">
                     <script src="{{ 'selling-plans-integration.js' | asset_url }}" defer></script>
                     {% for variant in product.variants %}
                       {% liquid
@@ -422,7 +422,7 @@
                         </div>
                       {% endif %}
                     {% endfor %}
-                  </div>
+                  </selling-plans-widget>
                   <input
                     name="selling_plan"
                     class="selected-selling-plan-id"
