@@ -1,35 +1,36 @@
-{{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
-{{ 'component-product-price.css' | asset_url | stylesheet_tag }}
-{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
-{%- if section.settings.image_zoom != 'none' -%}
-  {{ 'component-product-media-modal.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
-
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-
-  product-info .page-width {
-    max-width: {{ settings.page_width }}px;
-  }
-{%- endstyle -%}
-
-{% assign selected_variant = product.selected_or_first_available_variant %}
-
 <product-info
   data-url="{{ product.url}}"
   data-section="{{ section.id }}"
+  data-update-url="true"
   class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
 >
+  {{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
+  {{ 'component-product-price.css' | asset_url | stylesheet_tag }}
+  {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {%- if section.settings.image_zoom != 'none' -%}
+    {{ 'component-product-media-modal.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+
+  {%- style -%}
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+
+    product-info .page-width {
+      max-width: {{ settings.page_width }}px;
+    }
+  {%- endstyle -%}
+
+  {% assign selected_variant = product.selected_or_first_available_variant %}
+
   <div class="page-width">
     <div class="product flex product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} {% if section.settings.constrain_to_viewport %}constrain-height{% endif %}">
       <div class="product__media-wrapper flex__item media-{{ section.settings.media_fit }}">
@@ -240,6 +241,9 @@
                         {% else %}
                           Add to cart
                         {% endif %}
+                        <span class="loading__spinner hidden">
+                          {{ 'icon-loader.svg' | inline_asset_content }}
+                        </span>
                       </button>
                     </div>
                     {%- if block.settings.show_dynamic_checkout -%}
@@ -324,8 +328,8 @@
               <div class="product__subscription">
                 {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
                 {% if product.selling_plan_groups.size > 0 %}
-                  <div class="selling_plan_app_container" data-section-id="{{ section.id }}">
-                    <script src="{{ 'selling-plans-integration.js' | asset_url }}" defer></script>
+                  <script src="{{ 'component-selling-plans.js' | asset_url }}" defer></script>
+                  <selling-plans-widget data-section-id="{{ section.id }}">
                     {% for variant in product.variants %}
                       {% liquid
                         assign variant_price = variant.price | money_with_currency | escape
@@ -418,7 +422,7 @@
                         </div>
                       {% endif %}
                     {% endfor %}
-                  </div>
+                  </selling-plans-widget>
                   <input
                     name="selling_plan"
                     class="selected-selling-plan-id"
@@ -435,14 +439,14 @@
     {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
     {% render 'component-product-media-modal', variant_images: variant_images %}
   {%- endif -%}
+
+  <script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+
+  {%- if section.settings.image_zoom != 'none' -%}
+    <script src="{{ 'component-product-media-modal.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
 </product-info>
-
-<script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
-<script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
-
-{%- if section.settings.image_zoom != 'none' -%}
-  <script src="{{ 'component-product-media-modal.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
 
 {% schema %}
 {

@@ -47,6 +47,12 @@
 {{ 'component-pagination.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
 
+{%- if section.settings.quick_add == 'standard' -%}
+  {{ 'component-quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'component-quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+
 <div class="color-{{ section.settings.color_scheme }} page-width">
   <div class="collection-hero color-{{ section.settings.color_scheme }}">
     <div class="collection-hero__text-wrapper">
@@ -206,7 +212,9 @@
                           enable_swatches: section.settings.enable_swatches,
                           swatch_trigger: section.settings.swatch_trigger,
                           swatch_type: section.settings.swatch_type,
-                          media_aspect_ratio: section.settings.image_ratio
+                          media_aspect_ratio: section.settings.image_ratio,
+                          quick_add: section.settings.quick_add
+                          section_id: section.id
                         %}
                       {%- endfor -%}
                     {%- endif -%}
@@ -308,10 +316,6 @@
         {
           "value": "standard",
           "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
-        },
-        {
-          "value": "bulk",
-          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
         }
       ]
     },

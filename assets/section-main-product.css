@@ -251,6 +251,7 @@ product-info .product__info-wrapper form > *:last-child {
   font-size: 15px;
   letter-spacing: 1px;
   color: var(--color-secondary-button);
+  position: relative;
 }
 
 .product-form__buttons button:hover {
@@ -490,6 +491,21 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   .product--large .share-button {
     max-width: 343px;
   }
+}
+
+[processing] .loading__spinner {
+  display: block !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[processing] .quick-add__submit.button span {
+  font-size: 0;
+}
+
+.loading__spinner svg {
+  animation: spinner 2s infinite linear;
 }
 
 @media screen and (min-width: 990px) {
