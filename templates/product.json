@@ -111,7 +111,7 @@
         "constrain_to_viewport": true,
         "media_fit": "cover",
         "media_position": "left",
-        "image_zoom": "none",
+        "image_zoom": "hover",
         "enable_video_looping": true,
         "padding_top": 36,
         "padding_bottom": 100
