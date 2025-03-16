@@ -435,7 +435,7 @@
       </div>
     </div>
   </div>
-  {%- if section.settings.image_zoom != 'none' -%}
+  {%- if section.settings.image_zoom == 'lightbox' -%}
     {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
     {% render 'component-product-media-modal', variant_images: variant_images %}
   {%- endif -%}
@@ -443,7 +443,7 @@
   <script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
   
-  {%- if section.settings.image_zoom != 'none' -%}
+  {%- if section.settings.image_zoom == 'lightbox' -%}
     <script src="{{ 'component-product-media-modal.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
