@@ -38,10 +38,6 @@ product-info {
   background: black;
 }
 
-.product__media-wrapper media-gallery{
-  cursor: pointer;
-}
-
 .product__media-wrapper .swiper-slide img,
 .product__media-wrapper .swiper-slide video,
 .product__media-wrapper .swiper-slide iframe {
@@ -237,8 +233,9 @@ product-info .product__info-wrapper form > *:last-child {
   margin: 0;
 }
 
-.product__info-wrapper .product-form__buttons {
-  margin-top: 27px;
+.product__quantity quantity-selector input {
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 .product-form__buttons button {

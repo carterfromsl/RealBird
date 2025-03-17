@@ -46,11 +46,16 @@
   letter-spacing: 1px;
 }
 
+.product-color-swatches:empty {
+  display: flex;
+}
+
 .product-color-swatches {
   display: flex;
   align-items: center;
   justify-content: var(--product-card-text-alignment);
   margin-top: 10px;
+  min-height: 25px;
 }
 
 .color-swatches {
@@ -96,6 +101,7 @@
 
 .card-pricing {
   margin-top: 10px;
+  height: 100%;
 }
 
 .card--standard .card-information {

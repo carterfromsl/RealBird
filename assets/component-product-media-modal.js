@@ -4,7 +4,7 @@ if (!customElements.get('product-media-modal')) {
     class ProductMediaModal extends HTMLElement {
       constructor() {
         super();
-        const mediaSlides = document.querySelectorAll('media-gallery .swiper-slide');
+        const mediaSlides = document.querySelectorAll('media-gallery .swiper-slide .light-box-zoom-trigger');
         if (!mediaSlides.length) return;
         mediaSlides.forEach((slide) => {
           slide.addEventListener('click', () => {

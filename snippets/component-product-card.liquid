@@ -42,8 +42,8 @@
       class="card-media"
       style="--media-ratio: {{ 1 | divided_by: ratio | times: 100 }}%;"
     >
-      <div class="card-media-child">
-        {% if card_product.featured_image != null %}
+      <div class="card-media-child{% if card_product.featured_image == blank %} card-media-no-image{% endif %}">
+        {% if card_product.featured_image != blank %}
           {{
             card_product.featured_image
             | image_url: width: card_product.featured_image.width

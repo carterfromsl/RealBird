@@ -14,11 +14,19 @@
       "blocks": {
         "title_bpmXVj": {
           "type": "title",
-          "settings": {}
+          "settings": {
+            "title_color": "#000000",
+            "title_font_size": 32,
+            "title_font_weight": "500"
+          }
         },
         "price_4XTzqR": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "price_color": "#000000",
+            "price_font_size": 16,
+            "price_font_weight": "500"
+          }
         },
         "text_CmhREB": {
           "type": "text",
@@ -66,27 +74,17 @@
         },
         "description_RxGjaP": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "description_color": "#000000",
+            "description_font_size": 16,
+            "description_font_weight": "500"
+          }
         },
         "buy_buttons_JPDYXc": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
-          }
-        },
-        "subscriptions_app_block_x4eUwM": {
-          "type": "shopify://apps/subscriptions/blocks/app-block/a3bfe9ec-96f8-4508-a003-df608a36d2ad",
-          "settings": {
-            "color_text_title": "#6d7175",
-            "color_text_body": "#6d7175",
-            "dividers_color": "#8f8d8d",
-            "bacgkround_color": "#ffffff",
-            "border_thickness": 1,
-            "border_radius": 0,
-            "supporting_text_title": "Purchase options",
-            "subscription_policy_url": "",
-            "product": "{{product}}"
           }
         }
       },
@@ -101,8 +99,7 @@
         "subscription_AbipnR",
         "share_ybFkAW",
         "description_RxGjaP",
-        "buy_buttons_JPDYXc",
-        "subscriptions_app_block_x4eUwM"
+        "buy_buttons_JPDYXc"
       ],
       "settings": {
         "enable_sticky_info": true,
@@ -111,10 +108,13 @@
         "constrain_to_viewport": true,
         "media_fit": "cover",
         "media_position": "left",
-        "image_zoom": "lightbox",
+        "image_zoom": "hover",
         "enable_video_looping": true,
         "padding_top": 36,
-        "padding_bottom": 100
+        "padding_bottom": 100,
+        "variant_label_color": "#000000",
+        "variant_label_font_size": 13,
+        "variant_label_font_weight": "300"
       }
     },
     "related-products": {
