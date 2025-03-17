@@ -352,7 +352,7 @@
       <a
         id="header-cart-bubble"
         {%- if settings.cart_type == 'drawer' -%}
-          @click.prevent="toggleCartDrawer"
+          @click.prevent="openCartDrawer"
         {%- else -%}
           href="{{ routes.cart_url }}"
         {%- endif -%}

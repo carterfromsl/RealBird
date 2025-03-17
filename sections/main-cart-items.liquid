@@ -24,7 +24,11 @@
 
           <div class="cart-item">
             <div class="cart-item__media">
-              {{ line_item.product | image_url: width: 200 | image_tag }}
+              {%- if line_item.image -%}
+                {{ line_item.image | image_url: width: 200 | image_tag: alt: line_item.title }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
             </div>
 
             <div class="cart-item__details">

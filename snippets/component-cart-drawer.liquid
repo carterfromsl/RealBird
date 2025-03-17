@@ -5,13 +5,13 @@
   class="color-{{ settings.cart_color_scheme }} gradient"
   :class="{ 'cart-open': cartOpen }"
 >
-  <button class="drawer-overlay" @click="toggleCartDrawer">
+  <button class="drawer-overlay" @click="closeCartDrawer">
     <span hidden>Close</span>
   </button>
   <div class="drawer__wrapper" data-ajax-cart-section>
     {%- if cart == empty -%}
       <div class="cart-header cart-header--empty">
-        <div class="cart-drawer__close" @click="toggleCartDrawer">
+        <div class="cart-drawer__close" @click="closeCartDrawer">
           {{- 'icon-close.svg' | inline_asset_content -}}
         </div>
       </div>
@@ -58,7 +58,11 @@
 
           <div class="cart-item">
             <div class="cart-item__media">
-              {{ line_item.product | image_url: width: 200 | image_tag }}
+              {%- if line_item.image -%}
+                {{ line_item.image | image_url: width: 200 | image_tag: alt: line_item.title }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
             </div>
 
             <div class="cart-item__details">
@@ -176,7 +180,7 @@
                 {%- endif -%}
               </div>
             </div>
-            
+
             <div class="cart-item__errors">
               <div data-ajax-cart-errors="{{ line_item.key }}"></div>
               {{- 'icon-info.svg' | inline_asset_content -}}
@@ -230,13 +234,17 @@
     Alpine.data('cartDrawer', () => ({
       cartOpen: false,
 
-      toggleCartDrawer() {
-        this.cartOpen = !this.cartOpen;
+      openCartDrawer() {
+        this.cartOpen = true;
+      },
+
+      closeCartDrawer() {
+        this.cartOpen = false;
       },
 
       init() {
         document.addEventListener('item-added-to-cart', () => {
-          this.toggleCartDrawer();
+          this.openCartDrawer();
         });
       },
     }));
