@@ -57,6 +57,7 @@ product-info {
 .product__media-wrapper.media-cover .swiper-slide video,
 .product__media-wrapper.media-cover .swiper-slide iframe {
   object-fit: cover;
+  object-position: top;
 }
 
 .product__media-wrapper.media-contain .swiper-slide img,
@@ -247,6 +248,7 @@ product-info .product__info-wrapper form > *:last-child {
   font-size: 15px;
   letter-spacing: 1px;
   color: var(--color-secondary-button);
+  position: relative;
 }
 
 .product-form__buttons button:hover {
@@ -263,7 +265,7 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   color: white;
 }
 
-.shopify-payment-button__button--unbranded:hover:not([disabled]){
+.shopify-payment-button__button--unbranded:hover:not([disabled]) {
   background: black;
 }
 
@@ -378,8 +380,38 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   align-items: center;
 }
 
-@media screen and (min-width: 750px) {
+.selling_plan_theme_integration--hidden {
+  display: none;
+}
 
+.product__subscription ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product__subscription fieldset {
+  padding: 0;
+}
+
+.selling_options_container > hr {
+  margin: 0;
+}
+
+.selling_options_container > div {
+  padding: 10px;
+}
+
+.selling_options_container--no-one-time > hr:first-of-type {
+  display: none;
+}
+
+.subscriptions_app_embed_block,
+.shopify_subscriptions_app_block {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
   .product--right .product__media-wrapper {
     order: 1;
   }
@@ -456,6 +488,21 @@ shopify-buy-it-now-button .shopify-payment-button__button {
   .product--large .share-button {
     max-width: 343px;
   }
+}
+
+[processing] .loading__spinner {
+  display: block !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[processing] .quick-add__submit.button span {
+  font-size: 0;
+}
+
+.loading__spinner svg {
+  animation: spinner 2s infinite linear;
 }
 
 @media screen and (min-width: 990px) {
