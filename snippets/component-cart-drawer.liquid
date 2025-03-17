@@ -234,8 +234,8 @@
     Alpine.data('cartDrawer', () => ({
       cartOpen: false,
 
-      toggleCartDrawer() {
-        this.cartOpen = !this.cartOpen;
+      openCartDrawer() {
+        this.cartOpen = true;
       },
 
       closeCartDrawer() {
@@ -244,7 +244,7 @@
 
       init() {
         document.addEventListener('item-added-to-cart', () => {
-          this.toggleCartDrawer();
+          this.openCartDrawer();
         });
       },
     }));
