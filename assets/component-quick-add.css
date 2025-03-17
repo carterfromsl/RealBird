@@ -94,6 +94,7 @@
     padding: 1.2rem;
     z-index: 5;
     width: 4rem;
+    height: 4rem;
     position: fixed;
     top: 1.5rem;
     right: 1.5rem;
@@ -113,11 +114,6 @@ quick-add-modal .product:not(.featured-product) .product__view-details {
     display: block;
 }
 
-quick-add-modal .quick-add-hidden,
-quick-add-modal .product__modal-opener:not(.product__modal-opener--image),
-quick-add-modal .product__media-item:not(:first-child) {
-    display: none !important;
-}
 
 quick-add-modal .slider.slider--mobile {
     overflow: visible;
@@ -140,10 +136,6 @@ quick-add-modal .product__column-sticky {
 
 quick-add-modal .page-width {
     padding: 0;
-}
-
-quick-add-modal .product__title>h1 {
-    display: none;
 }
 
 quick-add-modal .product__title>a {
@@ -204,10 +196,6 @@ quick-add-modal .product-media-container.constrain-height {
 }
 
 @media screen and (min-width: 750px) {
-    quick-add-modal .product-media-container.constrain-height {
-        --constrained-min-height: 400px;
-    }
-
     .quick-add-modal__content {
         --modal-height-offset: 10rem;
         margin-top: var(--modal-height-offset);
@@ -217,13 +205,14 @@ quick-add-modal .product-media-container.constrain-height {
     }
 
     quick-add-modal .quick-add-modal__toggle {
-        top: 2rem;
+        top: 1rem;
         right: 2rem;
     }
 
     quick-add-modal .product:not(.product--no-media) .product__media-wrapper {
         max-width: 45%;
         width: calc(45% - var(--grid-desktop-horizontal-spacing) / 2);
+        padding-top: 2rem;
     }
 
     quick-add-modal .product:not(.product--no-media) .product__info-wrapper {
