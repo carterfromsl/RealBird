@@ -36,8 +36,6 @@ class QuickAdd extends HTMLElement {
           .parseFromString(responseText, 'text/html')
           .querySelector('product-info');
 
-        productElement.setAttribute('data-update-url', 'false');
-
         this.preprocessContent(productElement);
         this.setContent(productElement.outerHTML);
 
@@ -62,7 +60,6 @@ class QuickAdd extends HTMLElement {
   preprocessContent(element) {
     const newId = `${element.dataset.section}`;
     element.innerHTML = element.innerHTML.replaceAll(element.dataset.section, newId);
-    element.setAttribute('data-update-url', 'false');
   }
 
   setContent(html) {

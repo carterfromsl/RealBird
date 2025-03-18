@@ -37,7 +37,7 @@ if (!customElements.get('product-info')) {
     }
 
     onCartUpdate(e) {
-      if (this.dataset.updateUrl === 'false') return;
+      if (!window.location.pathname.includes('/products/')) return;
       const { requestState } = e.detail;
       // If the "add to cart" request is successful
       if (requestState.requestType === 'add' && requestState.responseData?.ok) {
@@ -114,7 +114,7 @@ if (!customElements.get('product-info')) {
       // this.querySelector('share-button')?.updateUrl(
       //   `${window.shopUrl}${url}${variantId ? `?variant=${variantId}` : ''}`
       // );
-      if (this.dataset.updateUrl === 'false') return;
+      if (!window.location.pathname.includes('/products/')) return;
       window.history.replaceState({}, '', `${this.dataset.url}${variantId ? `?variant=${variantId}` : ''}`);
     }
 
@@ -149,6 +149,12 @@ if (!customElements.get('product-info')) {
           if (hasDifferentProductUrl) {
             const productInfo = html.querySelector('product-info');
             this.replaceWith(productInfo);
+            productInfo.querySelectorAll('script').forEach(script => {
+              const newScript = document.createElement('script');
+              [...script.attributes].forEach(({ name, value }) => newScript.setAttribute(name, value));
+              newScript.textContent = script.textContent;
+              script.replaceWith(newScript);
+            });
             productInfo.updateURL(variant?.id);
           } else {
             this.updateMedia(variant?.featured_media?.id);
