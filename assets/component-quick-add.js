@@ -43,7 +43,6 @@ class QuickAdd extends HTMLElement {
         this.setAttribute('open', '');
 
         if (window.Shopify?.PaymentButton) Shopify.PaymentButton.init();
-        if (window.ProductModel) window.ProductModel.loadShopifyXR();
       })
       .finally(() => {
         opener.removeAttribute('aria-disabled');
