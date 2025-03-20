@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "name": "Web Component Class Structure",
+      "description": "Custom elements should be defined in a class that extends HTMLElement, with all functions inside the class scope",
+      "message": "Custom elements should be defined in a class that extends HTMLElement, with all related functions inside the class scope",
+      "severity": "warning",
+      "pattern": {
+        "regex": "function\\s+([A-Za-z0-9_]+)\\s*\\([^)]*\\)\\s*\\{[^\\}]*customElements\\.define",
+        "excludePattern": "class\\s+([A-Za-z0-9_]+)\\s+extends\\s+HTMLElement"
+      }
+    },
+    {
+      "name": "File Name Matches Component Name",
+      "description": "Custom element filenames should match the name of the component (e.g., share-button component should be in a file named component-share-button.js)",
+      "message": "Custom element filename should match the component name",
+      "severity": "warning",
+      "pattern": {
+        "regex": "customElements\\.define\\(['\"]([a-z0-9-]+)['\"]",
+        "filePattern": "^(?!.*\\1).*\\.js$"
+      }
+    },
+    {
+      "name": "CSS Class Naming Convention",
+      "description": "CSS classes should follow a BEM-like naming pattern with component__element--modifier structure",
+      "message": "CSS classes should follow the component__element--modifier pattern",
+      "severity": "warning",
+      "pattern": {
+        "regex": "class=\"(?![^\"]*(?:[a-z0-9-]+__[a-z0-9-]+(?:--[a-z0-9-]+)?|pim-[a-z0-9-]+))",
+        "filePattern": "\\.liquid$|\\.css$"
+      }
+    },
+    {
+      "name": "Custom Element Scope",
+      "description": "DOM queries in custom elements should be scoped to the element (this.querySelector) not global document",
+      "message": "DOM queries in custom elements should be scoped to 'this' instead of using global document queries",
+      "severity": "warning",
+      "pattern": {
+        "regex": "document\\.querySelector(?:All)?\\([^)]+\\)",
+        "filePattern": "\\.js$",
+        "contextPattern": "class\\s+[A-Za-z0-9_]+\\s+extends\\s+HTMLElement"
+      }
+    },
+    {
+      "name": "Web Component Naming Convention",
+      "description": "Custom element tags should use kebab-case",
+      "message": "Custom element names should use kebab-case (lowercase with hyphens)",
+      "severity": "error",
+      "pattern": {
+        "regex": "customElements\\.define\\(['\"]([^-]*|[A-Z]+)['\"]",
+        "excludePattern": "customElements\\.define\\(['\"][a-z0-9]+-[a-z0-9-]+['\"]"
+      }
+    },
+    {
+      "name": "Check CustomElement Component Exists",
+      "description": "Always check if a custom element already exists before defining it",
+      "message": "Always check if a custom element already exists before defining it with: if (!customElements.get('element-name'))",
+      "severity": "warning",
+      "pattern": {
+        "regex": "customElements\\.define\\(['\"][a-z0-9-]+['\"]",
+        "excludePattern": "if\\s*\\(!customElements\\.get\\(['\"][a-z0-9-]+['\"]\\)\\)",
+        "filePattern": "\\.js$"
+      }
+    },
+    {
+      "name": "Event Handling in Web Components",
+      "description": "Event listeners in custom elements should be properly removed in disconnectedCallback",
+      "message": "Consider removing event listeners in disconnectedCallback when they're added in connectedCallback",
+      "severity": "info",
+      "pattern": {
+        "regex": "connectedCallback\\(\\)\\s*\\{[^\\}]*addEventListener\\(['\"][a-z]+['\"]",
+        "excludePattern": "disconnectedCallback\\(\\)\\s*\\{[^\\}]*removeEventListener\\(['\"][a-z]+['\"]",
+        "filePattern": "\\.js$"
+      }
+    },
+    {
+      "name": "Liquid Spacing",
+      "description": "Liquid tags should have consistent spacing (one space between braces and content)",
+      "message": "Use consistent spacing in Liquid tags: {{ variable }} instead of {{variable}}",
+      "severity": "warning",
+      "pattern": {
+        "regex": "\\{\\{[^ ]|[^ ]\\}\\}|\\{%[^ ]|[^ ]%\\}",
+        "filePattern": "\\.liquid$"
+      }
+    },
+    {
+      "name": "Liquid Comment Style",
+      "description": "Use Liquid comment syntax for template comments",
+      "message": "Use Liquid comments {% comment %}...{% endcomment %} instead of HTML comments <!-- --> for template logic",
+      "severity": "info",
+      "pattern": {
+        "regex": "<!--\\s*(?:if|for|unless|case|section|schema)",
+        "filePattern": "\\.liquid$"
+      }
+    },
+    {
+      "name": "Liquid Translation Usage",
+      "description": "User-facing strings should use translation filter",
+      "message": "User-facing strings should use the translation filter (e.g., {{ 'namespace.key' | t }})",
+      "severity": "warning",
+      "pattern": {
+        "regex": ">([A-Z][a-z].*?[a-z][.?!])</",
+        "excludePattern": ">\\s*\\{\\{\\s*['\"][\\w.]+['\"]\\s*\\|\\s*t\\s*(?:\\|[^}]+)?\\}\\}\\s*<",
+        "filePattern": "\\.liquid$"
+      }
+    },
+    {
+      "name": "Liquid Section Organization",
+      "description": "Sections should include schema with appropriate block organization",
+      "message": "Sections should include properly organized schema with appropriate blocks and settings",
+      "severity": "info",
+      "pattern": {
+        "regex": "{% section",
+        "excludePattern": "{% schema %}",
+        "filePattern": "sections/.*\\.liquid$" 
+      }
+    },
+    {
+      "name": "Liquid Snippet Naming",
+      "description": "Snippet names should follow component-* naming pattern",
+      "message": "Snippet filenames should follow component-* naming pattern for reusable components",
+      "severity": "warning",
+      "pattern": {
+        "regex": ".",
+        "excludePattern": "^component-",
+        "filePattern": "snippets/(?!component-).*\\.liquid$"
+      }
+    },
+    {
+      "name": "Liquid Variable Naming",
+      "description": "Liquid variables should use snake_case naming convention",
+      "message": "Liquid variables should use snake_case naming convention",
+      "severity": "warning",
+      "pattern": {
+        "regex": "\\{%\\s*assign\\s+([a-z]*[A-Z][a-zA-Z0-9]*)\\s*=",
+        "excludePattern": "\\{%\\s*assign\\s+([a-z][a-z0-9_]*)\\s*=",
+        "filePattern": "\\.liquid$"
+      }
+    }
+  ]
+} 
