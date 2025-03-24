@@ -7,7 +7,7 @@ if (!customElements.get('product-monogram-popup')) {
       this.selectedColor = 'white'; // Default color
       this.monogramText = 'A'; // Default text
       this.acknowledgeNoReturn = false;
-      
+
       // Style-specific character limits
       this.styleCharacterLimits = {
         'AB': 2,
@@ -15,7 +15,7 @@ if (!customElements.get('product-monogram-popup')) {
         'GDC': 5,
         'KATIE': 7
       };
-      
+
       // Set initial max characters based on default style
       this.maxCharacters = this.styleCharacterLimits[this.selectedStyle] || 2;
       console.log('ProductMonogramPopup constructor initialized');
@@ -23,19 +23,19 @@ if (!customElements.get('product-monogram-popup')) {
 
     connectedCallback() {
       this.setupEventListeners();
-      
+
       // Initialize the max characters display
       const maxCharsDisplay = this.querySelector('.product-monogram__max-chars');
       if (maxCharsDisplay) {
         maxCharsDisplay.textContent = this.maxCharacters;
       }
-      
+
       // Update the input maxlength attribute
       const textInput = this.querySelector('.product-monogram__text-input');
       if (textInput) {
         textInput.maxLength = this.maxCharacters;
       }
-      
+
       this.updatePreview(); // Initialize preview
     }
 
@@ -131,27 +131,27 @@ if (!customElements.get('product-monogram-popup')) {
       // Add selected class to clicked option
       event.currentTarget.classList.add('product-monogram__selected');
       this.selectedStyle = style;
-      
+
       // Update max characters based on selected style
       this.maxCharacters = this.styleCharacterLimits[style] || 2;
-      
+
       // Update max characters display in the heading
       const maxCharsDisplay = this.querySelector('.product-monogram__max-chars');
       if (maxCharsDisplay) {
         maxCharsDisplay.textContent = this.maxCharacters;
       }
-      
+
       // Update input field maxlength
       const textInput = this.querySelector('.product-monogram__text-input');
       if (textInput) {
         textInput.maxLength = this.maxCharacters;
-        
+
         // If current text is longer than new max, truncate it
         if (textInput.value.length > this.maxCharacters) {
           textInput.value = textInput.value.slice(0, this.maxCharacters);
           this.monogramText = textInput.value;
         }
-        
+
         // Update character counter
         const counter = this.querySelector('.product-monogram__character-count');
         if (counter) {
@@ -315,32 +315,32 @@ if (!customElements.get('product-monogram-popup')) {
 
     handleAddToCart() {
       if (!this.validateForm()) return;
-      
+
       // Get the selected variant ID from product-info component
       const productInfo = document.querySelector('product-info');
       if (!productInfo) {
         console.error('Product info component not found');
         return;
       }
-      
+
       // Find the selected variant ID
       const variantId = productInfo.querySelector('input[name="id"]').value;
       if (!variantId) {
         console.error('No variant selected');
         return;
       }
-      
+
       // Prepare monogram properties
       const properties = {
         style: this.selectedStyle,
         color: this.selectedColor,
         text: this.monogramText
       };
-      
+
       // Get quantity from product-info component
       const quantityInput = productInfo.querySelector('quantity-selector input[type="number"]');
       const quantity = quantityInput ? parseInt(quantityInput.value, 10) : 1;
-      
+
       // Check for selling plan (subscription) selection
       let sellingPlanId = null;
       const sellingPlanInput = productInfo.querySelector('.selected-selling-plan-id');
@@ -348,11 +348,11 @@ if (!customElements.get('product-monogram-popup')) {
         sellingPlanId = sellingPlanInput.value;
         console.log('Found selling plan ID:', sellingPlanId);
       }
-      
+
       // Show loading spinner
       const addToCartButton = this.querySelector('.product-monogram__add-to-cart');
       const originalButtonText = addToCartButton.textContent;
-      
+
       addToCartButton.innerHTML = `
         <span class="loading-spinner">
           <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
@@ -362,7 +362,7 @@ if (!customElements.get('product-monogram-popup')) {
         <span class="add-to-cart-text">Adding...</span>
       `;
       addToCartButton.disabled = true;
-      
+
       // Use Liquid Ajax Cart to add the item
       if (window.liquidAjaxCart) {
         // Prepare the cart item
@@ -371,34 +371,34 @@ if (!customElements.get('product-monogram-popup')) {
           quantity: quantity,
           properties: properties
         };
-        
+
         // Add selling plan if selected
         if (sellingPlanId) {
           cartItem.selling_plan = sellingPlanId;
         }
-        
+
         console.log('Adding to cart with Liquid Ajax Cart:', cartItem);
-        
+
         try {
           // Add item to cart using Liquid Ajax Cart
           window.liquidAjaxCart.add({
             items: [cartItem]
           });
-          
+
           // Listen for the request-end event to know when the request completes
           const handleRequestEnd = (event) => {
             const { requestState } = event.detail;
-            
+
             // Check if this is our add request and it succeeded
             if (requestState.requestType === 'add' && requestState.responseData?.ok) {
               console.log('Item added successfully with monogram:', requestState.responseData);
-              
+
               // Reset the form to default values
               this.resetForm();
-              
+
               // Show cart drawer by adding the class that component-product-info.js uses
               document.body.classList.add('js-show-ajax-cart');
-              
+
               // Hide the modal
               this.hideModal();
             } else if (requestState.requestType === 'add' && !requestState.responseData?.ok) {
@@ -406,34 +406,34 @@ if (!customElements.get('product-monogram-popup')) {
               console.error('Error adding item with monogram:', requestState.responseData?.body);
               alert('Could not add the item to your cart. Please try again.');
             }
-            
+
             // Reset button state
             addToCartButton.innerHTML = originalButtonText;
             addToCartButton.disabled = false;
-            
+
             // Remove event listener
             document.removeEventListener('liquid-ajax-cart:request-end', handleRequestEnd);
           };
-          
+
           // Add event listener for request completion
           document.addEventListener('liquid-ajax-cart:request-end', handleRequestEnd);
-          
+
         } catch (error) {
           console.error('Error invoking Liquid Ajax Cart add method:', error);
-          
+
           // Reset button state
           addToCartButton.innerHTML = originalButtonText;
           addToCartButton.disabled = false;
-          
+
           alert('Could not add the item to your cart. Please try again.');
         }
       } else {
         console.error('Liquid Ajax Cart is not available');
-        
+
         // Reset button state
         addToCartButton.innerHTML = originalButtonText;
         addToCartButton.disabled = false;
-        
+
         alert('Could not add the item to your cart. Please refresh the page and try again.');
       }
     }
@@ -446,20 +446,20 @@ if (!customElements.get('product-monogram-popup')) {
       this.monogramText = 'A';
       this.acknowledgeNoReturn = false;
       this.maxCharacters = this.styleCharacterLimits[this.selectedStyle] || 2;
-      
+
       // Reset text input
       const textInput = this.querySelector('.product-monogram__text-input');
       if (textInput) {
         textInput.value = '';
         textInput.maxLength = this.maxCharacters;
       }
-      
+
       // Reset character counter
       const counter = this.querySelector('.product-monogram__character-count');
       if (counter) {
         counter.textContent = `${this.maxCharacters} characters left`;
       }
-      
+
       // Reset style selection
       this.querySelectorAll('.product-monogram__style-option').forEach(option => {
         option.classList.remove('product-monogram__selected');
@@ -467,7 +467,7 @@ if (!customElements.get('product-monogram-popup')) {
           option.classList.add('product-monogram__selected');
         }
       });
-      
+
       // Reset color selection
       this.querySelectorAll('.product-monogram__color-option').forEach(option => {
         option.classList.remove('product-monogram__selected');
@@ -475,22 +475,22 @@ if (!customElements.get('product-monogram-popup')) {
           option.classList.add('product-monogram__selected');
         }
       });
-      
+
       // Reset acknowledgement checkbox
       const checkbox = this.querySelector('#monogram-acknowledge');
       if (checkbox) {
         checkbox.checked = false;
       }
-      
+
       // Reset the preview
       this.updatePreview();
-      
+
       // Disable the add to cart button
       const addToCartButton = this.querySelector('.product-monogram__add-to-cart');
       if (addToCartButton) {
         addToCartButton.setAttribute('disabled', '');
       }
-      
+
       console.log('Monogram form has been reset to default values');
     }
   }
@@ -498,27 +498,30 @@ if (!customElements.get('product-monogram-popup')) {
   customElements.define('product-monogram-popup', ProductMonogramPopup);
 }
 
-class MonogramOpener extends HTMLElement {
-  constructor() {
-    super();
-  }
 
-  connectedCallback() {
-    this.addEventListener('click', this.handleClick);
-  }
+if (!customElements.get('monogram-opener')) {
+  class MonogramOpener extends HTMLElement {
+    constructor() {
+      super();
+    }
 
-  disconnectedCallback() {
-    this.removeEventListener('click', this.handleClick);
-  }
+    connectedCallback() {
+      this.addEventListener('click', this.handleClick);
+    }
 
-  handleClick = () => {
-    const modal = document.querySelector('product-monogram-popup');
-    if (modal) {
-      modal.showModal();
-    } else {
-      console.error('Monogram modal not found');
+    disconnectedCallback() {
+      this.removeEventListener('click', this.handleClick);
+    }
+
+    handleClick = () => {
+      const modal = document.querySelector('product-monogram-popup');
+      if (modal) {
+        modal.showModal();
+      } else {
+        console.error('Monogram modal not found');
+      }
     }
   }
-}
 
-customElements.define('monogram-opener', MonogramOpener); 
+  customElements.define('monogram-opener', MonogramOpener);
+}
