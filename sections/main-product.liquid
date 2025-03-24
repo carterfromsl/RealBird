@@ -353,7 +353,7 @@
               {{ 'component-product-share-button.css' | asset_url | stylesheet_tag }}
               {% render 'component-product-share-button', block: block, share_link: share_url %}
               <script src="{{ 'component-product-share-button.js' | asset_url }}" defer="defer"></script>
-            {% when 'subscription' %}
+            {%- when 'subscription' -%}
               <div class="product__subscription">
                 {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
                 {% if product.selling_plan_groups.size > 0 %}
@@ -458,6 +458,15 @@
                     type="hidden"
                   >
                 {% endif %}
+              </div>
+            {%- when 'monogram' -%}
+              <div class="product__monogram" {{ block.shopify_attributes }}>
+                <monogram-opener>
+                  <button type="button" class="button button--primary" style="width: 100%; margin-top: 1rem;">
+                    {{ block.settings.button_text | default: 'Add Monogram' }}
+                  </button>
+                </monogram-opener>
+                {% render 'component-product-monogram-popup', block: block, section: section %}
               </div>
           {%- endcase -%}
         {%- endfor -%}
@@ -1956,6 +1965,18 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "monogram",
+      "name": "t:sections.main-product.blocks.monogram.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "t:sections.main-product.blocks.monogram.settings.button_text.default",
+          "label": "t:sections.main-product.blocks.monogram.settings.button_text.label"
         }
       ]
     }

@@ -60,6 +60,12 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "monogram_block": {
+          "type": "monogram",
+          "settings": {
+            "button_text": "Add Monogram"
+          }
+        },
         "subscription_AbipnR": {
           "type": "subscription",
           "settings": {
@@ -99,7 +105,8 @@
         "subscription_AbipnR",
         "share_ybFkAW",
         "description_RxGjaP",
-        "buy_buttons_JPDYXc"
+        "buy_buttons_JPDYXc",
+        "monogram_block"
       ],
       "settings": {
         "enable_sticky_info": true,
