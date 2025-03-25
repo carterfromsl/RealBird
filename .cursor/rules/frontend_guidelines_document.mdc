@@ -1,0 +1,112 @@
+---
+description: Apply these rules when making changes to the project
+globs:
+alwaysApply: true
+---
+
+Update this rule if user requested changes to the project requirement, etc.
+# Frontend Guideline Document
+
+This document outlines the key guidelines, architecture, and design principles for our Shopify Base Theme project. The aim is to provide a clear and straightforward setup that helps developers understand the frontend environment without any confusion.
+
+## 1. Frontend Architecture
+
+Our project is built using pure JavaScript and CSS, keeping things light and performant. Here’s a quick overview:
+
+*   **Languages and Templating:** We use Liquid for templating, allowing us to integrate smoothly with Shopify's ecosystem. HTML is enhanced with Liquid syntax for dynamic content.
+*   **JavaScript:** Our JavaScript strategy focuses on writing clean, dependency-minimal code. We use Alpine.js to manage UI state and interactions. Custom Web Components are at the heart of the project, encapsulating functionality for reusability. Tools like Swiper are included for image galleries and swiping features.
+*   **CSS/SCSS:** Styling is handled with CSS/SCSS. By keeping our styles modular and minimalistic, we ensure that the theme remains clean and easy to customize.
+*   **Shopify Integration:** With Shopify CLI 3.0 and full support for Online Store 2.0, our theme leverages Shopify’s built-in functionalities such as fluid theme updates and an intuitive section rendering API.
+
+This architecture is crafted to support scalability, maintainability, and high performance. It ensures that developers can easily adapt or expand the functionality while keeping the codebase lightweight and efficient.
+
+## 2. Design Principles
+
+Our frontend development is guided by these core principles:
+
+*   **Usability:** The user interface is designed to be straightforward and developer-friendly. Every component is created with clear functionality in mind, ensuring ease of use during both development and customization.
+*   **Accessibility:** We adhere to WCAG standards to ensure the theme is accessible to all users. Elements are designed with proper semantic structures, ensuring that screen readers and assistive technologies work smoothly.
+*   **Responsiveness:** The layout adapts seamlessly to various device sizes. From large desktops to mobile devices, the interface maintains consistency and usability.
+*   **Performance:** By focusing on minimal dependencies and using efficient libraries (e.g., Alpine.js and custom Web Components), we keep the frontend lean and fast.
+
+These principles are applied consistently across every user interface, helping to maintain a clean and effective design that aligns with the needs of developers and end users alike.
+
+## 3. Styling and Theming
+
+### Styling Methodology:
+
+We adopt a modular approach to styling to ensure maintainability and consistency across the theme. Key points include:
+
+*   **CSS Methodology:** We use a mix of standard CSS practices combined with SCSS for better structure and modularity. Our approach includes elements of BEM (Block Element Modifier) to name and organize our classes clearly.
+*   **No Overhead Styling Tools:** In line with our project’s focus on performance and minimal dependencies, no heavy build tools for CSS are used.
+
+### Theming and Visual Style:
+
+*   **Design Style:** The theme is designed with a clean, modern, and minimal aesthetic. The visuals lean towards a flat, material-inspired design with modern touches. A subtle glassmorphism effect may be added in areas where depth is useful without compromising on simplicity.
+
+*   **Color Palette:**
+
+    *   Primary: #0055AA (a strong, clear blue)
+    *   Secondary: #FF6600 (an accent orange for calls to action)
+    *   Background: #F9F9F9 (a light, neutral gray for a clean look)
+    *   Text: #333333 (a dark gray for readability)
+    *   Accent: #FFFFFF (used for highlights and card backgrounds)
+
+*   **Typography:** A modern, sans-serif font such as 'Inter' or 'Roboto' is recommended to communicate a clean, professional look that aligns with our minimalist aesthetic.
+
+These choices ensure a consistent look and feel that works well across the application and can be quickly customized by developers if needed.
+
+## 4. Component Structure
+
+Our project follows a component-based architecture, which makes it easy to manage and reuse pieces of the UI. Each component focuses on a single responsibility:
+
+*   **Header Components:** These handle search functionality (managed by Alpine.js) and cart interactions using Liquid AJAX Cart. The header is always in sync with the cart drawer for real-time updates.
+*   **Product Page Components:** Custom Web Components like `<variant-selector>` encapsulate variant selection functionality. This, combined with the Section Rendering API, ensures dynamic updates without page reloads.
+*   **Collection and Cart Components:** Components like `<collection-info>` manage filtering and sorting on collection pages, while liquid components and Alpine.js handle cart updates on both the cart page and drawer.
+
+This modular structure helps in reusing code, reducing repetition, and simplifies both the development and debugging processes.
+
+## 5. State Management
+
+*   **Alpine.js:** We rely on Alpine.js for managing UI state. It handles everything from filter drawers on collection pages to the dynamic opening of the cart drawer when an item is added.
+*   **Event Dispatching:** Events (such as `item-added-to-cart`) are managed centrally to ensure any changes in UI state are propagated throughout the necessary components.
+
+This lightweight state management approach keeps our frontend simple yet effective, ensuring a seamless user experience without the overhead of heavier state management libraries.
+
+## 6. Routing and Navigation
+
+The application’s navigation leverages Shopify’s inherent structure and Liquid templating. Key points include:
+
+*   **Section Rendering API:** Used extensively for updating parts of the page (like variant changes in the product page) without a full page reload.
+*   **Built-in Routing:** With Shopify’s routing handling the majority of navigation (like switching between collection, product, and cart pages), our focus is on ensuring that each part of the page updates dynamically and remains responsive.
+*   **Custom Navigation Interactions:** Alpine.js manages local navigation elements (like sliding menus or filter drawers) to enhance user experience, ensuring a smooth transition between states.
+
+## 7. Performance Optimization
+
+Performance is a core focus of this project. Key strategies include:
+
+*   **Minimal Dependencies:** By using pure JavaScript, simple CSS/SCSS, and custom web components, we keep the code lightweight.
+*   **Efficient Libraries:** Libraries like Alpine.js and Swiper are chosen for their balance between functionality and performance.
+*   **Smart Updates:** The use of Shopify’s Section Rendering API helps update only the necessary parts of the page, reducing load times.
+*   **Asset Optimization:** Images and static assets should be optimized and lazy loaded where appropriate to enhance loading speed and improve performance.
+
+These efforts underline our commitment to providing a fast and responsive user experience.
+
+## 8. Testing and Quality Assurance
+
+To maintain a high level of code quality and reliability, the following testing strategies are implemented:
+
+*   **Unit Testing:** Critical functions are tested in isolation to ensure they perform as expected.
+*   **Integration Testing:** Components are tested together to verify that interactions (such as event dispatching between Alpine.js and Liquid AJAX Cart) work correctly.
+*   **End-to-End Testing:** User flows are simulated, ensuring the application behaves as intended from a user’s perspective.
+*   **Browser and Accessibility Testing:** Regular testing using tools like Lighthouse helps ensure the theme adheres to accessibility standards and offers consistent performance across browsers.
+
+These testing routines help in catching issues early and maintaining the high quality expected from a professional developer theme.
+
+## 9. Conclusion and Overall Frontend Summary
+
+In summary, our Shopify Base Theme is built on a simple yet powerful stack of pure JavaScript, CSS/SCSS, and Liquid templating, facilitating a product that is easy to manage, scalable, and highly customizable. Our design principles focus on clean usability, strong accessibility standards, and responsive, fast-loading interfaces.
+
+The component-based architecture, managed state using Alpine.js, and performance-focused optimizations ensure that every part of the frontend works harmoniously. This thoughtful setup helps developers easily customize and extend the theme, making it a standout solution in today’s fast-paced e-commerce landscape.
+
+By adhering to these guidelines, we ensure that our Shopify Base Theme not only meets but exceeds performance, maintainability, and usability expectations, offering a robust foundation for developers and a delightful experience for end users.

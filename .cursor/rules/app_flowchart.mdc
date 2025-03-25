@@ -1,0 +1,27 @@
+---
+description: Apply these rules when making changes to the project
+globs:
+alwaysApply: true
+---
+
+Update this rule if user requested changes to the project requirement, etc.
+flowchart TD
+    A[Landing Page] --> B[Sign In or Sign Up]
+    B --> C[Forgot Password or Social Login]
+    C --> D[Successful Login]
+    B --> D[Successful Login]
+    D --> E[Main Dashboard]
+    E --> F[Header with Search and Cart]
+    F --> G[Predictive Search Suggestions]
+    G --> H[Select Product]
+    H --> I[Product Page]
+    I --> J[Variant Selector]
+    J --> K[Trigger ProductInfo Update]
+    K --> L[AJAX Cart Interaction]
+    L --> M[Cart Drawer Opens]
+    F --> N[View Collections]
+    N --> O[Filtering, Sorting, and Pagination]
+    L --> P[Navigate to Cart Page]
+    P --> Q[Real-time Quantity Updates]
+    E --> R[User Account Management]
+    I --> S[Error Handling and Alternate Paths]

@@ -1,0 +1,133 @@
+---
+description: Apply these rules when making changes to the project
+globs:
+alwaysApply: true
+---
+
+Update this rule if user requested changes to the project requirement, etc.
+## Project Overview
+
+*   **Type:** cursor_project_rules
+*   **Description:** The "Base Theme" is a developer-centric Shopify theme designed for clean, maintainable, and customizable e-commerce storefronts. It provides a lean starting point that avoids the bloat of typical marketplace themes and emphasizes modern development practices with a focus on performance, accessibility, and ease of customization. The theme leverages Shopify CLI 3.0 and Online Store 2.0 features, employs web components for JavaScript functionality, and uses pure JavaScript and CSS without additional build tools.
+*   **Primary Goal:** To deliver a high-performance, maintainable, and customizable Shopify theme that offers developers a clean architecture with modern tools and practices, ensuring rapid development and seamless user experiences.
+
+## Project Structure
+
+### Framework-Specific Routing
+
+*   **Directory Rules:**
+
+    *   Although traditional routing patterns (e.g., Next.js App or Pages Router) do not apply to Shopify themes, the project enforces a clear segmentation of theme files in accordance with Shopify’s architecture:
+
+        *   **Templates:** Define the page type (e.g., product.liquid, collection.liquid).
+        *   **Sections:** Contain modular, reusable components that drive the dynamic aspects of the storefront.
+        *   **Snippets:** Hold smaller reusable pieces of Liquid code for easy inclusion.
+        *   **Assets:** Store CSS, JavaScript, images, and fonts.
+        *   **Config & Locales:** Manage theme settings and translations.
+
+### Core Directories
+
+*   **Versioned Structure:**
+
+    *   **templates:** Contains page templates reflecting Online Store 2.0 architecture.
+    *   **sections:** Holds distinct, theme-specific components ensuring a clean separation of concerns.
+    *   **snippets:** Includes smaller Liquid components for reuse across the theme.
+    *   **assets:** Manages all styling (CSS/SCSS) and JavaScript (Alpine.js, Custom Web Components, Swiper) files.
+    *   **config:** Houses configuration files, including settings_schema.json for theme customization.
+    *   **locales:** Provides language and currency support for localization.
+
+### Key Files
+
+*   **Stack-Versioned Patterns:**
+
+    *   **theme.liquid:** Acts as the main layout file, integrating the header, footer, and dynamic section includes.
+    *   **templates/*.liquid:** Define individual page templates like product, collection, and cart pages.
+    *   **sections/*.liquid:** Implement core components of the theme such as the header, footer, and custom product displays.
+    *   **assets/theme.css / theme.scss.liquid:** Contains primary styles optimized for performance and responsive design.
+    *   **assets/theme.js:** Houses initialization scripts, Alpine.js integrations, and interactions for Liquid AJAX Cart.
+
+## Tech Stack Rules
+
+*   **Version Enforcement:**
+
+    *   **Shopify CLI 3.0:** Use Shopify CLI commands for theme development and deployment. Adhere strictly to Shopify CLI 3.0 conventions for building and testing.
+    *   **Liquid:** Follow Shopify's best practices for Liquid templating, ensuring clean separation between logic and presentation.
+    *   **Alpine.js:** Implement minimal and efficient state management for UI components; ensure state consistency across interactive elements (e.g., cart drawer and header search).
+    *   **Custom Web Components:** Encapsulate functionality and styles within components to maintain reusability and modularity.
+    *   **Swiper:** Optimize image galleries and swipe interactions by following performance-focused setups and lazy-loading best practices.
+    *   **CSS/SCSS:** Utilize best practices in CSS organization, such as BEM naming conventions and responsive design techniques.
+    *   **Liquid AJAX Cart:** Implement error handling and real-time updates; ensure the AJAX cart is seamlessly integrated with the overall theme logic.
+
+## PRD Compliance
+
+*   **Non-Negotiable:**
+
+    *   "Replace Dawn-based components with the team's own implementations" – All legacy Dawn components must be superseded by custom implementations to ensure the theme remains lean, modern, and tailored to developer needs.
+
+## App Flow Integration
+
+*   **Stack-Aligned Flow:**
+
+    *   **Header:** Uses Alpine.js to manage search interactions and Liquid AJAX Cart for real-time cart updates, including displaying cart counts and toggling the cart drawer.
+    *   **Product Page:** Features a custom `<variant-selector>` for variant selection; updates are dynamically handled through Shopify’s Section Rendering API and Liquid AJAX Cart events.
+    *   **Collection Page:** Deploys a `<collection-info>` element for filtering and sorting; implements onChange and onClick handlers to trigger dynamic page updates via section fetches.
+    *   **Cart Page:** Leverages data-ajax-cart-section markers for real-time quantity updates and error handling via Liquid AJAX Cart controls.
+    *   **Cart Drawer:** Manages state with Alpine.js; synchronizes with the header to ensure the cart drawer opens automatically upon product addition.
+
+## Best Practices
+
+*   **Liquid**
+
+    *   Follow Shopify’s official Liquid coding guidelines.
+    *   Maintain a clear separation of logic and presentation.
+    *   Regularly validate code to avoid performance pitfalls.
+
+*   **Alpine.js**
+
+    *   Use minimal watchers to optimize performance.
+    *   Maintain clear state management for interactive components.
+    *   Ensure seamless integration with Liquid and custom events.
+
+*   **Custom Web Components**
+
+    *   Encapsulate styles and functionality using Shadow DOM where appropriate.
+    *   Ensure reusability and modularity in component design.
+    *   Document component APIs for ease of customization.
+
+*   **Swiper**
+
+    *   Optimize image loading and transitions.
+    *   Use lazy loading for improved performance.
+    *   Test across devices for consistent swipe behavior.
+
+*   **CSS/SCSS**
+
+    *   Adopt a consistent naming convention such as BEM.
+    *   Leverage CSS variables and mixins for maintainability.
+    *   Prioritize responsive design with fluid grids and media queries.
+
+*   **Liquid AJAX Cart**
+
+    *   Implement robust error handling and state feedback for users.
+    *   Ensure real-time updates without full page reloads.
+    *   Test dynamic interactions across various scenarios.
+
+*   **Shopify CLI 3.0**
+
+    *   Use CLI tools for theme deployment and environment setup.
+    *   Keep CLI dependencies updated and follow release notes for changes.
+    *   Utilize CLI commands to streamline the development workflow.
+
+*   **Online Store 2.0**
+
+    *   Leverage dynamic sections and blocks for customizable storefronts.
+    *   Follow schema guidelines for theme settings and localization.
+    *   Optimize code for fast loading and responsive interactions.
+
+## Rules
+
+*   Derive folder/file patterns **directly** from Shopify's theme architecture and the specified tech stack versions.
+*   Enforce a clear separation between templates, sections, snippets, assets, config, and locales.
+*   Do not mix paradigms; for instance, never integrate routing patterns or file structures from frameworks like Next.js or React in this Shopify theme project.
+*   Adhere strictly to version-specific guidelines (e.g., Shopify CLI 3.0 usage, Liquid AJAX Cart implementations) to maintain consistency and performance across the project.
+*   Ensure that all custom implementations replace legacy code (e.g., Dawn-based components) and comply with the project’s modern development practices.
