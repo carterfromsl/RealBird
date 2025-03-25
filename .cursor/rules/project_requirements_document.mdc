@@ -5,102 +5,135 @@ alwaysApply: true
 ---
 
 Update this rule if user requested changes to the project requirement, etc.
-# Project Requirements Document: Shopify Base Theme
+# Project Requirements Document
 
-This document outlines the detailed requirements for the Shopify Base Theme, a developer-centric, lean, and customizable e-commerce theme. The theme is designed to provide a clean, well-organized starting point for building Shopify storefronts that are both high performance and easy to maintain. Leveraging modern development practices, the theme uses custom web components, Alpine.js for UI state management, and Shopify CLI 3.0 alongside Online Store 2.0 features—all without relying on complex build tools.
+## 1. Project Overview
 
-The primary objectives are to offer a minimal, dependency-light theme that developers can quickly customize while maintaining a strong focus on performance, accessibility, and responsiveness. Success will be measured by the ease of customization, streamlined code architecture, and an enhanced developer experience, all of which enable a smooth integration into the robust Shopify ecosystem.
+The Base Shopify Theme is a developer-friendly theme designed to offer a clean, organized, and easily customizable starting point for Shopify projects. It is built with modern tools and a minimalistic approach, keeping external dependencies low while maximizing performance and maintainability. With a focus on a clean code architecture and clear component separation, the theme leverages Shopify CLI 3.0 and Online Store 2.0 features to provide a modern workflow for developers, ensuring they can quickly set up and extend the theme without heavy build tools.
 
-## 1. In-Scope vs. Out-of-Scope
+This theme is being built to solve the common challenges developers face with cluttered codebases and complex dependencies that slow down development time. The key objectives are to simplify customization through well-documented sections and blocks, enhance user experience with dynamic interactions (like filtering, sorting, and pagination on collection pages), and manage shopping cart operations seamlessly with real-time updates. Success will be measured by the ease of onboarding for developers, smooth site interactions for end users, and reduced overhead when deploying and maintaining Shopify stores.
+
+## 2. In-Scope vs. Out-of-Scope
 
 ### In-Scope
 
-*   **Clean Architecture:** A structured and well-organized file system with a clear separation of concerns aimed at maintainability.
-*   **Minimal Dependencies:** Integration of only essential libraries such as Alpine.js, Liquid AJAX Cart, and Swiper.
-*   **Shopify CLI 3.0 & Online Store 2.0 Features:** Full integration with the latest Shopify development tools and features.
-*   **Custom Web Components:** Encapsulation of JavaScript logic within custom components.
-*   **Performance Optimization:** Use of pure JavaScript and CSS to maintain a lightweight footprint.
-*   **Simplified Customization:** Easy-to-modify sections and blocks for developers.
-*   **Search Functionality:** Predictive search capabilities with vendor and pricing details.
-*   **Cart Management:** AJAX cart with real-time updates, cart drawer, and notifications.
-*   **Collection Management:** Advanced filtering, sorting, and pagination functionality.
-*   **UI State Management:** Usage of Alpine.js for managing interactive states across the theme.
-*   **Responsive Design & Animations:** Fluid layouts across devices with tasteful CSS/JS animations.
-*   **Accessibility & Localization:** Built-in support for keyboard navigation, ARIA attributes, and multiple languages/currencies.
+*   **Clean Architecture & Organized File Structure:** A well-defined directory and component separation to enhance maintainability.
+*   **Minimal Dependencies:** Use only essential libraries such as Alpine.js for UI state management and Liquid AJAX Cart for cart functionality.
+*   **Modern Development Tools:** Integration with Shopify CLI 3.0 and full support for Online Store 2.0 features.
+*   **Custom Web Components & Pure JavaScript/CSS:** Implementation of JavaScript components without complicated build tools.
+*   **Header Interactions:** A responsive header with search functionality and real-time cart updates.
+*   **Product Page Functionality:** Dynamic variant selection, detailed product information updates, and AJAX-powered add-to-cart functionality.
+*   **Collection Page Enhancements:** Filtering, sorting, and pagination handled through event listeners and URL parameter updates.
+*   **Cart Page & Drawer Management:** Real-time cart updates, error handling, and reactive cart drawer behavior enhanced with Alpine.js.
+*   **Animations & Visual Feedback:** Implementing hover and scroll-triggered animations to improve user engagement.
 
 ### Out-of-Scope
 
-*   **Additional Build Tools:** No incorporation of external build tools (e.g., Webpack or Gulp) beyond what is needed.
-*   **Advanced External Integrations:** Features not directly related to core theme functionality (e.g., third-party enterprise integrations) will be deferred.
-*   **Custom Enterprise Features:** Extended functionalities or customizations that go beyond the basic theme setup may be considered for later phases.
-*   **Extensive CMS or Backend Modules:** This project strictly focuses on the theme’s front-end aspects within the Shopify environment.
+*   Advanced third-party integrations beyond the essential libraries (e.g., not including extra payment gateway integrations beyond the basic Liquid AJAX Cart).
+*   Server-side processing or heavy back-end customizations, as the theme is primarily front-end oriented.
+*   Complex build tool configurations or automation processes since the project relies on pure JavaScript and CSS.
+*   Custom solutions for customer account management beyond the basic login, registration, and account settings interface.
+*   Additional marketing or tracking scripts, which are expected to be integrated later as needed.
 
-## 2. User Flow
+## 3. User Flow
 
-A typical user journey begins at the header of the storefront, where users encounter a sleek, minimal interface. The header features a quick-search interface powered by Alpine.js and displays an interactive cart indicator managed by Liquid AJAX Cart. When a user searches for a product or views their cart, the system updates in real time and provides immediate feedback through a toggling cart drawer that is synced with the header.
+When a user first installs and launches the Base Shopify Theme, they are greeted by a clean and uncluttered interface that highlights the essential navigation elements and content areas. The initial setup screen ensures that all necessary assets and scripts (such as Alpine.js and Liquid AJAX Cart) are loaded efficiently to provide a smooth experience. The user sees a streamlined layout, with a prominent header featuring a search bar and a dynamic cart bubble reflecting real-time information, which signals that the theme is ready for an engaging shopping experience.
 
-After discovering products on the home or collection pages, the user moves to a product page where they interact with variant selectors rendered as custom web components (dropdowns or radio buttons). Each variant change triggers a seamless update via Shopify’s Section Rendering API, ensuring that product details such as images and descriptions remain current. As the user finalizes their selection and proceeds to the cart page, they experience real-time quantity adjustments and interactive notifications, allowing them to review their purchase before checking out—all while the system maintains consistency and responsiveness through shared Alpine.js data states.
+Once on any page, the interaction is highly intuitive. For example, on a product page, when a user selects a variant, the site dynamically updates product details like price, SKU, and inventory without a full page reload. As users interact with filters on the collection pages or adjust cart contents on the cart page, the changes are processed smoothly through AJAX updates. Throughout the journey, custom events and reactive updates ensure that key actions like adding to cart or navigating between product details and collections are both immediate and visually engaging.
 
-## 3. Core Features
+## 4. Core Features
 
-*   **Clean Architecture:** Organized file structure with clear separation of concerns for a maintainable codebase.
-*   **Minimal Dependencies:** Only these libraries are included—Alpine.js, Liquid AJAX Cart, and Swiper—to keep overhead low.
-*   **Shopify CLI 3.0 & Online Store 2.0:** Full use of modern Shopify development tools ensuring compatibility and feature support.
-*   **Custom Web Components:** Encapsulation of core JavaScript functionality for reuse and clarity.
-*   **Performance Optimization:** Designed to be lightweight with minimal JavaScript and CSS to speed up load times.
-*   **Simplified Customization:** Sections and blocks structured to ease modification and extension by developers.
-*   **Search Functionality:** Predictive search with optional display of vendor and pricing details.
-*   **AJAX Cart Management:** Real-time cart updates, including a dynamic cart drawer and notifications.
-*   **Collection Filtering, Sorting & Pagination:** Interactive systems for filtering products, sorting results, and managing paginated collections.
-*   **UI State Management:** Utilized Alpine.js for a clear, shared state across components like the search bar and cart drawer.
-*   **Animation & Responsiveness:** Fluid CSS/JS animations for scroll, zoom, and hover effects paired with layouts that adapt across mobile, tablet, and desktop.
-*   **Accessibility & Localization:** Keyboard navigation, ARIA attributes, and multi-language/multi-currency support to ensure an inclusive user experience.
+*   **Clean Architecture:** Structured file system ensuring clear separation of concerns for maintainability.
+*   **Minimal Dependencies:** Uses only essential libraries (e.g., Alpine.js, Liquid AJAX Cart) to maintain performance.
+*   **Modern Development Workflow:** Built with Shopify CLI 3.0 and adhering to Online Store 2.0 standards.
+*   **Simplified Customization:** Well-documented sections and blocks for easy theme setup and modifications.
+*   **Custom Web Components:** Encapsulated components using pure JavaScript and CSS to avoid reliance on complex build tools.
+*   **Dynamic Product Page Interactions:** Variant selector and AJAX updates to refresh product details without reloading pages.
+*   **Collection Page Enhancements:** Real-time filtering, sorting, and pagination via event listeners and URL updates.
+*   **Cart Management & Drawer:** Real-time cart updates, error handling, and reactive drawer state management using Alpine.js.
+*   **Animations & Visual Feedback:** Hover and scroll-triggered animations to enhance user interaction and overall aesthetic.
 
-## 4. Tech Stack & Tools
+## 5. Tech Stack & Tools
 
-*   **Frontend Languages & Frameworks:**
+*   **Frontend Frameworks & Languages:**
 
-    *   Liquid (Shopify’s templating language for dynamic content)
-    *   JavaScript with Alpine.js for UI state management and interactivity
-    *   Custom Web Components for modular JavaScript functionality
-    *   Swiper for image galleries and swiping interactions
-    *   CSS/SCSS for styling
+    *   Shopify Liquid (templating language specific to Shopify).
+    *   JavaScript (for client-side interactivity and custom web components).
+    *   CSS (for styling and layout).
 
-*   **Backend/Platform:**
+*   **Libraries & Tools:**
 
-    *   Shopify CLI 3.0 for theme development and deployment
-    *   Online Store 2.0 features for improved store functionality
-    *   Liquid AJAX Cart for managing real-time cart updates
+    *   Alpine.js for UI state management and DOM manipulation.
+    *   Liquid AJAX Cart for dynamic cart updates and interactions.
+    *   Swiper for mobile touch slider functionality in image galleries.
+    *   Shopify CLI 3.0 for theme development and deployment.
+    *   Online Store 2.0 architecture as the foundation of the theme.
+
+*   **Additional Components:**
+
+    *   Custom Web Components for encapsulating specific functionalities without heavy frameworks.
 
 *   **Development Tools:**
 
-    *   Cursor IDE for advanced AI-powered coding and real-time suggestions
+    *   Cursor for advanced IDE suggestions and real-time coding assistance.
+    *   Claude 3.7 Sonnet for reasoning and model integrations during development.
 
-## 5. Non-Functional Requirements
+## 6. Non-Functional Requirements
 
-*   **Performance:** The theme should have fast load times and be optimized for minimal resource usage.
-*   **Responsiveness:** Must display correctly and operate fluidly across mobile, tablet, and desktop devices.
-*   **Accessibility:** Adhere to WCAG standards, ensuring that keyboard navigation and ARIA attributes are properly implemented.
-*   **Security:** Data protection and secure handling of user interactions (e.g., form submissions) throughout the theme.
-*   **Maintainability:** Code must be neatly organized, well-documented, and structured to facilitate future updates and customizations.
-*   **Scalability:** While the base theme is lightweight, it should allow for seamless integration of additional features in future iterations.
+*   **Performance:**
 
-## 6. Constraints & Assumptions
+    *   The theme should load quickly and efficiently. Critical interactions (e.g., AJAX updates on cart and product pages) must occur with minimal latency.
 
-*   **Shopify Environment Dependency:** The theme assumes full compatibility with Shopify’s Online Store 2.0 and utilization of Shopify CLI 3.0.
-*   **No Build Tools:** The theme intentionally avoids any complex build tools, relying solely on pure JavaScript and CSS.
-*   **Library Compatibility:** Assumes that the included libraries (Alpine.js, Liquid AJAX Cart, Swiper) are compatible with current and future Shopify platform updates.
-*   **Developer-Centric Design:** The theme is built primarily with developers in mind, assuming a certain level of familiarity with web development principles and modern JavaScript frameworks.
-*   **Browser Support:** Assumes usage within modern browsers that support custom web components, JavaScript ES6+, and CSS3.
-*   **Integrated Tools:** Dependence on Cursor IDE suggests a workflow that supports real-time coding suggestions — ensure that team members have access to compatible development environments.
+*   **Security:**
 
-## 7. Known Issues & Potential Pitfalls
+    *   Ensure that no sensitive data is exposed in the frontend code. Use best practices for handling AJAX requests and error management.
 
-*   **Legacy Browser Compatibility:** Custom web components may not render as expected on older browsers. Testing and possible polyfill integration may be required.
-*   **API Rate Limits:** Shopify’s Section Rendering API and Liquid AJAX Cart could face rate limits during high traffic. Implement caching or debounce strategies where necessary.
-*   **Shared State Management:** Relying on Alpine.js for shared state across header and cart drawer might lead to complex state synchronization issues. Clear documentation and potentially a state management strategy can mitigate these risks.
-*   **Customization Overhead:** While the theme is easy to customize, significant custom modifications may inadvertently introduce bloat if not carefully managed.
-*   **Performance Trade-offs:** Emphasis on minimal dependencies requires careful review of any additional feature implementations to avoid compromising on performance.
-*   **Maintenance of External Libraries:** Future updates or deprecation of included dependencies like Alpine.js or Swiper could require refactoring—stay updated with library changes.
+*   **Compliance & Standards:**
 
-This PRD provides a comprehensive guideline for the AI model, clearly outlining the project scope, expected functionality, technical stack, and potential challenges. Subsequent documents such as Tech Stack Document, Frontend Guidelines, Backend Structure, and App Flow Diagrams can be generated with these specifications as the foundational reference.
+    *   Adhere to Shopify’s theme development guidelines and accessibility standards.
+
+*   **Usability:**
+
+    *   The interface should be intuitive, with easily navigable components and clear visual feedback on user interactions.
+
+*   **Maintainability:**
+
+    *   Code must be clearly commented and organized so future developers can easily extend or modify functionality. Regular refactoring should be straightforward due to the clean architecture.
+
+## 7. Constraints & Assumptions
+
+*   **Constraints:**
+
+    *   The theme is built exclusively using Shopify Liquid, JavaScript, CSS, and minimal libraries (Alpine.js, Liquid AJAX Cart, and Swiper), without complex build tools.
+    *   The development process relies on Shopify CLI 3.0 and conforms to the Online Store 2.0 framework.
+    *   Performance must be prioritized, so any third-party integrations are limited to those that do not add unnecessary bloat.
+
+*   **Assumptions:**
+
+    *   Developers using the theme have basic familiarity with Shopify’s Liquid templating system and front-end development.
+    *   The project assumes stable availability and compatibility of essential libraries and tools (e.g., Alpine.js and Liquid AJAX Cart).
+    *   The theme will primarily serve as a base and isn’t expected to include every possible e-commerce feature out-of-the-box; extra features can be added over time.
+
+## 8. Known Issues & Potential Pitfalls
+
+*   **API Rate Limits:**
+
+    *   When using Shopify’s Section Rendering API for dynamic updates, be aware of potential rate limits. To mitigate this, implement efficient event handling and caching mechanisms where possible.
+
+*   **Platform Restrictions:**
+
+    *   As the theme strictly relies on Shopify’s Online Store 2.0 and Liquid, there may be limitations when trying to integrate with non-Shopify services or external APIs. Clear documentation and scope definition can help avoid such issues.
+
+*   **Performance Bottlenecks:**
+
+    *   Although dependencies are minimal, improper use of AJAX calls or Alpine.js event handlers could lead to slower response times. It is important to profile the theme regularly and optimize code paths.
+
+*   **Browser Compatibility:**
+
+    *   Ensure custom web components, CSS, and JavaScript work across all major browsers. Testing on different platforms early on can help catch compatibility issues.
+
+*   **Error Handling:**
+
+    *   The cart management system handles updates and error management at the item level. Developers should ensure robust error capturing and user feedback to manage any AJAX call failures effectively.
+
+This PRD serves as the foundational document for generating subsequent technical documents. It clearly outlines every aspect of the project, minimizing any ambiguity for AI-assisted development and further documentation.
