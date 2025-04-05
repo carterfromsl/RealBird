@@ -1,101 +1,99 @@
-class QuickAdd extends HTMLElement {
-  constructor() {
-    super();
-    this.modal = null;
-    this.modalContent = null;
-    this.setupModal();
-    this.bindEvents();
-  }
+if (!customElements.get('quick-add-modal')) {
+  class QuickAdd extends HTMLElement {
+    constructor() {
+      super();
+      this.modal = null;
+      this.modalContent = null;
+      this.setupModal();
+      this.bindEvents();
+    }
 
-  setupModal() {
-    this.modal = this.querySelector('[role="dialog"]');
-    this.modalContent = this.querySelector('[id^="QuickAddInfo-"]');
-    document.body.appendChild(this);
-  }
+    setupModal() {
+      this.modal = this.querySelector('[role="dialog"]');
+      this.modalContent = this.querySelector('[id^="QuickAddInfo-"]');
+      document.body.appendChild(this);
+    }
 
-  bindEvents() {
-    this.querySelector('[id^="ModalClose-"]')?.addEventListener('click', () => this.hide());
-    this.addEventListener('keyup', (event) => {
-      if (event.code.toUpperCase() === 'ESCAPE') this.hide();
-    });
-    this.addEventListener('click', (event) => {
-      if (event.target === this) this.hide();
-    });
+    bindEvents() {
+      this.querySelector('[id^="ModalClose-"]')?.addEventListener('click', () => this.hide());
+      this.addEventListener('keyup', (event) => {
+        if (event.code.toUpperCase() === 'ESCAPE') this.hide();
+      });
+      this.addEventListener('click', (event) => {
+        if (event.target === this) this.hide();
+      });
 
-  }
+    }
 
-  show(opener) {
-    this.openedBy = opener;
-    opener.setAttribute('aria-disabled', true);
-    opener.querySelector('.loading__spinner').classList.remove('hidden');
+    show(opener) {
+      this.openedBy = opener;
 
-    fetch(opener.getAttribute('data-product-url'))
-      .then(response => response.text())
-      .then(responseText => {
-        const productElement = new DOMParser()
-          .parseFromString(responseText, 'text/html')
-          .querySelector('product-info');
+      // Only set aria-disabled and show spinner if it's a quick-add operation
+      // with a loading spinner element
+      if (opener && opener.querySelector('.loading__spinner')) {
+        opener.setAttribute('aria-disabled', true);
+        opener.querySelector('.loading__spinner').classList.remove('hidden');
 
-        productElement.setAttribute('data-update-url', 'false');
+        fetch(opener.getAttribute('data-product-url'))
+          .then(response => response.text())
+          .then(responseText => {
+            const productElement = new DOMParser()
+              .parseFromString(responseText, 'text/html')
+              .querySelector('product-info');
 
-        this.preprocessContent(productElement);
-        this.setContent(productElement.outerHTML);
+            productElement.setAttribute('data-update-url', 'false');
 
+            this.preprocessContent(productElement);
+            this.setContent(productElement.outerHTML);
+
+            document.body.classList.add('overflow-hidden');
+            this.setAttribute('open', '');
+
+            if (window.Shopify?.PaymentButton) Shopify.PaymentButton.init();
+            if (window.ProductModel) window.ProductModel.loadShopifyXR();
+          })
+          .finally(() => {
+            opener.removeAttribute('aria-disabled');
+            opener.querySelector('.loading__spinner').classList.add('hidden');
+          });
+      } else {
+        // For other modals (like monogram popup) that don't need fetch
         document.body.classList.add('overflow-hidden');
         this.setAttribute('open', '');
+      }
+    }
 
-        if (window.Shopify?.PaymentButton) Shopify.PaymentButton.init();
-        if (window.ProductModel) window.ProductModel.loadShopifyXR();
-      })
-      .finally(() => {
-        opener.removeAttribute('aria-disabled');
-        opener.querySelector('.loading__spinner').classList.add('hidden');
+    hide() {
+      document.body.classList.remove('overflow-hidden');
+      this.removeAttribute('open');
+      this.modalContent.innerHTML = '';
+    }
+
+    preprocessContent(element) {
+      const newId = `${element.dataset.section}`;
+      element.innerHTML = element.innerHTML.replaceAll(element.dataset.section, newId);
+      element.setAttribute('data-update-url', 'false');
+    }
+
+    setContent(html) {
+      this.modalContent.innerHTML = html;
+      // Reinject scripts
+      this.modalContent.querySelectorAll('script').forEach(oldScript => {
+        const newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr => {
+          newScript.setAttribute(attr.name, attr.value);
+        });
+        newScript.textContent = oldScript.textContent;
+        oldScript.parentNode.replaceChild(newScript, oldScript);
       });
+    }
+
   }
 
-  hide() {
-    document.body.classList.remove('overflow-hidden');
-    this.removeAttribute('open');
-    this.modalContent.innerHTML = '';
-  }
-
-  preprocessContent(element) {
-    const newId = `${element.dataset.section}`;
-    element.innerHTML = element.innerHTML.replaceAll(element.dataset.section, newId);
-    element.setAttribute('data-update-url', 'false');
-  }
-
-  setContent(html) {
-    this.modalContent.innerHTML = html;
-    // Reinject scripts
-    this.modalContent.querySelectorAll('script').forEach(oldScript => {
-      const newScript = document.createElement('script');
-      Array.from(oldScript.attributes).forEach(attr => {
-        newScript.setAttribute(attr.name, attr.value);
-      });
-      newScript.textContent = oldScript.textContent;
-      oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
-  }
-
+  customElements.define('quick-add-modal', QuickAdd);
 }
 
-customElements.define('quick-add-modal', QuickAdd);
-
-class ModalOpener extends HTMLElement {
-  constructor() {
-    super();
-
-    const button = this.querySelector('button');
-
-    if (!button) return;
-    button.addEventListener('click', () => {
-      const modal = document.querySelector(this.getAttribute('data-modal'));
-      if (modal) modal.show(button);
-    });
-  }
-}
-customElements.define('modal-opener', ModalOpener);
+// ModalOpener is now in component-modal-opener.js
 
 function onCartUpdate(e) {
   try {

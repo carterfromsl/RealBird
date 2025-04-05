@@ -19,6 +19,9 @@ if (!customElements.get('product-monogram-popup')) {
       // Set initial max characters based on default style
       this.maxCharacters = this.styleCharacterLimits[this.selectedStyle] || 2;
       console.log('ProductMonogramPopup constructor initialized');
+      
+      // Ensure the modal is moved to the body element for consistent behavior
+      //document.body.appendChild(this);
     }
 
     connectedCallback() {
@@ -44,7 +47,7 @@ if (!customElements.get('product-monogram-popup')) {
       // Close button event
       const closeButton = this.querySelector('[id^="MonogramModalClose-"]');
       if (closeButton) {
-        closeButton.addEventListener('click', this.hideModal.bind(this));
+        closeButton.addEventListener('click', this.hide.bind(this));
       } else {
         console.error('Close button not found');
       }
@@ -91,32 +94,33 @@ if (!customElements.get('product-monogram-popup')) {
 
       // Modal backdrop click to close
       this.addEventListener('click', (event) => {
-        if (event.target === this) this.hideModal();
+        if (event.target === this) this.hide();
       });
 
-      // Escape key to close - add to document level
-      this.escapeHandler = (event) => {
-        if (event.key === 'Escape' && this.isOpen) {
-          this.hideModal();
-        }
-      };
-      document.addEventListener('keydown', this.escapeHandler);
+      // Escape key to close
+      this.addEventListener('keyup', (event) => {
+        if (event.code.toUpperCase() === 'ESCAPE') this.hide();
+      });
     }
 
     disconnectedCallback() {
-      // Clean up the document event listener when the component is removed
-      if (this.escapeHandler) {
-        document.removeEventListener('keydown', this.escapeHandler);
-      }
+      // No need for document level event listeners as we're using element-level now
     }
 
-    showModal() {
+    // Renamed to align with QuickAdd convention
+    show(opener) {
       this.isOpen = true;
       document.body.classList.add('overflow-hidden');
       this.setAttribute('open', '');
+      
+      // Store the opener reference if provided
+      if (opener) {
+        this.openedBy = opener;
+      }
     }
 
-    hideModal() {
+    // Renamed to align with QuickAdd convention
+    hide() {
       this.isOpen = false;
       document.body.classList.remove('overflow-hidden');
       this.removeAttribute('open');
@@ -400,7 +404,7 @@ if (!customElements.get('product-monogram-popup')) {
               document.body.classList.add('js-show-ajax-cart');
 
               // Hide the modal
-              this.hideModal();
+              this.hide();
             } else if (requestState.requestType === 'add' && !requestState.responseData?.ok) {
               // Show error
               console.error('Error adding item with monogram:', requestState.responseData?.body);
@@ -496,32 +500,4 @@ if (!customElements.get('product-monogram-popup')) {
   }
 
   customElements.define('product-monogram-popup', ProductMonogramPopup);
-}
-
-
-if (!customElements.get('monogram-opener')) {
-  class MonogramOpener extends HTMLElement {
-    constructor() {
-      super();
-    }
-
-    connectedCallback() {
-      this.addEventListener('click', this.handleClick);
-    }
-
-    disconnectedCallback() {
-      this.removeEventListener('click', this.handleClick);
-    }
-
-    handleClick = () => {
-      const modal = document.querySelector('product-monogram-popup');
-      if (modal) {
-        modal.showModal();
-      } else {
-        console.error('Monogram modal not found');
-      }
-    }
-  }
-
-  customElements.define('monogram-opener', MonogramOpener);
 }

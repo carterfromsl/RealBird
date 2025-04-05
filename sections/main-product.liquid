@@ -461,11 +461,11 @@
               </div>
             {%- when 'monogram' -%}
               <div class="product__monogram" {{ block.shopify_attributes }}>
-                <monogram-opener>
+                <modal-opener data-modal="#ProductMonogramPopup-{{ section.id }}">
                   <button type="button" class="button button--primary" style="width: 100%; margin-top: 1rem;">
                     {{ block.settings.button_text | default: 'Add Monogram' }}
                   </button>
-                </monogram-opener>
+                </modal-opener>
                 {% render 'component-product-monogram-popup', block: block, section: section %}
               </div>
           {%- endcase -%}
@@ -480,6 +480,7 @@
 
   <script src="{{ 'component-product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+  <script src="{{ 'component-modal-opener.js' | asset_url }}" defer="defer"></script>
 
   {%- if section.settings.image_zoom != 'none' -%}
     <script src="{{ 'component-product-media-modal.js' | asset_url }}" defer="defer"></script>
