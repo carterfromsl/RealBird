@@ -29,10 +29,10 @@
   #{{ section_id }} {
     position: relative;
     color: {{ text_color }};
-    padding: 60px 20px; /* Adjust padding as needed */
-    min-height: 400px; /* Minimum height */
+    padding: 60px 20px; /* Adjusted padding */
+    min-height: 600px; /* Increased minimum height */
     display: flex;
-    align-items: center; /* Vertically center content */
+    align-items: flex-end; /* Align content block to the bottom */
     background-color: #000; /* Fallback background */
     overflow: hidden;
   }
@@ -68,15 +68,15 @@
   #{{ section_id }} .hero-banner__content {
     position: relative;
     z-index: 3;
-    max-width: 1200px; /* Adjust max width as needed */
-    margin-left: 0; /* Align content to the left */
+    max-width: 50%; /* Limit width to the left half */
+    margin-left: 0;
     margin-right: auto;
-    text-align: left; /* Align text to the left */
-    padding: 0 5%; /* Add some padding */
+    text-align: left;
+    padding: 0 5%;
   }
 
   #{{ section_id }} .hero-banner__stars {
-    margin-bottom: 15px;
+    margin-bottom: 8px; /* Reduced margin */
     font-size: 0.9em;
     /* Add star icon styling if needed */
   }
@@ -89,14 +89,15 @@
 
   #{{ section_id }} .hero-banner__heading {
     font-size: 2.5em; /* Adjust size */
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Reduced margin */
     font-weight: bold;
     line-height: 1.2;
+    color: {{ text_color }}; /* Explicitly set color */
   }
 
   #{{ section_id }} .hero-banner__subheading {
     font-size: 1.2em; /* Adjust size */
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Reduced margin */
     max-width: 600px; /* Limit width for readability */
   }
 
@@ -137,17 +138,17 @@
   /* Responsive adjustments */
   @media (max-width: 768px) {
     #{{ section_id }} {
-      padding: 40px 15px;
-      min-height: 300px;
+      padding: 40px 15px; /* Adjusted padding for mobile */
+      min-height: 450px; /* Adjust min-height for mobile */
     }
 
     #{{ section_id }} .hero-banner__content {
-        text-align: center;
-         margin-left: auto;
-         margin-right: auto;
-         padding: 0 10px;
+        text-align: left; /* Align left on mobile */
+        margin-left: 0;   /* Align left on mobile */
+        margin-right: auto; /* Align left on mobile */
+        padding: 0 10px;
+        max-width: 90%; /* Allow more width on mobile */
     }
-
 
     #{{ section_id }} .hero-banner__heading {
       font-size: 2em;
@@ -161,8 +162,12 @@
        position: relative; /* Stack endorsement below content */
        bottom: auto;
        right: auto;
-       text-align: center;
+       text-align: left; /* Align left on mobile */
        margin-top: 30px;
+       padding: 0 10px; /* Add padding */
+       max-width: 90%;
+       margin-left: 0;
+       margin-right: auto;
     }
   }
 
