@@ -40,6 +40,7 @@
         "block_2": {
           "type": "icon_block",
           "settings": {
+            "icon": "shopify://shop_images/Screenshot_3.png",
             "text": "Free Shipping $250+"
           }
         },
