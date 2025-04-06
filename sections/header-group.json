@@ -1,0 +1,28 @@
+{
+  "name": "Header group",
+  "type": "header",
+  "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "settings": {
+        // Default settings can be pre-filled here if desired,
+        // otherwise they will use the section's schema defaults.
+        // Example:
+        // "show_announcement": true,
+        // "text": "PROTECT HOCKEY'S FUTURE",
+        // "link_text": "SAVE ON TILÖ TODAY",
+        // "emoji": "🚨",
+        // "background_color": "#000000",
+        // "text_color": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement_bar",
+    "header"
+  ]
+} 
