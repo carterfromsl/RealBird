@@ -12,7 +12,7 @@
     "hero_banner_1": {
       "type": "hero-banner",
       "settings": {
-        "background_type": "image",
+        "background_type": "video",
         "video_background_hosted": "shopify://files/videos/59bb8acc9ea57f4877482611729dfd7572f06907.mov",
         "video_background_url": "",
         "overlay_color": "#000000",
