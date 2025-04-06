@@ -27,6 +27,35 @@
         "endorsement_name": "TJ Oshie"
       }
     },
+    "icon_bar_1": {
+      "type": "icon-bar",
+      "blocks": {
+        "block_1": {
+          "type": "icon_block",
+          "settings": {
+            "text": "Lifetime Guarantee"
+          }
+        },
+        "block_2": {
+          "type": "icon_block",
+          "settings": {
+            "text": "Free Shipping $250+"
+          }
+        },
+        "block_3": {
+          "type": "icon_block",
+          "settings": {
+            "text": "7,000+ Satisfied Customers"
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3"
+      ],
+      "settings": {}
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -137,6 +166,7 @@
   },
   "order": [
     "hero_banner_1",
+    "icon_bar_1",
     "image_banner",
     "fist-of-collections",
     "image_with_text_UnGP37"
