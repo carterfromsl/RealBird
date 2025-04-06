@@ -62,6 +62,34 @@
         "text_color": "#FFFFFF"
       }
     },
+    "featured_products_example": {
+      "type": "featured-products",
+      "settings": {},
+      "blocks": {
+        "block_1": {
+          "type": "product_card",
+          "settings": {}
+        },
+        "block_2": {
+          "type": "product_card",
+          "settings": {}
+        },
+        "block_3": {
+          "type": "product_card",
+          "settings": {}
+        },
+        "block_4": {
+          "type": "product_card",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4"
+      ]
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -173,6 +201,7 @@
   "order": [
     "hero_banner_1",
     "icon_bar_1",
+    "featured_products_example",
     "image_banner",
     "fist-of-collections",
     "image_with_text_UnGP37"
