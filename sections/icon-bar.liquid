@@ -58,7 +58,7 @@
 
   .icon-bar-text {
     margin: 0;
-    font-size: 2rem; /* Increased font size */
+    font-size: 1rem; /* Keep increased font size */
     white-space: nowrap; /* Prevent text wrapping */
     overflow: hidden;
     text-overflow: ellipsis;
@@ -72,29 +72,30 @@
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .icon-bar-container {
-      flex-direction: column;
-      gap: 20px;
+      justify-content: flex-start; /* Align to start for scrolling */
+      overflow-x: auto; /* Enable horizontal scrolling */
+      padding-bottom: 10px; /* Optional: space for scrollbar */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+       scrollbar-width: none; /* Hide scrollbar Firefox */
     }
-    .icon-bar-divider {
-       display: none; /* Hide dividers on mobile */
+    /* Hide scrollbar for Chrome/Safari/Edge */
+    .icon-bar-container::-webkit-scrollbar {
+        display: none;
     }
+
      .icon-bar-item {
-      flex-direction: row; /* Keep horizontal layout for item */
-      justify-content: center;
-      width: 100%; /* Take full width in column layout */
+       flex: 0 0 auto; /* Prevent shrinking, size based on content */
     }
     .icon-bar-text {
-        white-space: normal; /* Allow wrapping on small screens */
+        /* white-space: normal; Removed */
     }
   }
+
+   /* Remove or clear the 480px block if only stacking was intended */
    @media (max-width: 480px) {
-     .icon-bar-item {
-        flex-direction: column; /* Stack icon and text vertically */
-        gap: 5px;
-     }
-      .icon-bar-text {
-         font-size: 0.9rem; /* Increased font size for smallest breakpoint */
-     }
+     /* .icon-bar-item { flex-direction: column; gap: 5px; } Removed */
+     /* .icon-bar-text { font-size: 0.9rem; } Removed */
+     /* Keep this block empty or add other 480px specific styles if needed */
    }
 </style>
 
