@@ -75,12 +75,12 @@
                   </a>
                 </div>
                 <div class="product-card__price">
-                  <span class="price__regular {% if product.compare_at_price > product.price %}price--on-sale{% endif %}">
-                    {{ product.price | money }}
-                  </span>
                   {%- if product.compare_at_price > product.price -%}
                     <s class="price__compare-at">{{ product.compare_at_price | money }}</s>
                   {%- endif -%}
+                  <span class="price__regular {% if product.compare_at_price > product.price %}price--on-sale{% endif %}">
+                    {{ product.price | money }}
+                  </span>
                 </div>
               </div>
             </a>
@@ -123,8 +123,9 @@
   .featured-products__subheading {
     margin-top: 0;
     margin-bottom: 0; /* Remove bottom margin */
-    font-size: 1.5rem; /* Example size */
+    font-size: 1rem; /* Example size */
     color: rgba(var(--color-foreground), 0.75); /* Use existing theme variable/opacity */
+    font-style: italic; /* Make subheading italic */
   }
 
   .featured-products__view-all {
@@ -206,7 +207,7 @@
 
   .product-card__reviews {
     font-size: 1.5rem; /* Doubled font size */
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem; /* Reduced margin-bottom */
     display: flex;
     align-items: center;
     gap: 0.5rem; /* Increased gap slightly */
@@ -238,16 +239,22 @@
     font-weight: bold;
   }
 
+  .product-card__price .price__regular {
+    color: #000000; /* Make regular price black */
+  }
+
   .price--on-sale {
     color: #d9534f; /* Fallback sale color (Bootstrap red) - Adjust if theme has a variable */
+    /* This overrides the black color only when on sale */
   }
 
   .price__compare-at {
     text-decoration: line-through;
     font-weight: normal;
     color: rgba(var(--color-foreground), 0.75); /* Use existing theme variable/opacity */
-    margin-left: 0.5rem;
-    font-size: 0.9em;
+    margin-left: 0; /* Removed left margin */
+    margin-right: 0.5rem; /* Added right margin */
+    font-size: 0.8em; /* Made smaller */
   }
 
   /* Remove redundant utility class definitions as they exist in base.css */
