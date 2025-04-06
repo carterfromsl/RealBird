@@ -11,7 +11,7 @@
 {% if section.settings.show_announcement %}
   <div class="announcement-bar" style="background-color: {{ bg_color }}; color: {{ text_color }};">
     <div class="page-width announcement-bar__content">
-      <p class="announcement-bar__message">
+      <div class="announcement-bar__message">
         {{ section.settings.text }}
         {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
           <a href="{{ section.settings.link_url }}" class="announcement-bar__link" style="color: {{ text_color }};">
@@ -19,7 +19,7 @@
           </a>
         {%- endif -%}
         {{ section.settings.emoji }}
-      </p>
+      </div>
     </div>
   </div>
 {% endif %}
@@ -41,6 +41,11 @@
     font-size: 14px; /* Adjust as needed */
     font-weight: 500; /* Adjust as needed */
     line-height: 1.2;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
   }
 
   .announcement-bar__link {
