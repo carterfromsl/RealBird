@@ -11,7 +11,21 @@
   "sections": {
     "hero_banner_1": {
       "type": "hero-banner",
-      "settings": {}
+      "settings": {
+        "background_type": "image",
+        "video_background_hosted": "shopify://files/videos/59bb8acc9ea57f4877482611729dfd7572f06907.mov",
+        "video_background_url": "",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30,
+        "text_color": "#FFFFFF",
+        "stars_text": "Trusted By 30,539+ Players",
+        "heading": "END OF SEASON SALE",
+        "subheading": "Pro level protection for every level",
+        "button_text": "SAVE OVER 30%",
+        "button_link": "",
+        "show_endorsement": true,
+        "endorsement_name": "TJ Oshie"
+      }
     },
     "image_banner": {
       "type": "image-banner",
