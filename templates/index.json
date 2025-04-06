@@ -17,7 +17,7 @@
         "video_background_url": "",
         "overlay_color": "#000000",
         "overlay_opacity": 30,
-        "text_color": "#FFFFFF",
+        "text_color": "#ffffff",
         "stars_text": "Trusted By 30,539+ Players",
         "heading": "END OF SEASON SALE",
         "subheading": "Pro level protection for every level",
@@ -33,6 +33,7 @@
         "block_1": {
           "type": "icon_block",
           "settings": {
+            "icon": "shopify://shop_images/Screenshot_2.png",
             "text": "Lifetime Guarantee"
           }
         },
@@ -54,7 +55,10 @@
         "block_2",
         "block_3"
       ],
-      "settings": {}
+      "settings": {
+        "background_color": "#000000",
+        "text_color": "#FFFFFF"
+      }
     },
     "image_banner": {
       "type": "image-banner",
