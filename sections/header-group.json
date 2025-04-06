@@ -23,18 +23,6 @@
         "text_color": "#FFFFFF"
       }
     },
-    "announcement_bar_ip73b3": {
-      "type": "announcement-bar",
-      "settings": {
-        "show_announcement": true,
-        "text": "Ensure page-width is defined or adjust selector accordingly",
-        "link_text": "SAVE ON",
-        "link_url": "shopify://policies/privacy-policy",
-        "emoji": "😂",
-        "background_color": "#a62a2a",
-        "text_color": "#FFFFFF"
-      }
-    },
     "header": {
       "type": "header",
       "settings": {
@@ -57,7 +45,6 @@
   },
   "order": [
     "announcement_bar",
-    "announcement_bar_ip73b3",
     "header"
   ]
 }
