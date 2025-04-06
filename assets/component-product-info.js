@@ -149,12 +149,6 @@ if (!customElements.get('product-info')) {
           if (hasDifferentProductUrl) {
             const productInfo = html.querySelector('product-info');
             this.replaceWith(productInfo);
-            productInfo.querySelectorAll('script').forEach(script => {
-              const newScript = document.createElement('script');
-              [...script.attributes].forEach(({ name, value }) => newScript.setAttribute(name, value));
-              newScript.textContent = script.textContent;
-              script.replaceWith(newScript);
-            });
             productInfo.updateURL(variant?.id);
           } else {
             this.updateMedia(variant?.featured_media?.id);

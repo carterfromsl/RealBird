@@ -93,7 +93,6 @@ if (!customElements.get('quick-add-modal')) {
   customElements.define('quick-add-modal', QuickAdd);
 }
 
-// ModalOpener is now in component-modal-opener.js
 
 function onCartUpdate(e) {
   try {
