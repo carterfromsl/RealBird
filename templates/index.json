@@ -47,6 +47,7 @@
         "block_3": {
           "type": "icon_block",
           "settings": {
+            "icon": "shopify://shop_images/Screenshot_4.png",
             "text": "7,000+ Satisfied Customers"
           }
         }
