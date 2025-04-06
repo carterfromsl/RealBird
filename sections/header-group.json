@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Header group",
   "type": "header",
@@ -5,24 +14,37 @@
     "announcement_bar": {
       "type": "announcement-bar",
       "settings": {
-        // Default settings can be pre-filled here if desired,
-        // otherwise they will use the section's schema defaults.
-        // Example:
-        // "show_announcement": true,
-        // "text": "PROTECT HOCKEY'S FUTURE",
-        // "link_text": "SAVE ON TILÖ TODAY",
-        // "emoji": "🚨",
-        // "background_color": "#000000",
-        // "text_color": "#ffffff"
+        "show_announcement": true,
+        "text": "PROTECT HOCKEY'S FUTURE",
+        "link_text": "SAVE ON TILÖ TODAY",
+        "link_url": "shopify://blogs/news",
+        "emoji": "🚨",
+        "background_color": "#000000",
+        "text_color": "#FFFFFF"
       }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "",
+        "menu_color_scheme": "",
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "enable_customer_avatar": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
     }
   },
   "order": [
     "announcement_bar",
     "header"
   ]
-} 
+}
