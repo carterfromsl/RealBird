@@ -59,28 +59,35 @@
       ],
       "settings": {
         "background_color": "#000000",
-        "text_color": "#FFFFFF"
+        "text_color": "#ffffff"
       }
     },
     "featured_products_example": {
       "type": "featured-products",
-      "settings": {},
       "blocks": {
         "block_1": {
           "type": "product_card",
-          "settings": {}
+          "settings": {
+            "product": "alex-twill-pant-navy"
+          }
         },
         "block_2": {
           "type": "product_card",
-          "settings": {}
+          "settings": {
+            "product": "alia-knit-trouser-1"
+          }
         },
         "block_3": {
           "type": "product_card",
-          "settings": {}
+          "settings": {
+            "product": "alverstone-jacket-midnight"
+          }
         },
         "block_4": {
           "type": "product_card",
-          "settings": {}
+          "settings": {
+            "product": "3-4-sleeve-kimono-dress-coral"
+          }
         }
       },
       "block_order": [
@@ -88,7 +95,13 @@
         "block_2",
         "block_3",
         "block_4"
-      ]
+      ],
+      "settings": {
+        "heading": "Shop the Pro Selection",
+        "subheading": "Skate like the pros",
+        "view_all_text": "View All",
+        "view_all_url": ""
+      }
     },
     "image_banner": {
       "type": "image-banner",
