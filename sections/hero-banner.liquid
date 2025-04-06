@@ -19,198 +19,69 @@
   assign show_endorsement = section.settings.show_endorsement
   assign endorsement_name = section.settings.endorsement_name
   assign endorsement_signature_image = section.settings.endorsement_signature_image
-
-  assign text_color = section.settings.text_color
-  assign overlay_color = section.settings.overlay_color
-  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
 -%}
+
+{{ 'section-hero-banner.css' | asset_url | stylesheet_tag }}
 
 <style>
   #{{ section_id }} {
-    position: relative;
-    color: {{ text_color }};
-    padding: 60px 20px; /* Adjusted padding */
-    min-height: 600px; /* Increased minimum height */
-    display: flex;
-    align-items: flex-end; /* Align content block to the bottom */
-    background-color: #000; /* Fallback background */
-    overflow: hidden;
+    --hero-text-color: {{ section.settings.text_color }};
+    --hero-overlay-color: {{ section.settings.overlay_color }};
+    --hero-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    /* Add more variables here if needed for other settings */
   }
-
-  #{{ section_id }} .hero-banner__background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-
-   #{{ section_id }} .hero-banner__background-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: {{ overlay_color }};
-    opacity: {{ overlay_opacity }};
-    z-index: 2;
-  }
-
-  #{{ section_id }} .hero-banner__background img,
-  #{{ section_id }} .hero-banner__background video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  #{{ section_id }} .hero-banner__content {
-    position: relative;
-    z-index: 3;
-    max-width: 50%; /* Limit width to the left half */
-    margin-left: 0;
-    margin-right: auto;
-    text-align: left;
-    padding: 0 5%;
-  }
-
-  #{{ section_id }} .hero-banner__stars {
-    margin-bottom: 8px; /* Reduced margin */
-    font-size: 0.9em;
-    /* Add star icon styling if needed */
-  }
-
-   #{{ section_id }} .hero-banner__stars .stars {
-      color: #ffc107; /* Example star color */
-      margin-right: 5px;
-   }
-
-
-  #{{ section_id }} .hero-banner__heading {
-    font-size: 2.5em; /* Adjust size */
-    margin-bottom: 5px; /* Reduced margin */
-    font-weight: bold;
-    line-height: 1.2;
-    color: {{ text_color }}; /* Explicitly set color */
-  }
-
-  #{{ section_id }} .hero-banner__subheading {
-    font-size: 1.2em; /* Adjust size */
-    margin-bottom: 20px; /* Reduced margin */
-    max-width: 600px; /* Limit width for readability */
-  }
-
-  #{{ section_id }} .hero-banner__button {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: #fff; /* Button background */
-    color: #000; /* Button text color */
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 4px; /* Optional: button rounding */
-    transition: background-color 0.3s ease;
-  }
-
-  #{{ section_id }} .hero-banner__button:hover {
-    background-color: #eee; /* Button hover background */
-  }
-
-  #{{ section_id }} .hero-banner__endorsement {
-    position: absolute;
-    bottom: 40px; /* Adjust positioning */
-    right: 5%; /* Adjust positioning */
-    z-index: 3;
-    text-align: right;
-  }
-
-  #{{ section_id }} .hero-banner__endorsement-name {
-    font-size: 1.1em;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-
-  #{{ section_id }} .hero-banner__endorsement-signature img {
-    max-width: 100px; /* Adjust signature size */
-    height: auto;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    #{{ section_id }} {
-      padding: 40px 15px; /* Adjusted padding for mobile */
-      min-height: 450px; /* Adjust min-height for mobile */
-    }
-
-    #{{ section_id }} .hero-banner__content {
-        text-align: left; /* Align left on mobile */
-        margin-left: 0;   /* Align left on mobile */
-        margin-right: auto; /* Align left on mobile */
-        padding: 0 10px;
-        max-width: 90%; /* Allow more width on mobile */
-    }
-
-    #{{ section_id }} .hero-banner__heading {
-      font-size: 2em;
-    }
-
-    #{{ section_id }} .hero-banner__subheading {
-      font-size: 1em;
-    }
-
-    #{{ section_id }} .hero-banner__endorsement {
-       position: relative; /* Stack endorsement below content */
-       bottom: auto;
-       right: auto;
-       text-align: left; /* Align left on mobile */
-       margin-top: 30px;
-       padding: 0 10px; /* Add padding */
-       max-width: 90%;
-       margin-left: 0;
-       margin-right: auto;
-    }
-  }
-
 </style>
 
-<div id="{{ section_id }}" class="hero-banner">
+<div id="{{ section_id }}" class="hero-banner hero-banner-section">
   <div class="hero-banner__background">
     {% if background_type == 'video' %}
       {% if video_background_hosted != blank %}
-         <video autoplay muted loop playsinline>
-           <source src="{{ video_background_hosted.sources[1].url }}" type="{{ video_background_hosted.sources[1].mime_type }}">
-            {% if video_background_hosted.sources[0] != blank %}
-              <source src="{{ video_background_hosted.sources[0].url }}" type="{{ video_background_hosted.sources[0].mime_type }}">
-            {% endif %}
-            Your browser does not support the video tag.
-         </video>
+        <video autoplay muted loop playsinline>
+          <source src="{{ video_background_hosted.sources[1].url }}" type="{{ video_background_hosted.sources[1].mime_type }}">
+          {% if video_background_hosted.sources[0] != blank %}
+            <source src="{{ video_background_hosted.sources[0].url }}" type="{{ video_background_hosted.sources[0].mime_type }}">
+          {% endif %}
+          Your browser does not support the video tag.
+        </video>
       {% elsif video_background_url != blank %}
         {% comment %} Assuming YouTube or Vimeo URL - requires JS for proper embedding background {% endcomment %}
         {% comment %} Basic iframe fallback - might not cover full background well {% endcomment %}
-         {% if video_background_url contains 'youtube.com' or video_background_url contains 'youtu.be' %}
-           {% assign video_id = video_background_url | split: 'v=' | last | split: '&' | first | split: '/' | last %}
-           <iframe src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&mute=1&loop=1&playlist={{ video_id }}&controls=0&showinfo=0&autohide=1&modestbranding=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-         {% elsif video_background_url contains 'vimeo.com' %}
-            {% assign video_id = video_background_url | split: '/' | last %}
-            <iframe src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&loop=1&muted=1&controls=0&background=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
-         {% endif %}
+        {% if video_background_url contains 'youtube.com' or video_background_url contains 'youtu.be' %}
+          {% assign video_id = video_background_url | split: 'v=' | last | split: '&' | first | split: '/' | last %}
+          <iframe
+            src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&mute=1&loop=1&playlist={{ video_id }}&controls=0&showinfo=0&autohide=1&modestbranding=1&playsinline=1"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+        {% elsif video_background_url contains 'vimeo.com' %}
+          {% assign video_id = video_background_url | split: '/' | last %}
+          <iframe
+            src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&loop=1&muted=1&controls=0&background=1"
+            frameborder="0"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+          ></iframe>
+        {% endif %}
         {% comment %} NOTE: External video URLs (YouTube/Vimeo) often require JavaScript for true background video behavior. This is a basic iframe attempt. Hosted video is recommended. {% endcomment %}
       {% endif %}
     {% else %}
-       {% if image_background != blank %}
-         {{ image_background | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000', class: '' }}
-        {% else %}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {% endif %}
+      {% if image_background != blank %}
+        {{
+          image_background
+          | image_url: width: 2000
+          | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000', class: ''
+        }}
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
     {% endif %}
-     <div class="hero-banner__background-overlay"></div>
+    <div class="hero-banner__background-overlay"></div>
   </div>
 
   <div class="hero-banner__content">
     {% if stars_text != blank %}
-      <div class="hero-banner__stars">
-          <span class="stars">★★★★★</span> {{ stars_text }}
-      </div>
+      <div class="hero-banner__stars"><span class="stars">★★★★★</span> {{ stars_text }}</div>
     {% endif %}
 
     {% if heading != blank %}
@@ -235,12 +106,11 @@
       {% endif %}
       {% if endorsement_signature_image != blank %}
         <div class="hero-banner__endorsement-signature">
-           {{ endorsement_signature_image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '50, 100, 150, 200' }}
+          {{ endorsement_signature_image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '50, 100, 150, 200' }}
         </div>
       {% endif %}
     </div>
   {% endif %}
-
 </div>
 
 {% schema %}
@@ -268,7 +138,7 @@
       "id": "image_background",
       "label": "Image Background"
     },
-     {
+    {
       "type": "video",
       "id": "video_background_hosted",
       "label": "Hosted Video Background"
@@ -277,9 +147,9 @@
       "type": "url",
       "id": "video_background_url",
       "label": "Video URL (YouTube/Vimeo)",
-       "info": "Use hosted video above for better performance and reliability. External URLs might require custom JS for true background effect."
+      "info": "Use hosted video above for better performance and reliability. External URLs might require custom JS for true background effect."
     },
-     {
+    {
       "type": "color",
       "id": "overlay_color",
       "label": "Background Overlay Color",
@@ -299,7 +169,7 @@
       "type": "header",
       "content": "Content Settings"
     },
-     {
+    {
       "type": "color",
       "id": "text_color",
       "label": "Text Color",
@@ -334,7 +204,7 @@
       "id": "button_link",
       "label": "Button Link"
     },
-     {
+    {
       "type": "header",
       "content": "Endorsement Settings"
     },
@@ -362,4 +232,4 @@
     }
   ]
 }
-{% endschema %} 
+{% endschema %}

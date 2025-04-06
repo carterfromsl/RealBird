@@ -1,4 +1,9 @@
 ---
+description: 
+globs: 
+alwaysApply: false
+---
+---
 description: Apply these rules when making changes to the project
 globs:
 alwaysApply: true
@@ -44,7 +49,7 @@ Update this rule if user requested changes to the project requirement, etc.
 *   **Version Enforcement:**
 
     *   **Shopify CLI@3.0:** Enforce usage of Shopify CLI v3.0 commands for theme development and deployment.
-    *   **Liquid:** Follow Shopify’s Liquid templating best practices for clean, modular code.
+    *   **Liquid:** Follow Shopify's Liquid templating best practices for clean, modular code.
     *   **Online Store 2.0:** Must leverage the JSON templates and new sectioned theme architecture.
 
 ## PRD Compliance
@@ -64,7 +69,7 @@ Update this rule if user requested changes to the project requirement, etc.
 *   **Liquid**
 
     *   Maintain clean and modular code with reusable snippets and sections.
-    *   Follow Shopify’s theme conventions and utilize the Section Rendering API efficiently.
+    *   Follow Shopify's theme conventions and utilize the Section Rendering API efficiently.
     *   Avoid mixing business logic within template files; delegate to sections and snippets.
 
 *   **JavaScript**
@@ -106,7 +111,7 @@ Update this rule if user requested changes to the project requirement, etc.
 *   **Online Store 2.0**
 
     *   Utilize JSON templates and new section functionalities to their full potential.
-    *   Adhere to Shopify’s performance and design guidelines.
+    *   Adhere to Shopify's performance and design guidelines.
     *   Leverage native features over excessive customizations.
 
 *   **Custom Web Components**
@@ -127,3 +132,60 @@ Update this rule if user requested changes to the project requirement, etc.
 *   For Shopify themes using Online Store 2.0 and Shopify CLI 3.0, adhere strictly to the structure of `templates/`, `sections/`, and `assets/` directories.
 *   Do not mix patterns from other routing frameworks such as Next.js App Router or Pages Router within the Shopify Liquid structure.
 *   Ensure that custom events (e.g., `item-added-to-cart`) and component interactions remain consistent with Alpine.js state management and Shopify Liquid AJAX Cart behaviors.
+
+## Rule: CSS Scoping for Shopify Sections with Settings
+
+**Context:**
+Apply this rule when styling Shopify theme sections (`sections/*.liquid`) where:
+1.  Styles need to be moved to an external CSS file in the `assets` directory for better organization and potential caching.
+2.  Some styles within the section must change dynamically based on values configured in `section.settings` (e.g., colors, opacities, sizes).
+
+**Problem:**
+- Using only inline `<style>` scoped with `#{{ section.id }}` prevents moving styles to external files.
+- Moving all styles to an external file prevents styles from reacting dynamically to section settings, as the external file lacks access to the section's Liquid context.
+
+**Solution: CSS Custom Properties Approach**
+
+1.  **External Static CSS:**
+    *   Create a dedicated CSS file for the section in the `assets` directory (e.g., `assets/section-hero-banner.css`).
+    *   Move all *static* styles (layout, typography, margins, paddings that *don't* depend on settings) to this file.
+    *   Add a static, descriptive class to the section's root `div` in the Liquid file (e.g., `<div id="{{ section_id }}" class="hero-banner hero-banner-section">`).
+    *   Prefix all selectors in the external CSS file with this static class (e.g., `.hero-banner-section .hero-banner__heading { ... }`).
+
+2.  **Inline CSS Variables:**
+    *   In the section's Liquid file (`sections/*.liquid`), include a *small* inline `<style>` block.
+    *   Inside this block, target the unique section ID: `#{{ section_id }}`.
+    *   Define CSS Custom Properties (variables) for each setting that affects styling. Assign the value using the relevant Liquid setting:
+        ```liquid
+        <style>
+          #{{ section_id }} {
+            --section-text-color: {{ section.settings.text_color }};
+            --section-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+            /* ... other dynamic variables ... */
+          }
+        </style>
+        ```
+
+3.  **Link External CSS:**
+    *   In the section's Liquid file, link the external CSS file using the `stylesheet_tag`:
+        ```liquid
+        {{ 'section-hero-banner.css' | asset_url | stylesheet_tag }}
+        ```
+
+4.  **Use Variables in External CSS:**
+    *   In the external CSS file (`assets/section-*.css`), reference the CSS variables defined inline using `var(--variable-name, fallbackValue)`:
+        ```css
+        .hero-banner-section {
+          color: var(--section-text-color, #FFFFFF);
+        }
+
+        .hero-banner-section .hero-banner__background-overlay {
+          opacity: var(--section-overlay-opacity, 0.3);
+        }
+        ```
+
+**Rationale:**
+This approach provides the best balance:
+-   **Maintainability:** Keeps the bulk of the CSS external and organized.
+-   **Dynamic Styling:** Allows styles to adapt based on user configuration in the theme editor settings.
+-   **Scoping:** CSS variables defined inline are scoped to the specific section instance via `#{{ section.id }}`, ensuring multiple instances of the same section can have different styles based on their individual settings.
