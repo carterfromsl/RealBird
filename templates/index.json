@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "hero_banner_1": {
+      "type": "hero-banner",
+      "settings": {}
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -118,6 +122,7 @@
     }
   },
   "order": [
+    "hero_banner_1",
     "image_banner",
     "fist-of-collections",
     "image_with_text_UnGP37"
