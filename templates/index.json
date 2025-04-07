@@ -166,14 +166,14 @@
         "heading_M7BE4Y": {
           "type": "heading",
           "settings": {
-            "heading": "Image with text",
+            "heading": "Designed & tested by the best players in the world",
             "heading_size": "h1"
           }
         },
         "text_WRhMqM": {
           "type": "text",
           "settings": {
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text": "<p>\"We worked with textile scientists for over two years to perfect TILO, and we finally got it just right.</p><p>Playing in the NHL for 16 seasons, I have seen far too many players suffer injuries due to severe cuts that could have been avoided.</p><p>TILO is what I wear every game. I won’t take the ice without it. And as a parent… I make sure my kids wear TILO every time they play too.\"<br/><br/></p>",
             "text_style": "body"
           }
         },
@@ -201,7 +201,7 @@
         "button_eXxq6Y"
       ],
       "settings": {
-        "image": "shopify://shop_images/a-model-in-summer-fashion-with-grey-backdrop.jpg",
+        "image": "shopify://shop_images/c683db3263f6bf7b4823b02ade2d9697.jpg",
         "height": "adapt",
         "desktop_image_width": "medium",
         "layout": "image_first",
