@@ -7,6 +7,7 @@
 {{ 'section-image-hotspots.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
+  assign section_id = 'image-hotspots-' | append: section.id
   assign image = section.settings.image
   assign image_aspect_ratio = image.aspect_ratio | default: 1.7777777777777777
   assign section_padding_top = section.settings.padding_top
@@ -24,21 +25,23 @@
   assign quick_view_label = 'Quick view'
 -%}
 
-{% capture section_styles %}
-  --padding-top: {{ section_padding_top }}px;
-  --padding-bottom: {{ section_padding_bottom }}px;
-  --container-horizontal-alignment: {{ container_h_align }};
-  --container-vertical-alignment: {{ container_v_align }};
-  --popup-corner-radius: {{ popup_corner_radius }}px;
-  --popup-shadow-horizontal-offset: {{ popup_shadow_horizontal_offset }}px;
-  --popup-shadow-vertical-offset: {{ popup_shadow_vertical_offset }}px;
-  --popup-shadow-blur-radius: {{ popup_shadow_blur_radius }}px;
-  --popup-shadow-opacity: {{ popup_shadow_opacity }};
-{% endcapture %}
+<style>
+  #{{ section_id }} {
+    --padding-top: {{ section_padding_top }}px;
+    --padding-bottom: {{ section_padding_bottom }}px;
+    --container-horizontal-alignment: {{ container_h_align }};
+    --container-vertical-alignment: {{ container_v_align }};
+    --popup-corner-radius: {{ popup_corner_radius }}px;
+    --popup-shadow-horizontal-offset: {{ popup_shadow_horizontal_offset }}px;
+    --popup-shadow-vertical-offset: {{ popup_shadow_vertical_offset }}px;
+    --popup-shadow-blur-radius: {{ popup_shadow_blur_radius }}px;
+    --popup-shadow-opacity: {{ popup_shadow_opacity }};
+  }
+</style>
 
 <div
+  id="{{ section_id }}"
   class="section section-{{ section.id }} color-{{ section.settings.color_scheme }}"
-  style="{{ section_styles | strip | strip_newlines }}"
 >
   <div class="container--{{ container_width }}">
     <div class="image-hotspots__container">
@@ -348,72 +351,6 @@
         }
       ]
     }
-  ],
-  "locales": {
-    "en": {
-      "sections": {
-        "image-hotspots": {
-          "name": "Image with hotspots",
-          "settings": {
-            "image": {
-              "label": "Image"
-            }
-          },
-          "blocks": {
-            "hotspot": {
-              "name": "Hotspot",
-              "settings": {
-                "product": {
-                  "label": "Product"
-                },
-                "position_x": {
-                  "label": "Horizontal position"
-                },
-                "position_y": {
-                  "label": "Vertical position"
-                }
-              }
-            }
-          },
-          "presets": {
-            "name": "Image with hotspots"
-          },
-          "marker_label": "Show product details"
-        }
-      }
-    },
-    "fr": {
-      "sections": {
-        "image-hotspots": {
-          "name": "Image avec points interactifs",
-          "settings": {
-            "image": {
-              "label": "Image"
-            }
-          },
-          "blocks": {
-            "hotspot": {
-              "name": "Point interactif",
-              "settings": {
-                "product": {
-                  "label": "Produit"
-                },
-                "position_x": {
-                  "label": "Position horizontale"
-                },
-                "position_y": {
-                  "label": "Position verticale"
-                }
-              }
-            }
-          },
-          "presets": {
-            "name": "Image avec points interactifs"
-          },
-          "marker_label": "Afficher les détails du produit"
-        }
-      }
-    }
-  }
+  ]
 }
 {% endschema %}
