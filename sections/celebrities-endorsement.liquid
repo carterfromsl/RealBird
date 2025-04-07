@@ -8,6 +8,8 @@
   assign section_subheading = section.settings.subtitle
 -%}
 
+{{ 'section-celebrities-endorsement.css' | asset_url | stylesheet_tag }}
+
 <div class="celebrities-endorsement page-width section-{{ section.id }}-padding">
   <div class="title-wrapper title-wrapper--no-top-margin">
     {%- if section_heading != blank -%}
@@ -47,9 +49,7 @@
   {%- endif -%}
 
   {% if section.blocks.size == 0 %}
-    <div class="placeholder-noblocks">
-      No Blocks Found
-    </div>
+    <div class="placeholder-noblocks">No Blocks Found</div>
   {% endif %}
 </div>
 
@@ -122,100 +122,3 @@
   ]
 }
 {% endschema %}
-
-<style>
-  .celebrities-endorsement {
-    /* Keep overall section padding and structure, but remove center alignment here */
-  }
-
-  .celebrities-endorsement .title-wrapper {
-    text-align: left; /* Align heading and subheading left */
-    margin-bottom: 2rem; /* Add some space below the titles */
-  }
-
-  .celebrities-endorsement .title {
-    font-size: 3rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    margin-top: 0;
-  }
-
-  .celebrities-endorsement__subheading {
-    margin-top: 1rem;
-    font-style: italic;
-    font-size: 1rem;
-    color: rgb(var(--color-foreground));
-  }
-
-  .celebrities-endorsement__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-    justify-items: center;
-  }
-
-  .celebrities-endorsement__card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .celebrities-endorsement__image-wrapper {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    background-color: rgba(var(--color-foreground), 0.04);
-  }
-
-  .celebrities-endorsement__image-placeholder .placeholder-svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    fill: currentColor;
-    opacity: 0.3;
-  }
-
-  .celebrities-endorsement__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .celebrities-endorsement__name {
-    font-size: var(--font-heading-scale);
-    margin-bottom: 0.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-
-  .celebrities-endorsement__title {
-    font-size: var(--font-body-scale);
-    color: rgba(var(--color-foreground), 0.75);
-    font-weight: var(--font-weight-bold);
-  }
-
-  .section-{{ section.id }}-padding {
-    padding-top: calc(var(--grid-desktop-vertical-spacing) * var(--scale-percent-xs) / 100);
-    padding-bottom: calc(var(--grid-desktop-vertical-spacing) * var(--scale-percent-xs) / 100);
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: var(--grid-desktop-vertical-spacing);
-      padding-bottom: var(--grid-desktop-vertical-spacing);
-    }
-  }
-
-  .placeholder-noblocks {
-    padding: 2rem;
-    text-align: center;
-    background-color: rgba(var(--color-foreground), 0.04);
-    border: 1px dashed rgba(var(--color-foreground), 0.1);
-    border-radius: var(--border-radius);
-  }
-</style>
