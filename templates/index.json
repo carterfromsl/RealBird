@@ -180,25 +180,16 @@
         "caption_epYF98": {
           "type": "caption",
           "settings": {
-            "caption": "Add a tagline",
+            "caption": "",
             "text_style": "subtitle",
             "text_size": "large"
-          }
-        },
-        "button_eXxq6Y": {
-          "type": "button",
-          "settings": {
-            "button_label": "Button label",
-            "button_link": "",
-            "button_style_secondary": false
           }
         }
       },
       "block_order": [
         "heading_M7BE4Y",
         "text_WRhMqM",
-        "caption_epYF98",
-        "button_eXxq6Y"
+        "caption_epYF98"
       ],
       "settings": {
         "image": "shopify://shop_images/c683db3263f6bf7b4823b02ade2d9697.jpg",
