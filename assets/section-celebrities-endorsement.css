@@ -22,19 +22,50 @@
   color: rgb(var(--color-foreground));
 }
 
+/* Horizontal scroll container */
+.celebrities-endorsement__grid-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent items from wrapping */
+  padding-bottom: 1rem; /* Space for potential scrollbar if not hidden */
+  cursor: grab;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.celebrities-endorsement__grid-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+.celebrities-endorsement__grid-container.grabbing {
+  cursor: grabbing;
+}
+
 .celebrities-endorsement__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 2rem;
+  /* Remove grid display and related properties */
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
+  /* gap: 3rem; */
   margin-top: 3rem;
-  justify-items: center;
+  /* justify-items: center; */
+  /* Let container handle wrapping/scrolling */
+  white-space: nowrap; /* Ensure direct children don't wrap (belt and braces) */
+  display: block; /* Or inline-block, adjust as needed */
 }
 
 .celebrities-endorsement__card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* display: flex; */ /* Change to inline-block */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  /* text-align: center; */
+  display: inline-block;
+  vertical-align: top; /* Align cards to the top */
+  width: 180px; /* Set an explicit width based on image size or desired card size */
+  margin-right: 2rem; /* Use margin for spacing instead of gap */
+  white-space: normal; /* Allow text inside card to wrap */
   text-align: center;
+}
+
+.celebrities-endorsement__card:last-child {
+  margin-right: 0; /* Remove margin from the last card */
 }
 
 .celebrities-endorsement__image-wrapper {
