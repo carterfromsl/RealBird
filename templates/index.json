@@ -213,8 +213,8 @@
         "hotspot_A": {
           "type": "hotspot",
           "settings": {
-            "product": "",
-            "position_x": 25,
+            "product": "3-4-sleeve-kimono-dress-coral",
+            "position_x": 21,
             "position_y": 25
           }
         },
@@ -241,7 +241,7 @@
         "hotspot_C"
       ],
       "settings": {
-        "image": "",
+        "image": "shopify://shop_images/bf5e2b0fa2e08627d8d95ac8b00ec031.jpg",
         "container_width": "standard",
         "container_horizontal_alignment": "center",
         "container_vertical_alignment": "center",
