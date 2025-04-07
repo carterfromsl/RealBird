@@ -105,13 +105,37 @@
     },
     "featured_collections_example": {
       "type": "featured-collections",
-      "settings": {},
       "blocks": {
-        "block_1": { "type": "collection_card", "settings": {} },
-        "block_2": { "type": "collection_card", "settings": {} },
-        "block_3": { "type": "collection_card", "settings": {} },
-        "block_4": { "type": "collection_card", "settings": {} },
-        "block_5": { "type": "collection_card", "settings": {} }
+        "block_1": {
+          "type": "collection_card",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block_2": {
+          "type": "collection_card",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block_3": {
+          "type": "collection_card",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block_4": {
+          "type": "collection_card",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block_5": {
+          "type": "collection_card",
+          "settings": {
+            "collection": ""
+          }
+        }
       },
       "block_order": [
         "block_1",
@@ -119,47 +143,10 @@
         "block_3",
         "block_4",
         "block_5"
-      ]
-    },
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
       ],
       "settings": {
-        "image": "shopify://shop_images/flatlay-of-jade-face-roller-laying-on-a-grey-stone.jpg",
-        "image_2": "shopify://shop_images/wooden-toothbrushes-lined-up-against-a-green-background.jpg",
-        "image_overlay_opacity": 30,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "image_behavior": "none",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "heading": "Find the perfect fit for your game",
+        "subheading": "Browse through our collections"
       }
     },
     "fist-of-collections": {
@@ -234,7 +221,6 @@
     "icon_bar_1",
     "featured_products_example",
     "featured_collections_example",
-    "image_banner",
     "fist-of-collections",
     "image_with_text_UnGP37"
   ]
