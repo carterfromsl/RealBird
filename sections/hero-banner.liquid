@@ -36,16 +36,12 @@
   <div class="hero-banner__background">
     {% if background_type == 'video' %}
       {% if video_background_hosted != blank %}
-        <video autoplay muted loop playsinline>
-          <source src="{{ video_background_hosted.sources[1].url }}" type="{{ video_background_hosted.sources[1].mime_type }}">
-          {% if video_background_hosted.sources[0] != blank %}
-            <source src="{{ video_background_hosted.sources[0].url }}" type="{{ video_background_hosted.sources[0].mime_type }}">
-          {% endif %}
-          Your browser does not support the video tag.
-        </video>
+        {{ video_background_hosted | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
       {% elsif video_background_url != blank %}
-        {% comment %} Assuming YouTube or Vimeo URL - requires JS for proper embedding background {% endcomment %}
-        {% comment %} Basic iframe fallback - might not cover full background well {% endcomment %}
+        {% comment %}
+          Assuming YouTube or Vimeo URL - requires JS for proper embedding background
+          Basic iframe fallback - might not cover full background well
+        {% endcomment %}
         {% if video_background_url contains 'youtube.com' or video_background_url contains 'youtu.be' %}
           {% assign video_id = video_background_url | split: 'v=' | last | split: '&' | first | split: '/' | last %}
           <iframe
