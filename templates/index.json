@@ -361,7 +361,7 @@
         "celeb_1": {
           "type": "celebrity",
           "settings": {
-            "image": "shopify://shop_images/tj-oshie.jpg",
+            "image": "shopify://shop_images/fbb80e66561a67069d96a5627b817af9.png",
             "name": "TJ Oshie",
             "title": "Washington Capitals"
           }
@@ -369,7 +369,7 @@
         "celeb_2": {
           "type": "celebrity",
           "settings": {
-            "image": "shopify://shop_images/tom-wilson.jpg",
+            "image": "shopify://shop_images/c24980778bf0c3d75a1992b3b5f4ef45.png",
             "name": "Tom Wilson",
             "title": "Washington Capitals"
           }
@@ -377,7 +377,7 @@
         "celeb_3": {
           "type": "celebrity",
           "settings": {
-             "image": "shopify://shop_images/brock-nelson.jpg",
+            "image": "shopify://shop_images/3476b6ef9bf1785c69265c783a09c611.png",
             "name": "Brock Nelson",
             "title": "New York Islanders"
           }
@@ -385,7 +385,7 @@
         "celeb_4": {
           "type": "celebrity",
           "settings": {
-             "image": "shopify://shop_images/matthew-knies.jpg",
+            "image": "shopify://shop_images/a3e603e90e40ccf1528c80fe4f0a60a8.png",
             "name": "Matthew Knies",
             "title": "Toronto Maple Leafs"
           }
@@ -393,7 +393,7 @@
         "celeb_5": {
           "type": "celebrity",
           "settings": {
-             "image": "shopify://shop_images/josh-morrissey.jpg",
+            "image": "shopify://shop_images/squatting-exercise.jpg",
             "name": "Josh Morrissey",
             "title": "Winnipeg Jets"
           }
@@ -401,7 +401,7 @@
         "celeb_6": {
           "type": "celebrity",
           "settings": {
-            "image": "shopify://shop_images/jared-spurgeon.jpg",
+            "image": "shopify://shop_images/da4d55734407ed4fc25a417f3d4a51ee.png",
             "name": "Jared Spurgeon",
             "title": "Minnesota Wild"
           }
@@ -417,9 +417,7 @@
       ],
       "settings": {
         "title": "TRUSTED BY PROS IN EVERY MATCH POSSIBLE",
-        "subtitle": "Celebrities Endorsement",
-        "heading_size": "h1",
-        "subheading_style": "subtitle"
+        "subtitle": "Celebrities Endorsement"
       }
     }
   },
