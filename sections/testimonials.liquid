@@ -1,0 +1,313 @@
+{% comment %} /sections/testimonials.liquid {% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign testimonials_to_show = section.blocks.size
+-%}
+
+{%- if testimonials_to_show > 0 -%}
+  <div class="testimonials-section page-width">
+    <div class="testimonials__header">
+      {%- if heading != blank -%}
+        <h2 class="testimonials__heading">{{ heading | escape }}</h2>
+      {%- endif -%}
+      {%- if subheading != blank -%}
+        <p class="testimonials__subheading">{{ subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {% comment %} Using a grid layout that allows horizontal scroll on smaller screens {% endcomment %}
+    <div
+      class="testimonials__grid-container"
+      x-data="{ isDown: false, startX: 0, scrollLeftStart: 0 }"
+      x-on:mousedown="isDown = true; startX = $event.pageX - $el.offsetLeft; scrollLeftStart = $el.scrollLeft; $el.classList.add('grabbing')"
+      x-on:mouseleave="isDown = false; $el.classList.remove('grabbing')"
+      x-on:mouseup="isDown = false; $el.classList.remove('grabbing')"
+      x-on:mousemove.prevent="if(!isDown) return; const x = $event.pageX - $el.offsetLeft; const walk = (x - startX) * 2; $el.scrollLeft = scrollLeftStart - walk;"
+    >
+      <div class="testimonials__grid grid grid--{{ testimonials_to_show }}-col-desktop grid--2-col-tablet grid--1-col-mobile">
+        {%- for block in section.blocks -%}
+          <div class="testimonials__card grid__item" {{ block.shopify_attributes }}>
+            <div class="testimonial-card">
+              {%- if block.settings.rating > 0 -%}
+                <div class="testimonial-card__rating">
+                  {%- for i in (1..block.settings.rating) -%}
+                    <span class="testimonial-card__star">&#9733;</span>
+                  {%- endfor -%}
+                  {%- assign remaining_stars = 5 | minus: block.settings.rating -%}
+                  {%- if remaining_stars > 0 -%}
+                    {%- for i in (1..remaining_stars) -%}
+                      <span class="testimonial-card__star--empty">&#9734;</span>
+                    {%- endfor -%}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h3 class="testimonial-card__title">{{ block.settings.title | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="testimonial-card__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+              {%- if block.settings.author != blank -%}
+                <p class="testimonial-card__author">— {{ block.settings.author | escape }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- comment %} Basic Styles - Consider moving to a dedicated CSS file {%- endcomment %}
+<style>
+  .testimonials-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    /* text-align: center; /* REMOVED Center align header text */ */
+  }
+
+  .testimonials__header {
+    margin-bottom: 2.5rem; /* Increased margin */
+    text-align: left; /* ADDED - Align header text left */
+  }
+
+  .testimonials__heading {
+    font-size: 2.5rem; /* Adjust size as needed */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #000; /* Black color like image */
+    /* Assuming H2 style from base.css */
+  }
+
+  .testimonials__subheading {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.2rem; /* Adjust size */
+    color: #555; /* Slightly lighter than heading */
+    font-style: italic; /* Italic like image */
+    font-family: serif; /* Serif font like image */
+  }
+
+  .testimonials__grid-container {
+    overflow-x: auto; /* Enable horizontal scroll */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+    padding-bottom: 1rem; /* Space for scrollbar */
+    margin-left: calc(-1 * var(--grid-mobile-horizontal-spacing)); /* Offset for edge padding */
+    margin-right: calc(-1 * var(--grid-mobile-horizontal-spacing));
+    padding-left: var(--grid-mobile-horizontal-spacing);
+    padding-right: var(--grid-mobile-horizontal-spacing);
+    cursor: grab; /* Add grab cursor by default */
+  }
+
+  .testimonials__grid-container.grabbing {
+    cursor: grabbing;
+    user-select: none; /* Prevent text selection while grabbing */
+  }
+
+  @media screen and (min-width: 750px) {
+    .testimonials__grid-container {
+      margin-left: calc(-1 * var(--grid-desktop-horizontal-spacing));
+      margin-right: calc(-1 * var(--grid-desktop-horizontal-spacing));
+      padding-left: var(--grid-desktop-horizontal-spacing);
+      padding-right: var(--grid-desktop-horizontal-spacing);
+    }
+  }
+
+  /* Hide scrollbar visually */
+  .testimonials__grid-container::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  .testimonials__grid-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .testimonials__grid {
+    display: grid; /* Use grid */
+    grid-auto-flow: column; /* Arrange items horizontally */
+    gap: var(--grid-mobile-horizontal-spacing);
+    padding-top: 0.5rem; /* Prevent shadow clipping */
+    padding-bottom: 0.5rem; /* Prevent shadow clipping */
+    margin: 0;
+    width: max-content; /* Allow grid to expand horizontally */
+  }
+
+  /* Adjust column count/width based on number of items for larger screens */
+  /* Example: 3 columns for desktop */
+  @media screen and (min-width: 990px) {
+    .testimonials__grid {
+      gap: var(--grid-desktop-horizontal-spacing);
+    }
+  }
+  /* Example: 2 columns for tablet */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .testimonials__grid {
+      gap: var(--grid-desktop-horizontal-spacing);
+    }
+  }
+
+  .testimonials__card.grid__item {
+    /* Grid handles sizing */
+    width: auto; /* Override potential base styles */
+    max-width: 252px; /* Decreased max width by 30% */
+  }
+
+  .testimonial-card {
+    border: 2px solid #000; /* Black border like image */
+    border-radius: 15px; /* Rounded corners like image */
+    padding: 2rem; /* Padding inside the card */
+    text-align: center;
+    height: 100%; /* Ensure cards have same height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    background-color: #fff; /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  }
+
+  .testimonial-card__rating {
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .testimonial-card__star,
+  .testimonial-card__star--empty {
+    font-size: 1.8rem; /* Adjust star size */
+    color: #f0ad4e; /* Gold color like image */
+  }
+
+  .testimonial-card__star--empty {
+    color: #e0e0e0; /* Light grey for empty stars */
+  }
+
+  .testimonial-card__title {
+    font-size: 1.3rem; /* Adjust size */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #000;
+  }
+
+  .testimonial-card__text {
+    font-size: 1rem; /* Adjust size */
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-family: serif; /* Match font from image */
+    flex-grow: 1; /* Allow text to take available space */
+  }
+
+  .testimonial-card__author {
+    font-size: 1rem;
+    font-style: italic;
+    color: #555;
+    margin-top: auto; /* Push author to bottom */
+    margin-bottom: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "HEAR WHAT PLAYERS & PARENTS HAVE TO SAY"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Warroad Testimonials"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "limit": 9,
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "label": "Rating (Stars)",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "TESTIMONIAL TITLE"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share feedback, experiences, or insights from your customers. Use testimonials to build trust and credibility.</p>"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Author Name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "GREAT QUALITY & FIT",
+            "text": "<p>I purchased the Tilo cut-resistant gear for my son, and it fits perfectly while providing top-notch protection. Excellent quality, he loves wearing it!</p>",
+            "author": "Mark T."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "VERSATILE TECH SPORTSWEAR",
+            "text": "<p>I love the tech sportswear collection from Warroad. It's functional for training, and the material is breathable, making it perfect for intense workouts.</p>",
+            "author": "David"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "IMPRESSIVE CUSTOMER SERVICE",
+            "text": "<p>Had a great experience with Warroad's customer service. They answered all my questions about sizing and shipping quickly and were very helpful throughout the process.</p>",
+            "author": "Honey"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "EXCELLENT PROTECTION",
+            "text": "<p>I purchased this for my daughter. Excellent quality and protection!</p>",
+            "author": "Sarah P."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

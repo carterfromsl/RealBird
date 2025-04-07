@@ -263,6 +263,97 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "testimonials_1": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "GREAT QUALITY & FIT",
+            "text": "<p>I purchased the Tilo cut-resistant gear for my son, and it fits perfectly while providing top-notch protection. Excellent quality, he loves wearing it!</p>",
+            "author": "Mark T."
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "VERSATILE TECH SPORTSWEAR",
+            "text": "<p>I love the tech sportswear collection from Warroad. It's functional for training, and the material is breathable, making it perfect for intense workouts.</p>",
+            "author": "David"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "IMPRESSIVE CUSTOMER SERVICE",
+            "text": "<p>Had a great experience with Warroad's customer service. They answered all my questions about sizing and shipping quickly and were very helpful throughout the process.</p>",
+            "author": "Honey"
+          }
+        },
+        "testimonial_4": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "EXCELLENT PROTECTION",
+            "text": "<p>I purchased this for my daughter. Excellent quality and protection!</p>",
+            "author": "Sarah P."
+          }
+        },
+        "testimonial_5": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "EXCELLENT PROTECTION",
+            "text": "<p>I purchased this for my daughter. Excellent quality and protection!</p>",
+            "author": "Sarah P."
+          }
+        },
+        "testimonial_6": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "EXCELLENT PROTECTION",
+            "text": "<p>I purchased this for my daughter. Excellent quality and protection!</p>",
+            "author": "Sarah P."
+          }
+        },
+        "testimonial_7": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "EXCELLENT PROTECTION",
+            "text": "<p>I purchased this for my daughter. Excellent quality and protection!</p>",
+            "author": "Sarah P."
+          }
+        },
+        "testimonial_8": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "title": "EXCELLENT PROTECTION",
+            "text": "<p>I purchased this for my daughter. Excellent quality and protection!</p>",
+            "author": "Sarah P."
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3",
+        "testimonial_4",
+        "testimonial_5",
+        "testimonial_6",
+        "testimonial_7",
+        "testimonial_8"
+      ],
+      "settings": {
+        "heading": "HEAR WHAT PLAYERS & PARENTS HAVE TO SAY",
+        "subheading": "Warroad Testimonials"
+      }
     }
   },
   "order": [
@@ -272,6 +363,7 @@
     "featured_collections_example",
     "fist-of-collections",
     "image_with_text_UnGP37",
-    "image_hotspots_1"
+    "image_hotspots_1",
+    "testimonials_1"
   ]
 }
