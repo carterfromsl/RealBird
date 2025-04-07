@@ -1,0 +1,219 @@
+{% comment %} /sections/featured-collections.liquid {% endcomment %}
+
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign collections_to_show = section.blocks.size
+-%}
+
+{%- if collections_to_show > 0 -%}
+  <div class="featured-collections-section page-width">
+    <div class="featured-collections__header title-wrapper title-wrapper--no-top-margin">
+      {%- if heading != blank -%}
+        <h2 class="featured-collections__heading title h2">{{ heading | escape }}</h2>
+      {%- endif -%}
+      {%- if subheading != blank -%}
+        <p class="featured-collections__subheading subtitle">{{ subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {% comment %} Use the grid classes from base.css (flexbox based) {% endcomment %}
+    {%- assign grid_classes = 'grid grid--5-col-desktop grid--2-col-tablet-down' -%}
+    <div class="featured-collections__grid {{ grid_classes }}">
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+        {%- assign collection_image = collection.featured_image | default: collection.image -%}
+
+        <div class="featured-collections__card grid__item" {{ block.shopify_attributes }}>
+          <a href="{{ collection.url | default: '#' }}" class="collection-card__link">
+            <div class="collection-card__image-wrapper media media--portrait {% if collection_image == blank %} placeholder {% endif %}">
+              {%- if collection_image != blank -%}
+                <img
+                  srcset="
+                    {%- if collection_image.width >= 165 -%}{{ collection_image | image_url: width: 165 }} 165w,{%- endif -%}
+                    {%- if collection_image.width >= 360 -%}{{ collection_image | image_url: width: 360 }} 360w,{%- endif -%}
+                    {%- if collection_image.width >= 533 -%}{{ collection_image | image_url: width: 533 }} 533w,{%- endif -%}
+                    {%- if collection_image.width >= 720 -%}{{ collection_image | image_url: width: 720 }} 720w,{%- endif -%}
+                    {{ collection_image | image_url }} {{ collection_image.width }}w
+                  "
+                  src="{{ collection_image | image_url: width: 533 }}"
+                  sizes="(min-width: 990px) calc(var(--page-width) / 5 - var(--grid-desktop-horizontal-spacing) * 4 / 5), (min-width: 750px) calc(100vw / 2 - var(--grid-desktop-horizontal-spacing) / 2 - 4rem), calc(100vw / 2 - var(--grid-mobile-horizontal-spacing) / 2 - 2rem)"
+                  alt="{{ collection_image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ collection_image.width }}"
+                  height="{{ collection_image.height }}"
+                  class="collection-card__image"
+                >
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg collection-card__image' }}
+              {%- endif -%}
+            </div>
+            <div class="collection-card__info">
+              <h3 class="collection-card__title h3">{{ collection.title | default: 'Collection Title' }}</h3>
+              <span class="collection-card__shop-now link underlined-link">Shop Now</span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  .featured-collections-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .featured-collections__header {
+    text-align: left; /* Align header text left */
+    margin-bottom: 2rem;
+  }
+
+  .featured-collections__heading {
+    margin-bottom: 0.5rem; /* Adjust spacing */
+    font-weight: bold; /* Make heading bold */
+    color: #000000; /* Make heading black */
+    font-size: 3rem; /* Match featured products heading size */
+    /* Inherits h2 style */
+  }
+
+  .featured-collections__subheading {
+    margin-top: 0;
+    /* Inherits subtitle style */
+    color: #000000; /* Make subheading black */
+    font-style: italic; /* Make subheading italic */
+  }
+
+  .featured-collections__grid {
+    margin: 0; /* Remove default grid margin if any */
+    padding: 0; /* Remove default grid padding if any */
+    /* Uses base.css flexbox grid */
+  }
+
+  .featured-collections__card.grid__item {
+    max-width: none; /* Override base.css potentially limiting max-width */
+    position: relative; /* For positioning the text overlay */
+    overflow: hidden; /* Hide overflow if needed */
+  }
+
+  .collection-card__link {
+    display: block;
+    position: relative; /* Needed for overlay child */
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  .collection-card__image-wrapper {
+    height: 100%;
+    width: 100%;
+  }
+
+  /* Override base.css padding for taller portrait images */
+  .collection-card__image-wrapper.media--portrait {
+      padding-bottom: 144%; /* Approx 15% taller than 125% */
+  }
+
+  .collection-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease; /* Optional: zoom effect on hover */
+  }
+
+  .collection-card__link:hover .collection-card__image {
+    transform: scale(1.05); /* Optional: zoom effect on hover */
+  }
+
+  .collection-card__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 1rem; /* Adjust padding as needed */
+    text-align: center;
+    color: #ffffff; /* White text */
+    z-index: 2;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); /* Gradient overlay for text visibility */
+  }
+
+  .collection-card__title {
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 0.5rem; /* Space between title and link */
+    text-transform: uppercase;
+    /* Inherits h3 style */
+  }
+
+  .collection-card__shop-now {
+    color: #ffffff;
+    font-size: 0.9rem; /* Smaller font size for shop now */
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    display: inline-block; /* Needed for link styling */
+  }
+
+  .collection-card__shop-now:hover {
+    color: #ffffff; /* Keep white on hover */
+    text-decoration-thickness: 0.15rem;
+  }
+
+  .placeholder.collection-card__image-wrapper {
+    background-color: #f5f5f5;
+  }
+
+  .placeholder-svg.collection-card__image {
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Collections",
+  "tag": "section",
+  "class": "featured-collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find the perfect fit for your game"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Browse through our collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collections",
+      "blocks": [
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
