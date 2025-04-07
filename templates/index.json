@@ -214,7 +214,7 @@
           "type": "hotspot",
           "settings": {
             "product": "alex-twill-pant-navy",
-            "position_x": 39,
+            "position_x": 38,
             "position_y": 32
           }
         },
@@ -354,6 +354,73 @@
         "heading": "HEAR WHAT PLAYERS & PARENTS HAVE TO SAY",
         "subheading": "Warroad Testimonials"
       }
+    },
+    "celebrities_endorsement_1": {
+      "type": "celebrities-endorsement",
+      "blocks": {
+        "celeb_1": {
+          "type": "celebrity",
+          "settings": {
+            "image": "shopify://shop_images/tj-oshie.jpg",
+            "name": "TJ Oshie",
+            "title": "Washington Capitals"
+          }
+        },
+        "celeb_2": {
+          "type": "celebrity",
+          "settings": {
+            "image": "shopify://shop_images/tom-wilson.jpg",
+            "name": "Tom Wilson",
+            "title": "Washington Capitals"
+          }
+        },
+        "celeb_3": {
+          "type": "celebrity",
+          "settings": {
+             "image": "shopify://shop_images/brock-nelson.jpg",
+            "name": "Brock Nelson",
+            "title": "New York Islanders"
+          }
+        },
+        "celeb_4": {
+          "type": "celebrity",
+          "settings": {
+             "image": "shopify://shop_images/matthew-knies.jpg",
+            "name": "Matthew Knies",
+            "title": "Toronto Maple Leafs"
+          }
+        },
+        "celeb_5": {
+          "type": "celebrity",
+          "settings": {
+             "image": "shopify://shop_images/josh-morrissey.jpg",
+            "name": "Josh Morrissey",
+            "title": "Winnipeg Jets"
+          }
+        },
+        "celeb_6": {
+          "type": "celebrity",
+          "settings": {
+            "image": "shopify://shop_images/jared-spurgeon.jpg",
+            "name": "Jared Spurgeon",
+            "title": "Minnesota Wild"
+          }
+        }
+      },
+      "block_order": [
+        "celeb_1",
+        "celeb_2",
+        "celeb_3",
+        "celeb_4",
+        "celeb_5",
+        "celeb_6"
+      ],
+      "settings": {
+        "title": "TRUSTED BY PROS IN EVERY MATCH POSSIBLE",
+        "subtitle": "Celebrities Endorsement",
+        "heading_size": "h1",
+        "subheading_style": "subtitle"
+      }
     }
   },
   "order": [
@@ -364,6 +431,7 @@
     "fist-of-collections",
     "image_with_text_UnGP37",
     "image_hotspots_1",
-    "testimonials_1"
+    "testimonials_1",
+    "celebrities_endorsement_1"
   ]
 }
