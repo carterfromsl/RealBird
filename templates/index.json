@@ -428,6 +428,53 @@
         "title": "TRUSTED BY PROS IN EVERY MATCH POSSIBLE",
         "subtitle": "Celebrities Endorsement"
       }
+    },
+    "image_with_text_kj8i3w": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_9r7TNY": {
+          "type": "heading",
+          "settings": {
+            "heading": "WARROAD, MN HOCKEYTOWN USA",
+            "heading_size": "h2"
+          }
+        },
+        "text_9cri4T": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_FER6KN": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_9r7TNY",
+        "text_9cri4T",
+        "button_FER6KN"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/a35c29244d5539befa47d6401fd1d75f.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -439,6 +486,7 @@
     "image_with_text_UnGP37",
     "image_hotspots_1",
     "testimonials_1",
-    "celebrities_endorsement_1"
+    "celebrities_endorsement_1",
+    "image_with_text_kj8i3w"
   ]
 }
