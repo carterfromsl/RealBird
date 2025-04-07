@@ -173,7 +173,7 @@
         "text_WRhMqM": {
           "type": "text",
           "settings": {
-            "text": "<p>\"We worked with textile scientists for over two years to perfect TILO, and we finally got it just right.</p><p>Playing in the NHL for 16 seasons, I have seen far too many players suffer injuries due to severe cuts that could have been avoided.</p><p>TILO is what I wear every game. I won’t take the ice without it. And as a parent… I make sure my kids wear TILO every time they play too.\"<br/><br/></p>",
+            "text": "<p>\"We worked with textile scientists for over two years to perfect TILO, and we finally got it just right.</p><p>Playing in the NHL for 16 seasons, I have seen far too many players suffer injuries due to severe cuts that could have been avoided.</p><p>TILO is what I wear every game. I won't take the ice without it. And as a parent… I make sure my kids wear TILO every time they play too.\"<br/><br/></p>",
             "text_style": "body"
           }
         },
@@ -206,6 +206,54 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "image_hotspots_1": {
+      "type": "image-hotspots",
+      "blocks": {
+        "hotspot_A": {
+          "type": "hotspot",
+          "settings": {
+            "product": "",
+            "position_x": 25,
+            "position_y": 25
+          }
+        },
+        "hotspot_B": {
+          "type": "hotspot",
+          "settings": {
+            "product": "",
+            "position_x": 50,
+            "position_y": 50
+          }
+        },
+        "hotspot_C": {
+          "type": "hotspot",
+          "settings": {
+            "product": "",
+            "position_x": 75,
+            "position_y": 75
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_A",
+        "hotspot_B",
+        "hotspot_C"
+      ],
+      "settings": {
+        "image": "",
+        "container_width": "standard",
+        "container_horizontal_alignment": "center",
+        "container_vertical_alignment": "center",
+        "color_scheme": "scheme-1",
+        "popup_corner_radius": 4,
+        "popup_shadow_horizontal_offset": 0,
+        "popup_shadow_vertical_offset": 4,
+        "popup_shadow_blur_radius": 10,
+        "popup_shadow_opacity": 10,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -214,6 +262,7 @@
     "featured_products_example",
     "featured_collections_example",
     "fist-of-collections",
-    "image_with_text_UnGP37"
+    "image_with_text_UnGP37",
+    "image_hotspots_1"
   ]
 }

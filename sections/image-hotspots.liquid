@@ -1,0 +1,491 @@
+{% comment %}
+  Image with hotspots section
+  - Allows placing interactive markers on an image.
+  - Each marker links to a product and displays a popup on hover/focus.
+{% endcomment %}
+
+{{ 'section-image-hotspots.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign image = section.settings.image
+  assign image_aspect_ratio = image.aspect_ratio | default: 1.7777777777777777
+  assign section_padding_top = section.settings.padding_top
+  assign section_padding_bottom = section.settings.padding_bottom
+  assign container_width = section.settings.container_width
+  assign container_h_align = section.settings.container_horizontal_alignment
+  assign container_v_align = section.settings.container_vertical_alignment
+
+  assign popup_corner_radius = section.settings.popup_corner_radius
+  assign popup_shadow_horizontal_offset = section.settings.popup_shadow_horizontal_offset
+  assign popup_shadow_vertical_offset = section.settings.popup_shadow_vertical_offset
+  assign popup_shadow_blur_radius = section.settings.popup_shadow_blur_radius
+  assign popup_shadow_opacity = section.settings.popup_shadow_opacity | divided_by: 100.0
+
+  assign quick_view_label = 'products.product.quick_view' | t
+-%}
+
+{% capture section_styles %}
+  --padding-top: {{ section_padding_top }}px;
+  --padding-bottom: {{ section_padding_bottom }}px;
+  --container-horizontal-alignment: {{ container_h_align }};
+  --container-vertical-alignment: {{ container_v_align }};
+  --popup-corner-radius: {{ popup_corner_radius }}px;
+  --popup-shadow-horizontal-offset: {{ popup_shadow_horizontal_offset }}px;
+  --popup-shadow-vertical-offset: {{ popup_shadow_vertical_offset }}px;
+  --popup-shadow-blur-radius: {{ popup_shadow_blur_radius }}px;
+  --popup-shadow-opacity: {{ popup_shadow_opacity }};
+{% endcapture %}
+
+<div
+  class="section section-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  style="{{ section_styles | strip | strip_newlines }}"
+>
+  <div class="container--{{ container_width }}">
+    <div
+      class="image-hotspots__container"
+      x-data="imageHotspots()"
+      @keyup.escape="closePopup()"
+    >
+      <div class="image-hotspots__image-wrapper" style="padding-bottom: {{ 1 | divided_by: image_aspect_ratio | times: 100 }}%;">
+        {%- if image != blank -%}
+          {{
+            image
+            | image_url: width: 3000
+            | image_tag:
+              loading: 'lazy',
+              widths: '400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400, 2800, 3000',
+              sizes: '(min-width: 1200px) 1100px, (min-width: 990px) calc(100vw - 10rem), (min-width: 750px) calc(100vw - 6rem), 100vw',
+              class: 'image-hotspots__image'
+          }}
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg image-hotspots__image' }}
+        {%- endif -%}
+
+        <div class="image-hotspots__hotspots">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign product = block.settings.product | default: false
+              assign pos_x = block.settings.position_x
+              assign pos_y = block.settings.position_y
+              assign block_id = block.id
+            -%}
+            <div
+              class="image-hotspots__hotspot"
+              style="--hotspot-pos-x: {{ pos_x }}%; --hotspot-pos-y: {{ pos_y }}%;"
+              {{ block.shopify_attributes }}
+            >
+              <button
+                type="button"
+                class="image-hotspots__marker"
+                aria-describedby="popup-{{ block_id }}"
+                aria-expanded="false"
+                @click="togglePopup($el, 'popup-{{ block_id }}')"
+                @keydown.escape.prevent.stop="closeSpecificPopup('{{ block_id }}')"
+                x-ref="marker{{ block_id }}"
+              >
+                <span class="visually-hidden">{{ 'sections.image_hotspots.marker_label' | t }}</span>
+                <span class="image-hotspots__marker-dot"></span>
+              </button>
+
+              {%- if product -%}
+                <div
+                  class="image-hotspots__popup"
+                  id="popup-{{ block_id }}"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="popup-title-{{ block_id }}"
+                  x-show="activePopupId === 'popup-{{ block_id }}'"
+                  x-cloak
+                  x-transition:enter="transition ease-out duration-100"
+                  x-transition:enter-start="opacity-0 transform scale-95"
+                  x-transition:enter-end="opacity-100 transform scale-100"
+                  x-transition:leave="transition ease-in duration-75"
+                  x-transition:leave-start="opacity-100 transform scale-100"
+                  x-transition:leave-end="opacity-0 transform scale-95"
+                  tabindex="-1"
+                  @keydown.tab.prevent="trapFocus($event, '{{ block_id }}')"
+                >
+                  <div class="image-hotspots__popup-content">
+                    <div class="image-hotspots__popup-image">
+                      {%- if product.featured_media -%}
+                        {{
+                          product.featured_media
+                          | image_url: width: 100
+                          | image_tag: loading: 'lazy', widths: '50, 100', sizes: '50px', alt: product.featured_media.alt
+                          | escape
+                        }}
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="image-hotspots__popup-info">
+                      <h3 class="image-hotspots__popup-title" id="popup-title-{{ block_id }}">
+                        <a href="{{ product.url }}" class="link--underlined-opacity">{{ product.title }}</a>
+                      </h3>
+                      {% render 'component-product-price',
+                        product: product,
+                        use_variant: false,
+                        show_badges: false,
+                        price_class: 'image-hotspots__popup-price'
+                      %}
+                      {% if settings.enable_quick_view and product.available %}
+                        <button
+                          type="button"
+                          class="image-hotspots__popup-link link link--text"
+                          onclick="showQuickView('{{ product.handle }}', '{{ section.id }}')"
+                          aria-haspopup="dialog"
+                          aria-controls="QuickViewDialog"
+                          data-product-handle="{{ product.handle }}"
+                        >
+                          {{ quick_view_label }}
+                        </button>
+                      {% else %}
+                        <a href="{{ product.url }}" class="image-hotspots__popup-link link link--text">
+                          {{- 'products.product.view_details' | t -}}
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="modal__close-button link link--text focus-inset"
+                    @click="closeSpecificPopup('{{ block_id }}')"
+                    aria-label="{{ 'general.accessibility.close_modal' | t }}"
+                    style="position: absolute; top: 5px; right: 5px; padding: 5px; line-height: 0;"
+                  >
+                    {% render 'icon-close', width: 14, height: 14 %}
+                  </button>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function imageHotspots() {
+    return {
+      activePopupId: null,
+
+      togglePopup(markerButton, popupId) {
+        console.log(`togglePopup called for: ${popupId}`);
+        console.log(`Current activePopupId: ${this.activePopupId}`);
+
+        const isExpanded = markerButton.getAttribute('aria-expanded') === 'true';
+
+        if (this.activePopupId && this.activePopupId !== popupId) {
+          console.log(`Closing different popup: ${this.activePopupId}`);
+          this.closeSpecificPopup(this.activePopupId.replace('popup-', ''));
+        }
+
+        if (isExpanded) {
+          console.log(`Closing current popup: ${popupId}`);
+          this.closeSpecificPopup(popupId.replace('popup-', ''));
+        } else {
+          console.log(`Opening popup: ${popupId}`);
+          this.activePopupId = popupId;
+          markerButton.setAttribute('aria-expanded', 'true');
+          console.log(`New activePopupId: ${this.activePopupId}`);
+
+          this.$nextTick(() => {
+            const popupContent = document.getElementById(popupId);
+            if (!popupContent) {
+              console.error(`Popup content not found for ${popupId}`);
+              return;
+            }
+            const focusableElements = popupContent.querySelectorAll(
+              'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            if (focusableElements.length > 0) {
+              console.log(`Focusing first element in ${popupId}`);
+              focusableElements[0].focus();
+            } else {
+              console.log(`No focusable elements found in ${popupId}`);
+            }
+          });
+        }
+      },
+
+      closePopup() {
+        console.log('closePopup (global) called');
+        if (this.activePopupId) {
+          this.closeSpecificPopup(this.activePopupId.replace('popup-', ''));
+        }
+      },
+
+      closeSpecificPopup(blockId) {
+        const popupId = `popup-${blockId}`;
+        console.log(`closeSpecificPopup called for block: ${blockId}, popup: ${popupId}`);
+
+        if (this.activePopupId !== popupId) {
+          console.log('Attempted to close popup that is not active');
+          return;
+        }
+
+        const markerRef = `marker${blockId}`;
+        const markerButton = this.$refs[markerRef];
+
+        this.activePopupId = null;
+        console.log(`Cleared activePopupId`);
+
+        if (markerButton) {
+          markerButton.setAttribute('aria-expanded', 'false');
+          console.log('Returning focus to marker');
+          markerButton.focus();
+        } else {
+          console.log('Marker button not found for focus return');
+        }
+      },
+
+      trapFocus(event, blockId) {
+        const popupId = `popup-${blockId}`;
+        const popup = document.getElementById(popupId);
+        if (!popup) return;
+
+        const focusableElements = Array.from(
+          popup.querySelectorAll(
+            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          )
+        ).filter((el) => el.offsetParent !== null);
+        const firstFocusableElement = focusableElements[0];
+        const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+        if (event.key !== 'Tab') return;
+
+        if (event.shiftKey) {
+          if (document.activeElement === firstFocusableElement) {
+            lastFocusableElement.focus();
+            event.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastFocusableElement) {
+            firstFocusableElement.focus();
+            event.preventDefault();
+          }
+        }
+      },
+    };
+  }
+
+  function showQuickView(productHandle, sectionId) {
+    console.log(`Trigger Quick View for: ${productHandle}, from section: ${sectionId}`);
+    document.dispatchEvent(
+      new CustomEvent('quickview:open', {
+        bubbles: true,
+        detail: { productHandle: productHandle, sourceSectionId: sectionId },
+      })
+    );
+  }
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.image-hotspots.name",
+  "tag": "section",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-hotspots.settings.image.label"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "t:sections.all.layout.container_width.label",
+      "options": [
+        {
+          "value": "full-bleed",
+          "label": "t:sections.all.layout.container_width.options.full_bleed.label"
+        },
+        {
+          "value": "standard",
+          "label": "t:sections.all.layout.container_width.options.standard.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.layout.container_width.options.large.label"
+        }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "container_horizontal_alignment",
+      "label": "t:sections.all.layout.horizontal_alignment.label",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:sections.all.layout.horizontal_alignment.options.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.layout.horizontal_alignment.options.center.label"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:sections.all.layout.horizontal_alignment.options.right.label"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "container_vertical_alignment",
+      "label": "t:sections.all.layout.vertical_alignment.label",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:sections.all.layout.vertical_alignment.options.top.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.layout.vertical_alignment.options.center.label"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:sections.all.layout.vertical_alignment.options.bottom.label"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.popup.header.content"
+    },
+    {
+      "type": "range",
+      "id": "popup_corner_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.popup.corner_radius.label",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "popup_shadow_horizontal_offset",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.shadow.horizontal_offset.label",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "popup_shadow_vertical_offset",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.shadow.vertical_offset.label",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "popup_shadow_blur_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.shadow.blur_radius.label",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "popup_shadow_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.all.shadow.opacity.label",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "t:sections.image-hotspots.blocks.hotspot.name",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:sections.image-hotspots.blocks.hotspot.settings.product.label"
+        },
+        {
+          "type": "range",
+          "id": "position_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.image-hotspots.blocks.hotspot.settings.position_x.label",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "position_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.image-hotspots.blocks.hotspot.settings.position_y.label",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image-hotspots.presets.name",
+      "blocks": [
+        {
+          "type": "hotspot"
+        },
+        {
+          "type": "hotspot"
+        },
+        {
+          "type": "hotspot"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
