@@ -405,6 +405,14 @@
             "name": "Jared Spurgeon",
             "title": "Minnesota Wild"
           }
+        },
+        "celebrity_9Baptk": {
+          "type": "celebrity",
+          "settings": {
+            "image": "shopify://shop_images/2015-07-02_Ashley_33_51032_24034.jpg",
+            "name": "Celebrity Name",
+            "title": "Celebrity Title"
+          }
         }
       },
       "block_order": [
@@ -413,7 +421,8 @@
         "celeb_3",
         "celeb_4",
         "celeb_5",
-        "celeb_6"
+        "celeb_6",
+        "celebrity_9Baptk"
       ],
       "settings": {
         "title": "TRUSTED BY PROS IN EVERY MATCH POSSIBLE",
