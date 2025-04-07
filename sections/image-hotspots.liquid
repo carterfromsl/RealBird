@@ -21,7 +21,7 @@
   assign popup_shadow_blur_radius = section.settings.popup_shadow_blur_radius
   assign popup_shadow_opacity = section.settings.popup_shadow_opacity | divided_by: 100.0
 
-  assign quick_view_label = 'products.product.quick_view' | t
+  assign quick_view_label = 'Quick view'
 -%}
 
 {% capture section_styles %}
@@ -83,7 +83,7 @@
                 @keydown.escape.prevent.stop="closeSpecificPopup('{{ block_id }}')"
                 x-ref="marker{{ block_id }}"
               >
-                <span class="visually-hidden">{{ 'sections.image_hotspots.marker_label' | t }}</span>
+                <span class="visually-hidden">Show product details</span>
                 <span class="image-hotspots__marker-dot"></span>
               </button>
 
@@ -141,7 +141,7 @@
                         </button>
                       {% else %}
                         <a href="{{ product.url }}" class="image-hotspots__popup-link link link--text">
-                          {{- 'products.product.view_details' | t -}}
+                          View details
                         </a>
                       {% endif %}
                     </div>
@@ -150,7 +150,7 @@
                     type="button"
                     class="modal__close-button link link--text focus-inset"
                     @click="closeSpecificPopup('{{ block_id }}')"
-                    aria-label="{{ 'general.accessibility.close_modal' | t }}"
+                    aria-label="Close"
                     style="position: absolute; top: 5px; right: 5px; padding: 5px; line-height: 0;"
                   >
                     {% render 'icon-close', width: 14, height: 14 %}
@@ -283,31 +283,31 @@
 
 {% schema %}
 {
-  "name": "t:sections.image-hotspots.name",
+  "name": "Image with hotspots",
   "tag": "section",
   "class": "spaced-section",
   "settings": [
     {
       "type": "image_picker",
       "id": "image",
-      "label": "t:sections.image-hotspots.settings.image.label"
+      "label": "Image"
     },
     {
       "type": "select",
       "id": "container_width",
-      "label": "t:sections.all.layout.container_width.label",
+      "label": "Container width",
       "options": [
         {
           "value": "full-bleed",
-          "label": "t:sections.all.layout.container_width.options.full_bleed.label"
+          "label": "Full bleed"
         },
         {
           "value": "standard",
-          "label": "t:sections.all.layout.container_width.options.standard.label"
+          "label": "Standard"
         },
         {
           "value": "large",
-          "label": "t:sections.all.layout.container_width.options.large.label"
+          "label": "Large"
         }
       ],
       "default": "standard"
@@ -315,19 +315,19 @@
     {
       "type": "select",
       "id": "container_horizontal_alignment",
-      "label": "t:sections.all.layout.horizontal_alignment.label",
+      "label": "Horizontal alignment",
       "options": [
         {
           "value": "flex-start",
-          "label": "t:sections.all.layout.horizontal_alignment.options.left.label"
+          "label": "Left"
         },
         {
           "value": "center",
-          "label": "t:sections.all.layout.horizontal_alignment.options.center.label"
+          "label": "Center"
         },
         {
           "value": "flex-end",
-          "label": "t:sections.all.layout.horizontal_alignment.options.right.label"
+          "label": "Right"
         }
       ],
       "default": "center"
@@ -335,19 +335,19 @@
     {
       "type": "select",
       "id": "container_vertical_alignment",
-      "label": "t:sections.all.layout.vertical_alignment.label",
+      "label": "Vertical alignment",
       "options": [
         {
           "value": "flex-start",
-          "label": "t:sections.all.layout.vertical_alignment.options.top.label"
+          "label": "Top"
         },
         {
           "value": "center",
-          "label": "t:sections.all.layout.vertical_alignment.options.center.label"
+          "label": "Center"
         },
         {
           "value": "flex-end",
-          "label": "t:sections.all.layout.vertical_alignment.options.bottom.label"
+          "label": "Bottom"
         }
       ],
       "default": "center"
@@ -355,12 +355,12 @@
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "t:sections.all.colors.color_scheme.label",
+      "label": "Color scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "t:sections.all.popup.header.content"
+      "content": "Popup styles"
     },
     {
       "type": "range",
@@ -369,7 +369,7 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "t:sections.all.popup.corner_radius.label",
+      "label": "Corner radius",
       "default": 4
     },
     {
@@ -379,7 +379,7 @@
       "max": 10,
       "step": 1,
       "unit": "px",
-      "label": "t:sections.all.shadow.horizontal_offset.label",
+      "label": "Horizontal offset",
       "default": 0
     },
     {
@@ -389,7 +389,7 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "t:sections.all.shadow.vertical_offset.label",
+      "label": "Vertical offset",
       "default": 4
     },
     {
@@ -399,7 +399,7 @@
       "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "t:sections.all.shadow.blur_radius.label",
+      "label": "Blur radius",
       "default": 10
     },
     {
@@ -409,12 +409,12 @@
       "max": 100,
       "step": 5,
       "unit": "%",
-      "label": "t:sections.all.shadow.opacity.label",
+      "label": "Opacity",
       "default": 10
     },
     {
       "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
+      "content": "Section padding"
     },
     {
       "type": "range",
@@ -423,7 +423,7 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
+      "label": "Top padding",
       "default": 36
     },
     {
@@ -433,20 +433,20 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
+      "label": "Bottom padding",
       "default": 36
     }
   ],
   "blocks": [
     {
       "type": "hotspot",
-      "name": "t:sections.image-hotspots.blocks.hotspot.name",
+      "name": "Hotspot",
       "limit": 10,
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "t:sections.image-hotspots.blocks.hotspot.settings.product.label"
+          "label": "Product"
         },
         {
           "type": "range",
@@ -455,7 +455,7 @@
           "max": 100,
           "step": 1,
           "unit": "%",
-          "label": "t:sections.image-hotspots.blocks.hotspot.settings.position_x.label",
+          "label": "Horizontal position",
           "default": 50
         },
         {
@@ -465,7 +465,7 @@
           "max": 100,
           "step": 1,
           "unit": "%",
-          "label": "t:sections.image-hotspots.blocks.hotspot.settings.position_y.label",
+          "label": "Vertical position",
           "default": 50
         }
       ]
@@ -473,7 +473,7 @@
   ],
   "presets": [
     {
-      "name": "t:sections.image-hotspots.presets.name",
+      "name": "Image with hotspots",
       "blocks": [
         {
           "type": "hotspot"
@@ -486,6 +486,72 @@
         }
       ]
     }
-  ]
+  ],
+  "locales": {
+    "en": {
+      "sections": {
+        "image-hotspots": {
+          "name": "Image with hotspots",
+          "settings": {
+            "image": {
+              "label": "Image"
+            }
+          },
+          "blocks": {
+            "hotspot": {
+              "name": "Hotspot",
+              "settings": {
+                "product": {
+                  "label": "Product"
+                },
+                "position_x": {
+                  "label": "Horizontal position"
+                },
+                "position_y": {
+                  "label": "Vertical position"
+                }
+              }
+            }
+          },
+          "presets": {
+            "name": "Image with hotspots"
+          },
+          "marker_label": "Show product details"
+        }
+      }
+    },
+    "fr": {
+       "sections": {
+        "image-hotspots": {
+          "name": "Image avec points interactifs",
+          "settings": {
+            "image": {
+              "label": "Image"
+            }
+          },
+          "blocks": {
+            "hotspot": {
+              "name": "Point interactif",
+              "settings": {
+                "product": {
+                  "label": "Produit"
+                },
+                "position_x": {
+                  "label": "Position horizontale"
+                },
+                "position_y": {
+                  "label": "Position verticale"
+                }
+              }
+            }
+          },
+          "presets": {
+            "name": "Image avec points interactifs"
+          },
+           "marker_label": "Afficher les détails du produit"
+        }
+      }
+    }
+  }
 }
 {% endschema %}
