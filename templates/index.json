@@ -210,6 +210,14 @@
     "image_hotspots_1": {
       "type": "image-hotspots",
       "blocks": {
+        "hotspot_CzVt6Q": {
+          "type": "hotspot",
+          "settings": {
+            "product": "alex-twill-pant-navy",
+            "position_x": 39,
+            "position_y": 32
+          }
+        },
         "hotspot_A": {
           "type": "hotspot",
           "settings": {
@@ -229,13 +237,14 @@
         "hotspot_C": {
           "type": "hotspot",
           "settings": {
-            "product": "",
+            "product": "a-line-jacket-in-black",
             "position_x": 75,
             "position_y": 75
           }
         }
       },
       "block_order": [
+        "hotspot_CzVt6Q",
         "hotspot_A",
         "hotspot_B",
         "hotspot_C"
