@@ -91,7 +91,7 @@
   color: rgb(var(--color-text));
   border: 1px solid rgba(var(--color-foreground), 0.1);
   border-radius: var(--popup-corner-radius, 4px);
-  padding: 15px;
+  padding: 15px; /* Reverted padding */
   box-shadow: var(--popup-shadow-horizontal-offset, 0px) var(--popup-shadow-vertical-offset, 4px) var(--popup-shadow-blur-radius, 10px) rgba(var(--color-shadow), var(--popup-shadow-opacity, 0.1));
   width: max-content; /* Adjust width based on content */
   max-width: 250px; /* Max width to prevent excessive size */
@@ -157,8 +157,9 @@
 .image-hotspots__popup-title {
   font-size: var(--font-body-scale);
   margin: 0;
-  font-weight: var(--font-weight-bold);
+  font-weight: 900; /* Increased boldness */
   line-height: 1.3;
+  color: rgb(var(--color-foreground)); /* Ensure title color is foreground */
 }
 
 .image-hotspots__popup-price {
@@ -169,7 +170,7 @@
 .image-hotspots__popup-link {
   font-size: calc(var(--font-body-scale) * 0.9rem);
   text-decoration: underline;
-  margin-top: auto; /* Pushes link down if space allows */
+  margin-top: 10px; /* Increased space above the link */
 }
 
 /* Hide element when using x-cloak until Alpine initializes */

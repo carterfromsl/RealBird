@@ -41,11 +41,7 @@
   style="{{ section_styles | strip | strip_newlines }}"
 >
   <div class="container--{{ container_width }}">
-    <div
-      class="image-hotspots__container"
-      x-data="imageHotspots()"
-      @keyup.escape="closePopup()"
-    >
+    <div class="image-hotspots__container">
       <div class="image-hotspots__image-wrapper" style="padding-bottom: {{ 1 | divided_by: image_aspect_ratio | times: 100 }}%;">
         {%- if image != blank -%}
           {{
@@ -73,28 +69,25 @@
               class="image-hotspots__hotspot"
               style="--hotspot-pos-x: {{ pos_x }}%; --hotspot-pos-y: {{ pos_y }}%;"
               {{ block.shopify_attributes }}
+              x-data="{ isVisible: false }"
+              @mouseenter="isVisible = true"
+              @mouseleave="isVisible = false"
             >
-              <button
-                type="button"
+              <div
                 class="image-hotspots__marker"
-                aria-describedby="popup-{{ block_id }}"
-                aria-expanded="false"
-                @click="togglePopup($el, 'popup-{{ block_id }}')"
-                @keydown.escape.prevent.stop="closeSpecificPopup('{{ block_id }}')"
-                x-ref="marker{{ block_id }}"
               >
                 <span class="visually-hidden">Show product details</span>
                 <span class="image-hotspots__marker-dot"></span>
-              </button>
+              </div>
 
               {%- if product -%}
                 <div
                   class="image-hotspots__popup"
                   id="popup-{{ block_id }}"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby="popup-title-{{ block_id }}"
-                  x-show="activePopupId === 'popup-{{ block_id }}'"
+                  role="tooltip"
+                  aria-hidden="true"
+                  x-bind:aria-hidden="!isVisible"
+                  x-show="isVisible"
                   x-cloak
                   x-transition:enter="transition ease-out duration-100"
                   x-transition:enter-start="opacity-0 transform scale-95"
@@ -102,8 +95,6 @@
                   x-transition:leave="transition ease-in duration-75"
                   x-transition:leave-start="opacity-100 transform scale-100"
                   x-transition:leave-end="opacity-0 transform scale-95"
-                  tabindex="-1"
-                  @keydown.tab.prevent="trapFocus($event, '{{ block_id }}')"
                 >
                   <div class="image-hotspots__popup-content">
                     <div class="image-hotspots__popup-image">
@@ -120,7 +111,7 @@
                     </div>
                     <div class="image-hotspots__popup-info">
                       <h3 class="image-hotspots__popup-title" id="popup-title-{{ block_id }}">
-                        <a href="{{ product.url }}" class="link--underlined-opacity">{{ product.title }}</a>
+                        {{ product.title }}
                       </h3>
                       {% render 'component-product-price',
                         product: product,
@@ -132,7 +123,6 @@
                         <button
                           type="button"
                           class="image-hotspots__popup-link link link--text"
-                          onclick="showQuickView('{{ product.handle }}', '{{ section.id }}')"
                           aria-haspopup="dialog"
                           aria-controls="QuickViewDialog"
                           data-product-handle="{{ product.handle }}"
@@ -140,21 +130,10 @@
                           {{ quick_view_label }}
                         </button>
                       {% else %}
-                        <a href="{{ product.url }}" class="image-hotspots__popup-link link link--text">
-                          View details
-                        </a>
+                        <a href="{{ product.url }}" class="image-hotspots__popup-link link link--text"> View details </a>
                       {% endif %}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    class="modal__close-button link link--text focus-inset"
-                    @click="closeSpecificPopup('{{ block_id }}')"
-                    aria-label="Close"
-                    style="position: absolute; top: 5px; right: 5px; padding: 5px; line-height: 0;"
-                  >
-                    {% render 'icon-close', width: 14, height: 14 %}
-                  </button>
                 </div>
               {%- endif -%}
             </div>
@@ -164,123 +143,6 @@
     </div>
   </div>
 </div>
-
-<script>
-  function imageHotspots() {
-    return {
-      activePopupId: null,
-
-      togglePopup(markerButton, popupId) {
-        console.log(`togglePopup called for: ${popupId}`);
-        console.log(`Current activePopupId: ${this.activePopupId}`);
-
-        const isExpanded = markerButton.getAttribute('aria-expanded') === 'true';
-
-        if (this.activePopupId && this.activePopupId !== popupId) {
-          console.log(`Closing different popup: ${this.activePopupId}`);
-          this.closeSpecificPopup(this.activePopupId.replace('popup-', ''));
-        }
-
-        if (isExpanded) {
-          console.log(`Closing current popup: ${popupId}`);
-          this.closeSpecificPopup(popupId.replace('popup-', ''));
-        } else {
-          console.log(`Opening popup: ${popupId}`);
-          this.activePopupId = popupId;
-          markerButton.setAttribute('aria-expanded', 'true');
-          console.log(`New activePopupId: ${this.activePopupId}`);
-
-          this.$nextTick(() => {
-            const popupContent = document.getElementById(popupId);
-            if (!popupContent) {
-              console.error(`Popup content not found for ${popupId}`);
-              return;
-            }
-            const focusableElements = popupContent.querySelectorAll(
-              'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-            );
-            if (focusableElements.length > 0) {
-              console.log(`Focusing first element in ${popupId}`);
-              focusableElements[0].focus();
-            } else {
-              console.log(`No focusable elements found in ${popupId}`);
-            }
-          });
-        }
-      },
-
-      closePopup() {
-        console.log('closePopup (global) called');
-        if (this.activePopupId) {
-          this.closeSpecificPopup(this.activePopupId.replace('popup-', ''));
-        }
-      },
-
-      closeSpecificPopup(blockId) {
-        const popupId = `popup-${blockId}`;
-        console.log(`closeSpecificPopup called for block: ${blockId}, popup: ${popupId}`);
-
-        if (this.activePopupId !== popupId) {
-          console.log('Attempted to close popup that is not active');
-          return;
-        }
-
-        const markerRef = `marker${blockId}`;
-        const markerButton = this.$refs[markerRef];
-
-        this.activePopupId = null;
-        console.log(`Cleared activePopupId`);
-
-        if (markerButton) {
-          markerButton.setAttribute('aria-expanded', 'false');
-          console.log('Returning focus to marker');
-          markerButton.focus();
-        } else {
-          console.log('Marker button not found for focus return');
-        }
-      },
-
-      trapFocus(event, blockId) {
-        const popupId = `popup-${blockId}`;
-        const popup = document.getElementById(popupId);
-        if (!popup) return;
-
-        const focusableElements = Array.from(
-          popup.querySelectorAll(
-            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-          )
-        ).filter((el) => el.offsetParent !== null);
-        const firstFocusableElement = focusableElements[0];
-        const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-        if (event.key !== 'Tab') return;
-
-        if (event.shiftKey) {
-          if (document.activeElement === firstFocusableElement) {
-            lastFocusableElement.focus();
-            event.preventDefault();
-          }
-        } else {
-          if (document.activeElement === lastFocusableElement) {
-            firstFocusableElement.focus();
-            event.preventDefault();
-          }
-        }
-      },
-    };
-  }
-
-  function showQuickView(productHandle, sectionId) {
-    console.log(`Trigger Quick View for: ${productHandle}, from section: ${sectionId}`);
-    document.dispatchEvent(
-      new CustomEvent('quickview:open', {
-        bubbles: true,
-        detail: { productHandle: productHandle, sourceSectionId: sectionId },
-      })
-    );
-  }
-</script>
-
 {% schema %}
 {
   "name": "Image with hotspots",
@@ -521,7 +383,7 @@
       }
     },
     "fr": {
-       "sections": {
+      "sections": {
         "image-hotspots": {
           "name": "Image avec points interactifs",
           "settings": {
@@ -548,7 +410,7 @@
           "presets": {
             "name": "Image avec points interactifs"
           },
-           "marker_label": "Afficher les détails du produit"
+          "marker_label": "Afficher les détails du produit"
         }
       }
     }
