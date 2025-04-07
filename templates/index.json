@@ -109,31 +109,31 @@
         "block_1": {
           "type": "collection_card",
           "settings": {
-            "collection": ""
+            "collection": "spring"
           }
         },
         "block_2": {
           "type": "collection_card",
           "settings": {
-            "collection": ""
+            "collection": "summer"
           }
         },
         "block_3": {
           "type": "collection_card",
           "settings": {
-            "collection": ""
+            "collection": "winter"
           }
         },
         "block_4": {
           "type": "collection_card",
           "settings": {
-            "collection": ""
+            "collection": "spring"
           }
         },
         "block_5": {
           "type": "collection_card",
           "settings": {
-            "collection": ""
+            "collection": "summer"
           }
         }
       },
