@@ -1,5 +1,3 @@
-{% comment %} /sections/testimonials.liquid {% endcomment %}
-
 {%- liquid
   assign section_id = 'testimonials-' | append: section.id
   assign heading = section.settings.heading
@@ -163,42 +161,3 @@
   ]
 }
 {% endschema %}
-
-<script>
-  document.addEventListener('shopify:section:load', function(event) {
-    const sectionId = '{{ section.id }}';
-    if (event.detail.sectionId === sectionId) {
-      initTestimonialScrollListener(sectionId);
-    }
-  });
-
-  // Initial load
-  document.addEventListener('DOMContentLoaded', function() {
-     initTestimonialScrollListener('{{ section.id }}');
-  });
-
-  function initTestimonialScrollListener(sectionId) {
-    const sectionElement = document.getElementById('testimonials-' + sectionId);
-    if (!sectionElement) return;
-
-    sectionElement.addEventListener('shopify:block:select', function(event) {
-      // Ensure we are in the theme editor
-      if (!Shopify || !Shopify.designMode) {
-        return;
-      }
-
-      const blockElement = event.target;
-      // Scroll the selected block into view within its container
-      blockElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest'
-      });
-    });
-
-     // Optional: Add listener for shopify:block:deselect if specific behavior is needed
-     // sectionElement.addEventListener('shopify:block:deselect', function(event) {
-     //   // Handle block deselection if needed
-     // });
-  }
-</script>

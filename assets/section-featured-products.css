@@ -1,0 +1,171 @@
+/* sections/featured-products.liquid */
+
+.featured-products-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.featured-products__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 1rem; /* Add gap for wrapping */
+}
+
+.featured-products__titles {
+  flex-grow: 1; /* Allow titles to take available space */
+}
+
+.featured-products__heading {
+  margin-bottom: 0.5rem; /* Adjust spacing */
+  font-size: 3rem; /* Example size */
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 0;
+  /* Assuming H2 style from base.css is sufficient */
+}
+
+.featured-products__subheading {
+  margin-top: 0;
+  margin-bottom: 0; /* Remove bottom margin */
+  font-size: 1rem; /* Example size */
+  color: #000000; /* Make subheading black */
+  font-style: italic; /* Make subheading italic */
+}
+
+.featured-products__view-all {
+  white-space: nowrap; /* Prevent wrap */
+  font-weight: bold;
+  /* Use link styles from base.css */
+}
+
+.featured-products__grid {
+  /* Inherit display: flex and gap from .grid in base.css */
+  /* The column classes grid--4-col-desktop etc. are handled by base.css */
+  margin: 0; /* Remove default grid margin if any */
+  padding: 0; /* Remove default grid padding if any */
+}
+
+.featured-products__card.grid__item {
+  /* Let base.css handle the width calculations */
+  /* e.g., width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4); */
+  max-width: none; /* Override base.css potentially limiting max-width */
+}
+
+.product-card {
+  text-align: left; /* Align text to the left */
+  position: relative; /* Needed for badge positioning */
+  /* Ensure card takes full height of grid item */
+  display: flex; /* Allow inner content to flex */
+  flex-direction: column;
+}
+
+.product-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem; /* Space between image and info */
+  aspect-ratio: 1 / 1.2; /* Adjust aspect ratio as needed */
+  background-color: #f5f5f5; /* Placeholder background */
+}
+
+.product-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card__badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: #ffc107; /* Example gold color from image */
+  color: #000;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 3px;
+  line-height: 1.2; /* Adjust line height */
+}
+
+.product-card__info {
+  padding: 0 0.5rem; /* Add some padding if needed */
+  margin-top: auto; /* Push info to bottom if image wrapper doesn't fill height */
+}
+
+.product-card__title {
+  font-size: 2.2rem; /* Doubled font size */
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  /* Assume H3 style from base.css or adjust */
+}
+
+.product-card__reviews {
+  font-size: 1.5rem; /* Doubled font size */
+  margin-bottom: 0.25rem; /* Reduced margin-bottom */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Increased gap slightly */
+}
+
+.product-card__stars {
+  /* Star rating color */
+  color: #f0ad4e; /* Example gold color */
+  line-height: 1; /* Adjust line height for stars */
+}
+
+.product-card__review-link {
+  text-decoration: none; /* Remove default underline if needed */
+  color: rgba(var(--color-foreground), 0.75); /* Use existing theme variable/opacity */
+}
+
+.product-card__review-link:hover {
+  text-decoration: underline; /* Add underline on hover like base links */
+  color: rgb(var(--color-link)); /* Use theme link hover color */
+}
+
+.product-card__review-count {
+  font-weight: bold; /* Make review count bold */
+  /* Inherits color from parent link */
+}
+
+.product-card__price {
+  font-size: 2.2rem; /* Doubled font size */
+  font-weight: bold;
+}
+
+.product-card__price .price__regular {
+  color: #000000; /* Make regular price black */
+}
+
+.price--on-sale {
+  color: #d9534f; /* Fallback sale color (Bootstrap red) - Adjust if theme has a variable */
+  /* This overrides the black color only when on sale */
+}
+
+.price__compare-at {
+  text-decoration: line-through;
+  font-weight: normal;
+  color: rgba(var(--color-foreground), 0.75); /* Use existing theme variable/opacity */
+  margin-left: 0; /* Removed left margin */
+  margin-right: 0.5rem; /* Added right margin */
+  font-size: 0.8em; /* Made smaller */
+}
+
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
