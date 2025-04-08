@@ -125,54 +125,15 @@
         },
         {
           "type": "celebrity"
+        },
+        {
+          "type": "celebrity"
+        },
+        {
+          "type": "celebrity"
         }
       ]
     }
   ]
 }
 {% endschema %}
-
-<script>
-  document.addEventListener('shopify:section:load', function(event) {
-    const sectionId = '{{ section.id }}';
-    if (event.detail.sectionId === sectionId) {
-      initCelebrityScrollListener(sectionId);
-    }
-  });
-
-  // Initial load
-  document.addEventListener('DOMContentLoaded', function() {
-     initCelebrityScrollListener('{{ section.id }}');
-  });
-
-  function initCelebrityScrollListener(sectionId) {
-    // Find the section container. Using a class selector as we don't have a specific ID wrapper like testimonials
-    const sectionElement = document.querySelector('.section-{{ section.id }}-padding');
-    if (!sectionElement) return;
-
-    // Note: Shopify wraps sections in an element with id="shopify-section-{{ section.id }}"
-    // It might be more robust to listen on that element if issues arise with the class selector
-    const shopifySectionWrapper = document.getElementById('shopify-section-' + sectionId);
-    const listenerTarget = shopifySectionWrapper || sectionElement; // Prefer Shopify wrapper if found
-
-    listenerTarget.addEventListener('shopify:block:select', function(event) {
-      // Ensure we are in the theme editor
-      if (!window.Shopify || !window.Shopify.designMode) {
-        return;
-      }
-
-      const blockElement = event.target;
-      // Scroll the selected block into view within its container
-      blockElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'nearest'
-      });
-    });
-
-     // Optional: Add listener for shopify:block:deselect if specific behavior is needed
-     // listenerTarget.addEventListener('shopify:block:deselect', function(event) {
-     //   // Handle block deselection if needed
-     // });
-  }
-</script>
