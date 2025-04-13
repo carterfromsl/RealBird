@@ -361,7 +361,7 @@
         "block_comp_1": {
           "type": "product_column",
           "settings": {
-            "image": "",
+            "image": "shopify://shop_images/fbb80e66561a67069d96a5627b817af9.png",
             "product_name": "PRO STOCK NECK & WRIST",
             "ideal_for": "Ideal for players who need top-rated neck and wrist protection against skate blade lacerations.",
             "cut_resistant_forearms": true,
@@ -369,21 +369,20 @@
             "padloc_elbow_securing": false
           }
         },
-        "block_comp_2": {
+        "product_column_CFJVwd": {
           "type": "product_column",
           "settings": {
-            "image": "",
-            "product_name": "PADLOC NECK & WRIST",
-            "ideal_for": "For high-level players who want a performance advantage and top-rated skate cut protection.",
+            "product_name": "Product Name",
+            "ideal_for": "Ideal for description text.",
             "cut_resistant_forearms": true,
             "cut_resistant_neck_guard": true,
-            "padloc_elbow_securing": true
+            "padloc_elbow_securing": false
           }
         }
       },
       "block_order": [
         "block_comp_1",
-        "block_comp_2"
+        "product_column_CFJVwd"
       ],
       "settings": {
         "title": "WHICH VERSION OF TILO IS RIGHT FOR YOUR GAME?",
