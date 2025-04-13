@@ -1,21 +1,24 @@
 .product-comparison__container {
-  text-align: center;
   padding-top: var(--padding-top-section);
   padding-bottom: var(--padding-bottom-section);
 }
 
+.product-comparison__header {
+  margin-bottom: 2em; /* Keep some space below header */
+}
+
 .product-comparison__title {
-  /* Use theme's heading styles */
-  font-size: var(--font-size-h2);
+  /* Match featured-collections */
+  font-size: 3rem;
+  font-weight: bold;
+  color: #000000;
   margin-bottom: 0.5em;
 }
 
 .product-comparison__subtitle {
-   /* Use theme's body text styles */
-  font-size: var(--font-size-body);
-  color: var(--color-text-secondary);
-  margin-bottom: 2em;
-  font-style: italic; /* Match image */
+  /* Match featured-collections */
+  color: #000000;
+  font-style: italic;
 }
 
 .product-comparison__grid {
@@ -111,10 +114,9 @@
 }
 
 .product-comparison__feature--bool .product-comparison__feature-icon {
-   border-color: var(--color-success);
-   color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-success);
 }
-
 
 .product-comparison__feature-value {
   font-weight: bold;
@@ -122,14 +124,37 @@
   display: none; /* Hide Yes/No text, icon is enough */
 }
 
-/* View More Button Styling - Placeholder */
+/* Initially hide features beyond the 3rd one */
+.product-comparison__features-list .product-comparison__feature:nth-child(n+4) {
+  display: none;
+}
+
+/* Styles for when the section is expanded */
+product-comparison-section[expanded] .product-comparison__features-list .product-comparison__feature:nth-child(n+4) {
+  display: flex; /* Or block, depending on the feature type */
+}
+
+/* Hide "View More" text when expanded, show "View Less" */
+product-comparison-section:not([expanded]) .product-comparison__view-less-text {
+  display: none;
+}
+product-comparison-section[expanded] .product-comparison__view-more-text {
+  display: none;
+}
+
+/* Rotate chevron icon when expanded */
+product-comparison-section[expanded] .product-comparison__view-more-button .icon {
+  transform: rotate(180deg);
+}
+
+/* View More Button Styling */
 .product-comparison__view-more {
   margin-top: 2em;
   text-align: center;
 }
 
 .product-comparison__view-more button {
- /* Style button using theme variables */
+  /* Style button using theme variables */
   cursor: pointer;
   background: none;
   border: none;
@@ -140,7 +165,13 @@
 }
 
 .product-comparison__view-more .icon-arrow-down {
- /* Style icon */
+  /* Style icon */
+}
+
+.product-comparison__view-more button .icon {
+  transition: transform 0.3s ease;
+  width: 16px; /* Adjust size as needed */
+  height: 16px;
 }
 
 /* Responsive adjustments */
@@ -148,4 +179,4 @@
   .product-comparison__grid {
     grid-template-columns: 1fr; /* Stack columns on mobile */
   }
-} 
+}
