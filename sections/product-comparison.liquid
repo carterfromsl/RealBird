@@ -43,49 +43,49 @@
           {% endif %}
 
           <div class="product-comparison__features-list">
-            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.cut_resistant_forearms == false %}product-comparison__feature--no{% endif %}">
+            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_1 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
-                {% if block.settings.cut_resistant_forearms %}
+                {% if block.settings.feature_1 %}
                   {{ 'icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
                   {{ 'icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
-              <span class="product-comparison__feature-label">CUT RESISTANT FOREARMS</span>
+              <span class="product-comparison__feature-label">{{ block.settings.feature_1_label | default: 'Feature 1' }}</span>
               <span class="product-comparison__feature-value">
-                {%- if block.settings.cut_resistant_forearms %}Yes{% else %}No{% endif -%}
+                {%- if block.settings.feature_1 %}Yes{% else %}No{% endif -%}
               </span>
             </div>
 
-            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.cut_resistant_neck_guard == false %}product-comparison__feature--no{% endif %}">
+            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_2 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
-                {% if block.settings.cut_resistant_neck_guard %}
+                {% if block.settings.feature_2 %}
                   {{ 'icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
                   {{ 'icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
-              <span class="product-comparison__feature-label">CUT RESISTANT NECK GUARD</span>
+              <span class="product-comparison__feature-label">{{ block.settings.feature_2_label | default: 'Feature 2' }}</span>
               <span class="product-comparison__feature-value">
-                {%- if block.settings.cut_resistant_neck_guard %}Yes{% else %}No{% endif -%}
+                {%- if block.settings.feature_2 %}Yes{% else %}No{% endif -%}
               </span>
             </div>
 
-            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.padloc_elbow_securing == false %}product-comparison__feature--no{% endif %}">
+            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_3 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
-                {% if block.settings.padloc_elbow_securing %}
+                {% if block.settings.feature_3 %}
                   {{ 'icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
                   {{ 'icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
-              <span class="product-comparison__feature-label">PADLOC ELBOW PAD SECURING SYSTEM</span>
+              <span class="product-comparison__feature-label">{{ block.settings.feature_3_label | default: 'Feature 3' }}</span>
               <span class="product-comparison__feature-value">
-                {%- if block.settings.padloc_elbow_securing %}Yes{% else %}No{% endif -%}
+                {%- if block.settings.feature_3 %}Yes{% else %}No{% endif -%}
               </span>
             </div>
 
-            {% comment %} Added Features Start {% endcomment %}
+            {% comment %} Added Features Start -> Now Features 4-6 {% endcomment %}
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_4 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_4 %}
@@ -114,7 +114,7 @@
               </span>
             </div>
 
-             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_6 == false %}product-comparison__feature--no{% endif %}">
+            <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_6 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_6 %}
                   {{ 'icon-checkmark.svg' | inline_asset_content }}
@@ -127,9 +127,9 @@
                 {%- if block.settings.feature_6 %}Yes{% else %}No{% endif -%}
               </span>
             </div>
-             {% comment %} Added Features End {% endcomment %}
-
-          </div> {% comment %} End features-list {% endcomment %}
+            {% comment %} Added Features End {% endcomment %}
+          </div>
+          {% comment %} End features-list {% endcomment %}
         </div>
       {% endfor %}
     </div>
@@ -141,7 +141,6 @@
         {{ 'icon-chevron-down.svg' | inline_asset_content }}
       </button>
     </div>
-
   </div>
 </product-comparison-section>
 
@@ -216,21 +215,39 @@
           "default": "Ideal for description text."
         },
         {
-          "type": "checkbox",
-          "id": "cut_resistant_forearms",
-          "label": "Cut Resistant Forearms",
-          "default": true
+          "type": "text",
+          "id": "feature_1_label",
+          "label": "Feature 1 Label",
+          "default": "Cut Resistant Forearms"
         },
         {
           "type": "checkbox",
-          "id": "cut_resistant_neck_guard",
-          "label": "Cut Resistant Neck Guard",
+          "id": "feature_1",
+          "label": "Feature 1 Enabled",
           "default": true
         },
         {
+          "type": "text",
+          "id": "feature_2_label",
+          "label": "Feature 2 Label",
+          "default": "Cut Resistant Neck Guard"
+        },
+        {
           "type": "checkbox",
-          "id": "padloc_elbow_securing",
-          "label": "Padloc Elbow Pad Securing",
+          "id": "feature_2",
+          "label": "Feature 2 Enabled",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "feature_3_label",
+          "label": "Feature 3 Label",
+          "default": "Padloc Elbow Pad Securing System"
+        },
+        {
+          "type": "checkbox",
+          "id": "feature_3",
+          "label": "Feature 3 Enabled",
           "default": false
         },
         {
@@ -251,7 +268,7 @@
           "label": "Feature 5 Label",
           "default": "Additional Feature 2"
         },
-         {
+        {
           "type": "checkbox",
           "id": "feature_5",
           "label": "Feature 5 Enabled",
@@ -263,7 +280,7 @@
           "label": "Feature 6 Label",
           "default": "Additional Feature 3"
         },
-         {
+        {
           "type": "checkbox",
           "id": "feature_6",
           "label": "Feature 6 Enabled",
