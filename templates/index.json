@@ -372,7 +372,8 @@
         "product_column_CFJVwd": {
           "type": "product_column",
           "settings": {
-            "product_name": "Product Name",
+            "image": "shopify://shop_images/c24980778bf0c3d75a1992b3b5f4ef45.png",
+            "product_name": "PADLOC NECK & WRIST",
             "ideal_for": "Ideal for description text.",
             "cut_resistant_forearms": true,
             "cut_resistant_neck_guard": true,
