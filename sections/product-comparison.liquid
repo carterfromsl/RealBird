@@ -1,0 +1,167 @@
+{% comment %}
+  Section: Product Comparison
+
+  Displays a side-by-side comparison of product features based on provided blocks.
+{% endcomment %}
+
+{{ 'section-product-comparison.css' | asset_url | stylesheet_tag }}
+
+<div class="product-comparison__container page-width">
+  {% if section.settings.title != blank %}
+    <h2 class="product-comparison__title">{{ section.settings.title | escape }}</h2>
+  {% endif %}
+  {% if section.settings.subtitle != blank %}
+    <p class="product-comparison__subtitle">{{ section.settings.subtitle | escape }}</p>
+  {% endif %}
+
+  <div class="product-comparison__grid">
+    {% for block in section.blocks %}
+      <div class="product-comparison__item" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          <div class="product-comparison__image-wrapper">
+            {{ block.settings.image | image_url: width: 400 | image_tag: widths: '200, 400', class: 'product-comparison__image' }}
+          </div>
+        {% else %}
+          <div class="product-comparison__image-wrapper product-comparison__image-wrapper--placeholder">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-comparison__image product-comparison__image--placeholder' }}
+          </div>
+        {% endif %}
+        {% if block.settings.product_name != blank %}
+          <h3 class="product-comparison__product-name">{{ block.settings.product_name | escape }}</h3>
+        {% endif %}
+
+        <hr class="product-comparison__divider">
+
+        {% if block.settings.ideal_for != blank %}
+          <div class="product-comparison__feature">
+            <span class="product-comparison__feature-label">IDEAL FOR</span>
+            <p class="product-comparison__feature-text">{{ block.settings.ideal_for | escape }}</p>
+          </div>
+        {% endif %}
+
+        <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.cut_resistant_forearms == false %}product-comparison__feature--no{% endif %}">
+          <span class="product-comparison__feature-icon">
+            {% if block.settings.cut_resistant_forearms %}
+              {{ 'icon-checkmark.svg' | inline_asset_content }}
+            {% else %}
+              {{ 'icon-close.svg' | inline_asset_content }}
+            {% endif %}
+          </span>
+          <span class="product-comparison__feature-label">CUT RESISTANT FOREARMS</span>
+          <span class="product-comparison__feature-value">
+            {%- if block.settings.cut_resistant_forearms %}Yes{% else %}No{% endif -%}
+          </span>
+        </div>
+
+        <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.cut_resistant_neck_guard == false %}product-comparison__feature--no{% endif %}">
+          <span class="product-comparison__feature-icon">
+            {% if block.settings.cut_resistant_neck_guard %}
+              {{ 'icon-checkmark.svg' | inline_asset_content }}
+            {% else %}
+              {{ 'icon-close.svg' | inline_asset_content }}
+            {% endif %}
+          </span>
+          <span class="product-comparison__feature-label">CUT RESISTANT NECK GUARD</span>
+          <span class="product-comparison__feature-value">
+            {%- if block.settings.cut_resistant_neck_guard %}Yes{% else %}No{% endif -%}
+          </span>
+        </div>
+
+        <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.padloc_elbow_securing == false %}product-comparison__feature--no{% endif %}">
+          <span class="product-comparison__feature-icon">
+            {% if block.settings.padloc_elbow_securing %}
+              {{ 'icon-checkmark.svg' | inline_asset_content }}
+            {% else %}
+              {{ 'icon-close.svg' | inline_asset_content }}
+            {% endif %}
+          </span>
+          <span class="product-comparison__feature-label">PADLOC ELBOW PAD SECURING SYSTEM</span>
+          <span class="product-comparison__feature-value">
+            {%- if block.settings.padloc_elbow_securing %}Yes{% else %}No{% endif -%}
+          </span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% comment %} TODO: Add "View More" toggle if needed {% endcomment %}
+</div>
+
+{% schema %}
+{
+  "name": "Product Comparison",
+  "tag": "section",
+  "class": "section section-product-comparison",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "WHICH VERSION IS RIGHT FOR YOUR GAME?"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The Difference"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_column",
+      "name": "Product Column",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product Name",
+          "default": "Product Name"
+        },
+        {
+          "type": "text",
+          "id": "ideal_for",
+          "label": "Ideal For Description",
+          "default": "Ideal for description text."
+        },
+        {
+          "type": "checkbox",
+          "id": "cut_resistant_forearms",
+          "label": "Cut Resistant Forearms",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "cut_resistant_neck_guard",
+          "label": "Cut Resistant Neck Guard",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "padloc_elbow_securing",
+          "label": "Padloc Elbow Pad Securing",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison",
+      "blocks": [
+        {
+          "type": "product_column"
+        },
+        {
+          "type": "product_column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

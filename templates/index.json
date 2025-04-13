@@ -355,6 +355,41 @@
         "subheading": "Warroad Testimonials"
       }
     },
+    "product_comparison_1": {
+      "type": "product-comparison",
+      "blocks": {
+        "block_comp_1": {
+          "type": "product_column",
+          "settings": {
+            "image": "",
+            "product_name": "PRO STOCK NECK & WRIST",
+            "ideal_for": "Ideal for players who need top-rated neck and wrist protection against skate blade lacerations.",
+            "cut_resistant_forearms": true,
+            "cut_resistant_neck_guard": true,
+            "padloc_elbow_securing": false
+          }
+        },
+        "block_comp_2": {
+          "type": "product_column",
+          "settings": {
+            "image": "",
+            "product_name": "PADLOC NECK & WRIST",
+            "ideal_for": "For high-level players who want a performance advantage and top-rated skate cut protection.",
+            "cut_resistant_forearms": true,
+            "cut_resistant_neck_guard": true,
+            "padloc_elbow_securing": true
+          }
+        }
+      },
+      "block_order": [
+        "block_comp_1",
+        "block_comp_2"
+      ],
+      "settings": {
+        "title": "WHICH VERSION OF TILO IS RIGHT FOR YOUR GAME?",
+        "subtitle": "The Difference"
+      }
+    },
     "celebrities_endorsement_1": {
       "type": "celebrities-endorsement",
       "blocks": {
@@ -442,7 +477,7 @@
         "text_9cri4T": {
           "type": "text",
           "settings": {
-            "text": "<p>Warroad is a hockey company dedicated to player performance, safety, and recovery.<br/><br/>Our Roots: Warroad, MN is referred to as \"Hockeytown USA” for good reason. Despite a population of less than 2000, Warroad has produced 7 Olympians, 5 NHLers, and over 80 Division I college hockey players. In fact, the U.S. Men’s Hockey Team has never won Olympic gold without a player from Warroad on the roster.<br/><br/></p>",
+            "text": "<p>Warroad is a hockey company dedicated to player performance, safety, and recovery.<br/><br/>Our Roots: Warroad, MN is referred to as \"Hockeytown USA\" for good reason. Despite a population of less than 2000, Warroad has produced 7 Olympians, 5 NHLers, and over 80 Division I college hockey players. In fact, the U.S. Men's Hockey Team has never won Olympic gold without a player from Warroad on the roster.<br/><br/></p>",
             "text_style": "body"
           }
         },
@@ -486,6 +521,7 @@
     "image_with_text_UnGP37",
     "image_hotspots_1",
     "testimonials_1",
+    "product_comparison_1",
     "celebrities_endorsement_1",
     "image_with_text_kj8i3w"
   ]
