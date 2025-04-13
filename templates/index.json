@@ -366,7 +366,13 @@
             "ideal_for": "Ideal for players who need top-rated neck and wrist protection against skate blade lacerations.",
             "cut_resistant_forearms": true,
             "cut_resistant_neck_guard": true,
-            "padloc_elbow_securing": false
+            "padloc_elbow_securing": false,
+            "feature_4_label": "Additional Feature 1",
+            "feature_4": true,
+            "feature_5_label": "Additional Feature 2",
+            "feature_5": true,
+            "feature_6_label": "Additional Feature 3",
+            "feature_6": false
           }
         },
         "product_column_CFJVwd": {
@@ -374,10 +380,16 @@
           "settings": {
             "image": "shopify://shop_images/c24980778bf0c3d75a1992b3b5f4ef45.png",
             "product_name": "PADLOC NECK & WRIST",
-            "ideal_for": "Ideal for description text.",
+            "ideal_for": "Ideal for players who need top-rated neck and wrist protection against skate blade lacerations.",
             "cut_resistant_forearms": true,
             "cut_resistant_neck_guard": true,
-            "padloc_elbow_securing": false
+            "padloc_elbow_securing": false,
+            "feature_4_label": "Additional Feature 1",
+            "feature_4": true,
+            "feature_5_label": "Additional Feature 2",
+            "feature_5": true,
+            "feature_6_label": "Additional Feature 3",
+            "feature_6": false
           }
         }
       },
