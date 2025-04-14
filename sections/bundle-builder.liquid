@@ -50,7 +50,7 @@
 
   /* Step Container */
   .step-container {
-    margin-bottom: 30px;
+    margin-bottom: 18px;
     border-bottom: 1px solid #e0e0e0;
     padding: 20px;
     border-radius: 8px;
@@ -114,8 +114,12 @@
 
   .expand-icon {
     margin-left: auto;
-    color: #666;
-    font-size: 12px;
+    display: flex;
+    align-items: center;
+  }
+
+  .step-container.collapsed .expand-icon {
+    margin-left: auto;
   }
 
   /* Products Grid */
@@ -133,6 +137,12 @@
     position: relative;
     background-color: #fff;
     min-width: 0;
+  }
+
+  /* Added style for highlighted product card border */
+  .product-card--highlighted {
+    border-color: #4e2fd2; /* Use checkout button color */
+    border-width: 2px; /* Make border slightly thicker */
   }
 
   .discount-badge {
@@ -316,7 +326,21 @@
 
   /* Collapsed Steps */
   .step-container.collapsed {
-    padding-bottom: 15px;
+    padding: 4px 0; /* Vertical padding */
+    background-color: transparent;
+    border-bottom: 1px solid #333;
+    border-radius: 0;
+    margin-bottom: 9px;
+  }
+
+  .step-container.collapsed .step-header {
+    margin-bottom: 0; /* Remove margin below header in collapsed state */
+  }
+
+  .step-container.collapsed .step-divider {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
   }
 
   /* Cart Summary */
@@ -664,6 +688,27 @@
       order: unset; /* Remove flex order for mobile */
     }
 
+    .step-container.collapsed {
+      padding-left: 20px; /* Add mobile side padding */
+      padding-right: 20px; /* Add mobile side padding */
+      padding-top: 4px; /* Ensure vertical padding is kept */
+      padding-bottom: 4px; /* Ensure vertical padding is kept */
+    }
+
+    /* Adjust divider for new padding in collapsed steps on mobile */
+    .step-container.collapsed .step-divider {
+      margin-left: -20px; /* Counteract new padding */
+      margin-right: -20px; /* Counteract new padding */
+      width: calc(100% + 40px); /* Span the padded container */
+      /* Keep reduced vertical margins */
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    .step-container.collapsed .step-number {
+      margin-bottom: 0; /* Remove bottom margin */
+    }
+
     /* Optional: Adjust swatch wrapping if needed */
     /* .color-options {
       flex-wrap: wrap; 
@@ -676,6 +721,18 @@
     background-color: #333; /* Set color to near black */
     margin: 10px -20px 15px -20px; /* Use negative horizontal margins to counteract padding */
     width: calc(100% + 40px); /* Calculate width to span the container including padding */
+  }
+
+  .step-container.collapsed .step-icon {
+    background-color: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    color: #aaa;
+  }
+
+  .step-container.collapsed .step-icon svg {
+    stroke: #aaa;
   }
 </style>
 
@@ -690,8 +747,21 @@
           <hr class="step-divider">
           <div class="step-title">
             <div class="step-icon">
-                <!-- Replaced number 1 with camera SVG -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              <!-- Replaced number 1 with camera SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-camera"
+              >
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle>
+              </svg>
             </div>
             <h2>Choose your cameras</h2>
             <span class="selected-count">
@@ -705,7 +775,7 @@
 
         <div class="products-grid">
           <!-- Wyze Cam v4 -->
-          <div class="product-card">
+          <div class="product-card product-card--highlighted">
             <div class="discount-badge">SAVE 22%</div>
             <img src="https://placehold.co/150x150" alt="Wyze Cam v4" class="product-image" width="150" height="150">
             <div class="product-card__content">
@@ -758,7 +828,7 @@
           </div>
 
           <!-- Wyze Cam Pan v3 -->
-          <div class="product-card">
+          <div class="product-card product-card--highlighted">
             <div class="discount-badge">SAVE 12%</div>
             <img src="https://placehold.co/150x150" alt="Wyze Cam Pan v3" class="product-image" width="150" height="150">
             <div class="product-card__content">
@@ -923,11 +993,39 @@
           <hr class="step-divider">
           <div class="step-title">
             <div class="step-icon">
-                <!-- Replaced number 2 with settings SVG -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              <!-- Replaced number 2 with settings SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-settings"
+              >
+                <circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
             </div>
             <h2>Choose your plan</h2>
-            <span class="expand-icon">▼</span>
+            <span class="expand-icon">
+              <!-- Replaced text with SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="#4e2fd2"
+                stroke="#4e2fd2"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="12 18 6 6 18 6 12 18"></polygon>
+              </svg>
+            </span>
           </div>
         </div>
       </div>
@@ -939,11 +1037,39 @@
           <hr class="step-divider">
           <div class="step-title">
             <div class="step-icon">
-                 <!-- Replaced number 3 with activity SVG -->
-                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <!-- Replaced number 3 with activity SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-activity"
+              >
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
             </div>
             <h2>Choose your sensors</h2>
-            <span class="expand-icon">▼</span>
+            <span class="expand-icon">
+              <!-- Replaced text with SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="#4e2fd2"
+                stroke="#4e2fd2"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="12 18 6 6 18 6 12 18"></polygon>
+              </svg>
+            </span>
           </div>
         </div>
       </div>
@@ -955,11 +1081,39 @@
           <hr class="step-divider">
           <div class="step-title">
             <div class="step-icon">
-                <!-- Replaced number 4 with shield SVG -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <!-- Replaced number 4 with shield SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-shield"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
             </div>
             <h2>Add extra protection</h2>
-            <span class="expand-icon">▼</span>
+            <span class="expand-icon">
+              <!-- Replaced text with SVG -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="#4e2fd2"
+                stroke="#4e2fd2"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polygon points="12 18 6 6 18 6 12 18"></polygon>
+              </svg>
+            </span>
           </div>
         </div>
       </div>
