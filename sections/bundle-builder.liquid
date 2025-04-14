@@ -95,11 +95,21 @@
 
   .selected-count {
     margin-left: auto;
-    background-color: #f0f0f0;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    color: #666;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    font-size: 16px;
+    color: #5e35b1;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .selected-count svg {
+    fill: #5e35b1;
+    width: 10px;
+    height: 10px;
   }
 
   .expand-icon {
@@ -159,6 +169,7 @@
   .learn-more {
     color: #5e35b1;
     font-weight: 600;
+    text-decoration: underline;
   }
 
   /* Updated Color Swatch Styles */
@@ -258,7 +269,7 @@
 
   .original-price {
     text-decoration: line-through;
-    color: #DC3545;
+    color: #dc3545;
     font-size: 16px;
     order: 1;
   }
@@ -276,18 +287,31 @@
     color: #00c853;
   }
 
+  /* Wrapper to center the next button */
+  .next-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Keep the margin on the wrapper */
+  }
+
   .next-button {
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 10px 20px;
-    border-radius: 4px;
+    background-color: #f5f7fa;
+    color: #5e35b1;
+    padding: 8px 20px; /* Reduced vertical padding */
+    border-radius: 12px;
     font-weight: 600;
-    margin-top: 20px;
-    transition: background-color 0.3s;
+    margin-top: 0; /* Removed margin from button itself */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    border: 2px solid #5e35b1;
+    /* width: 100%; */
+    text-align: center;
+    font-size: 16px;
   }
 
   .next-button:hover {
-    background-color: #e0e0e0;
+    background-color: #e1e7f0;
+    border-color: #4527a0;
+    color: #4527a0;
   }
 
   /* Collapsed Steps */
@@ -332,7 +356,6 @@
   .summary-item {
     display: flex;
     align-items: center;
-    gap: 10px;
     margin-bottom: 10px;
   }
 
@@ -340,10 +363,12 @@
     width: 40px;
     height: 40px;
     object-fit: contain;
+    margin-right: 10px;
   }
 
   .item-details {
     flex: 1;
+    margin-right: 10px;
   }
 
   .item-name {
@@ -365,6 +390,42 @@
   .item-price {
     text-align: right;
     min-width: 70px;
+  }
+
+  /* Style prices within summary to stack */
+  .summary-item .item-price span {
+    display: block; /* Stack prices vertically */
+    line-height: 1.3; /* Adjust spacing between stacked prices */
+  }
+
+  /* Style quantity selector within summary */
+  .summary-item .item-quantity {
+    margin-right: 5px;
+  }
+
+  .summary-item .quantity-button {
+    background-color: #fff; /* White background for summary buttons */
+    border: none; /* Remove subtle border */
+  }
+
+  .summary-item .quantity-button:hover {
+    background-color: #eee; /* Slightly grey on hover */
+  }
+
+  .summary-item .quantity-value {
+    /* Inherits general .quantity-value styles */
+  }
+
+  /* Set specific price colors in summary */
+  .summary-item .item-price .sale-price,
+  .summary-item .item-price .free-price {
+    color: #5e35b1; /* Match checkout button purple */
+    font-weight: 600; /* Ensure consistent weight */
+  }
+
+  .summary-item .item-price .original-price {
+    color: #888; /* Keep original price grey/red if needed, default grey */
+    font-size: 12px; /* Make original price smaller */
   }
 
   .cam-unlimited {
@@ -441,21 +502,24 @@
   }
 
   .savings-text {
-    font-size: 12px;
-    color: #00c853;
+    font-size: 10px;
+    color: #00bfa5;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    font-weight: 500;
   }
 
   .checkout-button {
     background-color: #5e35b1;
     color: white;
     width: 100%;
-    padding: 12px;
-    border-radius: 4px;
+    padding: 15px; /* Adjusted padding for height */
+    border-radius: 6px; /* Reduced from 12px */
     font-weight: 600;
     margin-bottom: 10px;
     transition: background-color 0.3s;
+    border: none;
+    font-size: 18px;
   }
 
   .checkout-button:hover {
@@ -466,7 +530,9 @@
     display: block;
     text-align: center;
     font-size: 14px;
-    color: #5e35b1;
+    color: #333;
+    text-decoration: underline;
+    font-style: italic;
   }
 
   /* Testimonials Section */
@@ -557,6 +623,44 @@
     .products-grid {
       grid-template-columns: 1fr;
     }
+
+    .product-card {
+      display: flex; /* Make card a flex container */
+      gap: 15px; /* Add gap between image and content */
+      align-items: center; /* Changed from flex-start to center */
+    }
+
+    .product-image {
+      width: 40%; /* Set image width */
+      height: auto; /* Adjust height automatically */
+      margin-bottom: 0; /* Remove bottom margin */
+      flex-shrink: 0; /* Prevent image from shrinking */
+    }
+
+    .product-card__content {
+      flex: 1; /* Allow content to take remaining space */
+    }
+
+    .main-content {
+      padding-left: 0; /* Remove side padding on mobile */
+      padding-right: 0; /* Remove side padding on mobile */
+    }
+
+    .price {
+      display: block; /* Stack prices vertically */
+      text-align: right; /* Align text to the right */
+      gap: 0; /* Reset gap for block layout */
+    }
+
+    .original-price,
+    .sale-price {
+      order: unset; /* Remove flex order for mobile */
+    }
+
+    /* Optional: Adjust swatch wrapping if needed */
+    /* .color-options {
+      flex-wrap: wrap; 
+    } */
   }
 
   .step-divider {
@@ -580,7 +684,12 @@
           <div class="step-title">
             <div class="step-icon">1</div>
             <h2>Choose your cameras</h2>
-            <span class="selected-count">2 selected</span>
+            <span class="selected-count">
+              2 selected
+              <svg viewBox="0 0 10 5" aria-hidden="true" focusable="false">
+                <path d="M0 5l5-5 5 5z"></path>
+              </svg>
+            </span>
           </div>
         </div>
 
@@ -589,51 +698,51 @@
           <div class="product-card">
             <div class="discount-badge">SAVE 22%</div>
             <img src="https://placehold.co/150x150" alt="Wyze Cam v4" class="product-image" width="150" height="150">
-            <h3>Wyze Cam v4</h3>
-            <p class="product-description">The clearest Wyze Cam ever made. <a href="#" class="learn-more">Learn More</a></p>
-
-            <div class="color-options">
-              <button class="color-swatch-button selected">
-                <img
-                  src="https://placehold.co/24x24/ffffff/000000?text=W"
-                  alt="White Wyze Cam v4"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">White</span>
-              </button>
-              <button class="color-swatch-button">
-                <img
-                  src="https://placehold.co/24x24/9e9e9e/000000?text=G"
-                  alt="Gray Wyze Cam v4"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">Gray</span>
-              </button>
-              <button class="color-swatch-button">
-                <img
-                  src="https://placehold.co/24x24/000000/ffffff?text=B"
-                  alt="Black Wyze Cam v4"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">Black</span>
-              </button>
-            </div>
-
-            <div class="quantity-price">
-              <div class="quantity-selector">
-                <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
-                <span class="quantity-value">1</span>
-                <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+            <div class="product-card__content">
+              <h3>Wyze Cam v4</h3>
+              <p class="product-description">The clearest Wyze Cam ever made. <a href="#" class="learn-more">Learn More</a></p>
+              <div class="color-options">
+                <button class="color-swatch-button selected">
+                  <img
+                    src="https://placehold.co/24x24/ffffff/000000?text=W"
+                    alt="White Wyze Cam v4"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">White</span>
+                </button>
+                <button class="color-swatch-button">
+                  <img
+                    src="https://placehold.co/24x24/9e9e9e/000000?text=G"
+                    alt="Gray Wyze Cam v4"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">Gray</span>
+                </button>
+                <button class="color-swatch-button">
+                  <img
+                    src="https://placehold.co/24x24/000000/ffffff?text=B"
+                    alt="Black Wyze Cam v4"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">Black</span>
+                </button>
               </div>
-              <div class="price">
-                <span class="original-price">$35.98</span>
-                <span class="sale-price">$27.98</span>
+              <div class="quantity-price">
+                <div class="quantity-selector">
+                  <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+                  <span class="quantity-value">1</span>
+                  <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="price">
+                  <span class="original-price">$35.98</span>
+                  <span class="sale-price">$27.98</span>
+                </div>
               </div>
             </div>
           </div>
@@ -642,41 +751,41 @@
           <div class="product-card">
             <div class="discount-badge">SAVE 12%</div>
             <img src="https://placehold.co/150x150" alt="Wyze Cam Pan v3" class="product-image" width="150" height="150">
-            <h3>Wyze Cam Pan v3</h3>
-            <p class="product-description">360° pan and 180° tilt security camera. <a href="#" class="learn-more">Learn More</a></p>
-
-            <div class="color-options">
-              <button class="color-swatch-button">
-                <img
-                  src="https://placehold.co/24x24/ffffff/000000?text=W"
-                  alt="White Wyze Cam Pan v3"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">White</span>
-              </button>
-              <button class="color-swatch-button selected">
-                <img
-                  src="https://placehold.co/24x24/000000/ffffff?text=B"
-                  alt="Black Wyze Cam Pan v3"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">Black</span>
-              </button>
-            </div>
-
-            <div class="quantity-price">
-              <div class="quantity-selector">
-                <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
-                <span class="quantity-value">2</span>
-                <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+            <div class="product-card__content">
+              <h3>Wyze Cam Pan v3</h3>
+              <p class="product-description">360° pan and 180° tilt security camera. <a href="#" class="learn-more">Learn More</a></p>
+              <div class="color-options">
+                <button class="color-swatch-button">
+                  <img
+                    src="https://placehold.co/24x24/ffffff/000000?text=W"
+                    alt="White Wyze Cam Pan v3"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">White</span>
+                </button>
+                <button class="color-swatch-button selected">
+                  <img
+                    src="https://placehold.co/24x24/000000/ffffff?text=B"
+                    alt="Black Wyze Cam Pan v3"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">Black</span>
+                </button>
               </div>
-              <div class="price">
-                <span class="original-price">$39.98</span>
-                <span class="sale-price">$34.98</span>
+              <div class="quantity-price">
+                <div class="quantity-selector">
+                  <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+                  <span class="quantity-value">2</span>
+                  <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="price">
+                  <span class="original-price">$39.98</span>
+                  <span class="sale-price">$34.98</span>
+                </div>
               </div>
             </div>
           </div>
@@ -685,43 +794,43 @@
           <div class="product-card">
             <div class="discount-badge">SAVE 22%</div>
             <img src="https://placehold.co/150x150" alt="Wyze Cam Floodlight v2" class="product-image" width="150" height="150">
-            <h3>Wyze Cam Floodlight v2</h3>
-            <p class="product-description">
-              2K floodlight camera with 180° wide-angle view for your garage. <a href="#" class="learn-more">Learn More</a>
-            </p>
-
-            <div class="color-options">
-              <button class="color-swatch-button selected">
-                <img
-                  src="https://placehold.co/24x24/ffffff/000000?text=W"
-                  alt="White Wyze Cam Floodlight v2"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">White</span>
-              </button>
-              <button class="color-swatch-button">
-                <img
-                  src="https://placehold.co/24x24/000000/ffffff?text=B"
-                  alt="Black Wyze Cam Floodlight v2"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">Black</span>
-              </button>
-            </div>
-
-            <div class="quantity-price">
-              <div class="quantity-selector">
-                <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
-                <span class="quantity-value">0</span>
-                <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+            <div class="product-card__content">
+              <h3>Wyze Cam Floodlight v2</h3>
+              <p class="product-description">
+                2K floodlight camera with 180° wide-angle view for your garage. <a href="#" class="learn-more">Learn More</a>
+              </p>
+              <div class="color-options">
+                <button class="color-swatch-button selected">
+                  <img
+                    src="https://placehold.co/24x24/ffffff/000000?text=W"
+                    alt="White Wyze Cam Floodlight v2"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">White</span>
+                </button>
+                <button class="color-swatch-button">
+                  <img
+                    src="https://placehold.co/24x24/000000/ffffff?text=B"
+                    alt="Black Wyze Cam Floodlight v2"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">Black</span>
+                </button>
               </div>
-              <div class="price">
-                <span class="original-price">$89.98</span>
-                <span class="sale-price">$69.98</span>
+              <div class="quantity-price">
+                <div class="quantity-selector">
+                  <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+                  <span class="quantity-value">0</span>
+                  <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="price">
+                  <span class="original-price">$89.98</span>
+                  <span class="sale-price">$69.98</span>
+                </div>
               </div>
             </div>
           </div>
@@ -729,43 +838,43 @@
           <!-- Wyze Battery Cam Pro -->
           <div class="product-card">
             <img src="https://placehold.co/150x150" alt="Wyze Battery Cam Pro" class="product-image" width="150" height="150">
-            <h3>Wyze Battery Cam Pro</h3>
-            <p class="product-description">
-              Protect anywhere. See everything. Up to 14mo. No power outlet or electrician needed.
-              <a href="#" class="learn-more">Learn More</a>
-            </p>
-
-            <div class="color-options">
-              <button class="color-swatch-button selected">
-                <img
-                  src="https://placehold.co/24x24/ffffff/000000?text=W"
-                  alt="White Wyze Battery Cam Pro"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">White</span>
-              </button>
-              <button class="color-swatch-button">
-                <img
-                  src="https://placehold.co/24x24/000000/ffffff?text=B"
-                  alt="Black Wyze Battery Cam Pro"
-                  class="swatch-image"
-                  width="24"
-                  height="24"
-                >
-                <span class="swatch-text">Black</span>
-              </button>
-            </div>
-
-            <div class="quantity-price">
-              <div class="quantity-selector">
-                <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
-                <span class="quantity-value">0</span>
-                <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+            <div class="product-card__content">
+              <h3>Wyze Battery Cam Pro</h3>
+              <p class="product-description">
+                Protect anywhere. See everything. Up to 14mo. No power outlet or electrician needed.
+                <a href="#" class="learn-more">Learn More</a>
+              </p>
+              <div class="color-options">
+                <button class="color-swatch-button selected">
+                  <img
+                    src="https://placehold.co/24x24/ffffff/000000?text=W"
+                    alt="White Wyze Battery Cam Pro"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">White</span>
+                </button>
+                <button class="color-swatch-button">
+                  <img
+                    src="https://placehold.co/24x24/000000/ffffff?text=B"
+                    alt="Black Wyze Battery Cam Pro"
+                    class="swatch-image"
+                    width="24"
+                    height="24"
+                  >
+                  <span class="swatch-text">Black</span>
+                </button>
               </div>
-              <div class="price">
-                <span class="sale-price">$59.98</span>
+              <div class="quantity-price">
+                <div class="quantity-selector">
+                  <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+                  <span class="quantity-value">0</span>
+                  <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="price">
+                  <span class="sale-price">$59.98</span>
+                </div>
               </div>
             </div>
           </div>
@@ -773,25 +882,28 @@
           <!-- Wyze Duo Cam Doorbell -->
           <div class="product-card">
             <img src="https://placehold.co/150x150" alt="Wyze Duo Cam Doorbell" class="product-image" width="150" height="150">
-            <h3>Wyze Duo Cam Doorbell</h3>
-            <p class="product-description">
-              Two cameras. Two views. Double the porch protection. <a href="#" class="learn-more">Learn More</a>
-            </p>
-
-            <div class="quantity-price">
-              <div class="quantity-selector">
-                <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
-                <span class="quantity-value">0</span>
-                <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
-              </div>
-              <div class="price">
-                <span class="sale-price">$69.98</span>
+            <div class="product-card__content">
+              <h3>Wyze Duo Cam Doorbell</h3>
+              <p class="product-description">
+                Two cameras. Two views. Double the porch protection. <a href="#" class="learn-more">Learn More</a>
+              </p>
+              <div class="quantity-price">
+                <div class="quantity-selector">
+                  <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+                  <span class="quantity-value">0</span>
+                  <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="price">
+                  <span class="sale-price">$69.98</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <button class="next-button">Next: Choose your sensors</button>
+        <div class="next-button-wrapper">
+          <button class="next-button">Next: Choose your sensors</button>
+        </div>
       </div>
 
       <!-- Step 2 -->
@@ -850,8 +962,9 @@
             <span class="item-name">Wyze Cam v4</span>
           </div>
           <div class="item-quantity">
-            <span>1</span>
-            <button>+</button>
+            <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+            <span class="quantity-value">1</span>
+            <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
           </div>
           <div class="item-price">
             <span class="original-price">$35.98</span>
@@ -865,8 +978,9 @@
             <span class="item-name">Wyze Cam Pan v3</span>
           </div>
           <div class="item-quantity">
-            <span>2</span>
-            <button>+</button>
+            <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+            <span class="quantity-value">2</span>
+            <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
           </div>
           <div class="item-price">
             <span class="original-price">$39.98</span>
@@ -883,8 +997,9 @@
             <span class="item-name">Wyze Sense Motion Sensor</span>
           </div>
           <div class="item-quantity">
-            <span>2</span>
-            <button>+</button>
+            <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+            <span class="quantity-value">2</span>
+            <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
           </div>
           <div class="item-price">
             <span class="sale-price">$9.98</span>
@@ -897,8 +1012,9 @@
             <span class="item-name">Wyze Sense Hub (Required)</span>
           </div>
           <div class="item-quantity">
-            <span>1</span>
-            <button>+</button>
+            <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+            <span class="quantity-value">1</span>
+            <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
           </div>
           <div class="item-price">
             <span class="original-price">$29.99</span>
@@ -915,8 +1031,9 @@
             <span class="item-name">Wyze MicroSD Card (32GB)</span>
           </div>
           <div class="item-quantity">
-            <span>2</span>
-            <button>+</button>
+            <button class="quantity-button quantity-down" aria-label="Decrease quantity">-</button>
+            <span class="quantity-value">2</span>
+            <button class="quantity-button quantity-up" aria-label="Increase quantity">+</button>
           </div>
           <div class="item-price">
             <span class="sale-price">$14.98</span>
@@ -950,17 +1067,12 @@
         </div>
       </div>
 
-      <div class="badge-section">
-        <div class="badge">
-          <span>You're saving $19.10 on your security bundle</span>
-        </div>
-      </div>
-
       <div class="total-section">
         <div class="total-row">
           <span class="original-total">$235.85</span>
           <span class="final-total">$187.89</span>
         </div>
+        <p class="savings-text">Congrats! You're saving $50.92 on your security bundle!</p>
         <button class="checkout-button">Checkout</button>
         <a href="#" class="save-later">Save my system for later</a>
       </div>
