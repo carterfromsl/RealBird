@@ -1,0 +1,124 @@
+{% comment %}
+  Announcement Bar Section
+  - Displays a customizable announcement message with an optional link and emoji.
+{% endcomment %}
+
+{%- liquid
+  assign bg_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+-%}
+
+{% if section.settings.show_announcement %}
+  <div class="announcement-bar" style="background-color: {{ bg_color }}; color: {{ text_color }};">
+    <div class="page-width announcement-bar__content">
+      <div class="announcement-bar__message">
+        {{ section.settings.text }}
+        {%- if section.settings.link_text != blank and section.settings.link_url != blank -%}
+          <a href="{{ section.settings.link_url }}" class="announcement-bar__link" style="color: {{ text_color }};">
+            {{ section.settings.link_text }}
+          </a>
+        {%- endif -%}
+        {{ section.settings.emoji }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .announcement-bar {
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .announcement-bar__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .announcement-bar__message {
+    margin: 0;
+    font-size: 14px; /* Adjust as needed */
+    font-weight: 500; /* Adjust as needed */
+    line-height: 1.2;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+  }
+
+  .announcement-bar__link {
+    text-decoration: underline;
+    text-underline-offset: 0.2em; /* Adjust underline position */
+  }
+
+  .announcement-bar__link:hover {
+    text-decoration-thickness: 2px; /* Optional: thicker underline on hover */
+  }
+
+  /* Ensure page-width is defined or adjust selector accordingly */
+  .page-width {
+    max-width: 1200px; /* Example max-width, adjust to your theme's standard */
+    margin: 0 auto;
+    padding: 0 15px; /* Example padding, adjust to your theme's standard */
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "PROTECT HOCKEY'S FUTURE"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "SAVE ON TILÖ TODAY"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+        "type": "text",
+        "id": "emoji",
+        "label": "Emoji",
+        "default": "🚨"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Bar"
+    }
+  ]
+}
+{% endschema %} 

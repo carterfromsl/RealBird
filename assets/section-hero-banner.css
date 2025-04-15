@@ -1,0 +1,144 @@
+/* Assets/section-hero-banner.css */
+
+.hero-banner-section {
+  position: relative;
+  color: var(--hero-text-color, #FFFFFF); /* Use variable, provide fallback */
+  padding: 60px 20px;
+  min-height: 600px;
+  display: flex;
+  align-items: flex-end;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.hero-banner-section .hero-banner__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-banner-section .hero-banner__background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--hero-overlay-color, #000000); /* Use variable, provide fallback */
+  opacity: var(--hero-overlay-opacity, 0.3);           /* Use variable, provide fallback */
+  z-index: 2;
+}
+
+.hero-banner-section .hero-banner__background img,
+.hero-banner-section .hero-banner__background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-banner-section .hero-banner__content {
+  position: relative;
+  z-index: 3;
+  max-width: 50%;
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+  padding: 0 5%;
+}
+
+.hero-banner-section .hero-banner__stars {
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
+
+.hero-banner-section .hero-banner__stars .stars {
+  color: #ffc107;
+  margin-right: 5px;
+}
+
+.hero-banner-section .hero-banner__heading {
+  font-size: 2.5em;
+  margin-bottom: 5px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: var(--hero-text-color, #FFFFFF); /* Explicitly use variable */
+}
+
+.hero-banner-section .hero-banner__subheading {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+
+.hero-banner-section .hero-banner__button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.hero-banner-section .hero-banner__button:hover {
+  background-color: #eee;
+}
+
+.hero-banner-section .hero-banner__endorsement {
+  position: absolute;
+  bottom: 40px;
+  right: 5%;
+  z-index: 3;
+  text-align: right;
+}
+
+.hero-banner-section .hero-banner__endorsement-name {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.hero-banner-section .hero-banner__endorsement-signature img {
+  max-width: 100px;
+  height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-banner-section {
+    padding: 40px 15px;
+    min-height: 450px;
+  }
+
+  .hero-banner-section .hero-banner__content {
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+    padding: 0 10px;
+    max-width: 90%;
+  }
+
+  .hero-banner-section .hero-banner__heading {
+    font-size: 2em;
+  }
+
+  .hero-banner-section .hero-banner__subheading {
+    font-size: 1em;
+  }
+
+  .hero-banner-section .hero-banner__endorsement {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    text-align: left;
+    margin-top: 30px;
+    padding: 0 10px;
+    max-width: 90%;
+    margin-left: 0;
+    margin-right: auto;
+  }
+} 

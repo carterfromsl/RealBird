@@ -1,0 +1,110 @@
+{% comment %} /sections/featured-collections.liquid {% endcomment %}
+
+{{ 'section-featured-collections.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign collections_to_show = section.blocks.size
+-%}
+
+{%- if collections_to_show > 0 -%}
+  <div class="featured-collections-section page-width">
+    <div class="featured-collections__header title-wrapper title-wrapper--no-top-margin">
+      {%- if heading != blank -%}
+        <h2 class="featured-collections__heading title h2">{{ heading | escape }}</h2>
+      {%- endif -%}
+      {%- if subheading != blank -%}
+        <p class="featured-collections__subheading subtitle">{{ subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {% comment %} Use the grid classes from base.css (flexbox based) {% endcomment %}
+    {%- assign grid_classes = 'grid grid--5-col-desktop grid--2-col-tablet-down' -%}
+    <div class="featured-collections__grid {{ grid_classes }}">
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+        {%- assign collection_image = collection.featured_image | default: collection.image -%}
+
+        <div class="featured-collections__card grid__item" {{ block.shopify_attributes }}>
+          <a href="{{ collection.url | default: '#' }}" class="collection-card__link">
+            <div class="collection-card__image-wrapper media media--portrait {% if collection_image == blank %} placeholder {% endif %}">
+              {%- if collection_image != blank -%}
+                <img
+                  srcset="
+                    {%- if collection_image.width >= 165 -%}{{ collection_image | image_url: width: 165 }} 165w,{%- endif -%}
+                    {%- if collection_image.width >= 360 -%}{{ collection_image | image_url: width: 360 }} 360w,{%- endif -%}
+                    {%- if collection_image.width >= 533 -%}{{ collection_image | image_url: width: 533 }} 533w,{%- endif -%}
+                    {%- if collection_image.width >= 720 -%}{{ collection_image | image_url: width: 720 }} 720w,{%- endif -%}
+                    {{ collection_image | image_url }} {{ collection_image.width }}w
+                  "
+                  src="{{ collection_image | image_url: width: 533 }}"
+                  sizes="(min-width: 990px) calc(var(--page-width) / 5 - var(--grid-desktop-horizontal-spacing) * 4 / 5), (min-width: 750px) calc(100vw / 2 - var(--grid-desktop-horizontal-spacing) / 2 - 4rem), calc(100vw / 2 - var(--grid-mobile-horizontal-spacing) / 2 - 2rem)"
+                  alt="{{ collection_image.alt | escape }}"
+                  loading="lazy"
+                  width="{{ collection_image.width }}"
+                  height="{{ collection_image.height }}"
+                  class="collection-card__image"
+                >
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg collection-card__image' }}
+              {%- endif -%}
+            </div>
+            <div class="collection-card__info">
+              <h3 class="collection-card__title h3">{{ collection.title | default: 'Collection Title' }}</h3>
+              <span class="collection-card__shop-now link underlined-link">Shop Now</span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Featured Collections",
+  "tag": "section",
+  "class": "featured-collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find the perfect fit for your game"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Browse through our collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collections",
+      "blocks": [
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
