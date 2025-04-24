@@ -22,8 +22,8 @@
         "heading": "END OF SEASON SALE",
         "subheading": "Pro level protection for every level",
         "button_text": "SAVE OVER 30%",
-        "button_link": "",
-        "show_endorsement": true,
+        "button_link": "shopify://collections/cam-plans",
+        "show_endorsement": false,
         "endorsement_name": "TJ Oshie"
       }
     },
@@ -214,8 +214,8 @@
           "type": "hotspot",
           "settings": {
             "product": "alex-twill-pant-navy",
-            "position_x": 38,
-            "position_y": 32
+            "position_x": 36,
+            "position_y": 7
           }
         },
         "hotspot_A": {
@@ -364,9 +364,12 @@
             "image": "shopify://shop_images/fbb80e66561a67069d96a5627b817af9.png",
             "product_name": "PRO STOCK NECK & WRIST",
             "ideal_for": "Ideal for players who need top-rated neck and wrist protection against skate blade lacerations.",
-            "cut_resistant_forearms": true,
-            "cut_resistant_neck_guard": true,
-            "padloc_elbow_securing": false,
+            "feature_1_label": "Cut Resistant Forearms",
+            "feature_1": true,
+            "feature_2_label": "Cut Resistant Neck Guard",
+            "feature_2": true,
+            "feature_3_label": "Padloc Elbow Pad Securing System",
+            "feature_3": false,
             "feature_4_label": "Additional Feature 1",
             "feature_4": true,
             "feature_5_label": "Additional Feature 2",
@@ -381,9 +384,12 @@
             "image": "shopify://shop_images/c24980778bf0c3d75a1992b3b5f4ef45.png",
             "product_name": "PADLOC NECK & WRIST",
             "ideal_for": "Ideal for players who need top-rated neck and wrist protection against skate blade lacerations.",
-            "cut_resistant_forearms": true,
-            "cut_resistant_neck_guard": true,
-            "padloc_elbow_securing": false,
+            "feature_1_label": "Cut Resistant Forearms",
+            "feature_1": true,
+            "feature_2_label": "Cut Resistant Neck Guard",
+            "feature_2": true,
+            "feature_3_label": "Padloc Elbow Pad Securing System",
+            "feature_3": false,
             "feature_4_label": "Additional Feature 1",
             "feature_4": true,
             "feature_5_label": "Additional Feature 2",
