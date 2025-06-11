@@ -23,7 +23,7 @@
         "swatch_type": "color",
         "swatch_trigger": "Color",
         "enable_filtering": true,
-        "filter_type": "horizontal",
+        "filter_type": "vertical",
         "collapse_filters": true,
         "enable_sorting": true,
         "columns_mobile": "2",
