@@ -1,5 +1,5 @@
 ---
-description: Writing CSS, whether inside .css files or in the `{% stylesheet %}…{% endstylesheet %}` or `{% style %}…{% endstyle %}` tags
+description: Writing CSS, whether inside .css files or in the `{% stylesheet %}…{% endstylesheet %}` or `{% style %}…{% endstyle %}` or in <style> </style> tags
 globs:
 alwaysApply: false
 ---

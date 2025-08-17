@@ -1,6 +1,5 @@
 ---
-description: Writing JavaScript inside `.js` files, or within the `{% javascript %}` or `{% script %}` tags in `.liquid` files.
-globs:
+description: Writing JavaScript inside `.js` files, or within the `{% javascript %}` or `{% script %}` or <script> </script> tags in `.liquid` files.
 alwaysApply: false
 ---
 # JavaScript Standards
