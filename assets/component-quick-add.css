@@ -153,6 +153,8 @@ quick-add-modal .product-form__buttons {
 }
 
 .quick-add__submit {
+  font-size: 1.6rem;
+  text-transform: uppercase;
   padding: 0.8rem;
   min-width: 100%;
   box-sizing: border-box;
@@ -178,6 +180,9 @@ quick-add-modal .product-media-container.constrain-height {
   quick-add-modal .slider .product__media-item.grid__item {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
+  }
+  .quick-add__submit{
+    font-size: 1.3rem;
   }
 
   .quick-add-modal__content {

@@ -68,6 +68,7 @@ h1,
 }
 
 @media only screen and (min-width: 750px) {
+
   h1,
   .h1 {
     font-size: calc(var(--font-heading-scale) * 4rem);
@@ -80,6 +81,7 @@ h2,
 }
 
 @media only screen and (min-width: 750px) {
+
   h2,
   .h2 {
     font-size: calc(var(--font-heading-scale) * 2.4rem);
@@ -246,7 +248,7 @@ h2,
   margin: 0 auto;
 }
 
-.gift-card__buttons > .button {
+.gift-card__buttons>.button {
   display: block;
   margin: 1rem 0;
 }
@@ -261,13 +263,13 @@ h2,
   box-shadow: none;
 }
 
-*:focus-visible {
+/* *:focus-visible {
   outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
   outline-offset: 0.3rem;
   box-shadow:
     0 0 0 0.3rem rgb(var(--color-background)),
     0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
-}
+} */
 
 /* Fallback - for browsers that don't support :focus-visible, a fallback is set for :focus */
 .focused {

@@ -27,7 +27,7 @@
 
   .drawer__facet-button-trigger span {
     margin-left: 10px;
-    font-size: 15px;
+    font-size: 1.6rem;
     color: rgba(var(--color-foreground), 0.75);
   }
 
@@ -114,7 +114,7 @@
     letter-spacing: 0.6px;
   }
 
-  .mobile-facets__block .svg-wrapper{
+  .mobile-facets__block .svg-wrapper {
     width: 15px;
     height: 15px;
   }
@@ -362,30 +362,30 @@
                   {% if f.type == 'price_range' %}
                     {% render 'component-filters-price-range', filter: f, id_prefix: 'Filter-', filter_type: filter_type %}
                   {% else %}
-                  {%- for v in f.values -%}
-                    {%- assign input_id = 'Filter-Drawer-' | append: f.param_name | escape | append: '-' | append: forloop.index -%}
-                    <label class="facet-checkbox">
-                      <input
-                        id="{{ input_id }}"
-                        type="checkbox"
-                        name="{{ v.param_name }}"
-                        value="{{ v.value }}"
-                        data-render-section="filters-form-drawer"
-                        {% if v.active %}
-                          checked
-                        {% endif -%}
-                        {% if v.count == 0 and v.active == false %}
-                          disabled
-                        {% endif -%}
-                      >
-                      {{- 'icon-square.svg' | inline_asset_content -}}
-                      <div class="svg-wrapper">
-                        {{- 'icon-checkmark.svg' | inline_asset_content -}}
-                      </div>
-                      {{- v.label }} ({{ v.count }})
-                    </label>
-                  {%- endfor -%}
-                {% endif %}
+                    {%- for v in f.values -%}
+                      {%- assign input_id = 'Filter-Drawer-' | append: f.param_name | escape | append: '-' | append: forloop.index -%}
+                      <label class="facet-checkbox">
+                        <input
+                          id="{{ input_id }}"
+                          type="checkbox"
+                          name="{{ v.param_name }}"
+                          value="{{ v.value }}"
+                          data-render-section="filters-form-drawer"
+                          {% if v.active %}
+                            checked
+                          {% endif -%}
+                          {% if v.count == 0 and v.active == false %}
+                            disabled
+                          {% endif -%}
+                        >
+                        {{- 'icon-square.svg' | inline_asset_content -}}
+                        <div class="svg-wrapper">
+                          {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                        </div>
+                        {{- v.label }} ({{ v.count }})
+                      </label>
+                    {%- endfor -%}
+                  {% endif %}
                 </div>
               </div>
             </div>
