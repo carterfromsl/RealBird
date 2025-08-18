@@ -2,3 +2,5 @@ node_modules/
 .vs
 .vscode
 package-lock.json
+.shopify
+.early.coverage

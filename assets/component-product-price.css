@@ -1,5 +1,5 @@
 .price {
-  font-size: 15px;
+  font-size: 1.8rem;
   letter-spacing: 0.8px;
   line-height: calc(1 + 0.5 / var(--font-body-scale));
   color: rgb(var(--color-foreground));
@@ -73,9 +73,9 @@
 }
 
 .price--on-sale .price__sale {
-  display: initial;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row-reverse;
+  /* flex-wrap: wrap; */
 }
 
 .price--center {
@@ -86,7 +86,12 @@
 .price--on-sale .price-item--regular {
   text-decoration: line-through;
   color: rgba(var(--color-foreground), 0.75);
-  font-size: 12px;
+}
+
+.price.price--on-sale.price--show-badge {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .price-item--sale {

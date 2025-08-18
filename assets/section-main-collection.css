@@ -1,7 +1,13 @@
+body.collection .shopify-section.section .page-width {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0px 20px;
+}
+
 .collection-hero__title {
-  margin: 25px 0;
-  font-size: 40px;
-  font-weight: 400;
+  margin: 75px 0;
+  font-size: 3.6rem;
+  font-weight: 600;
   color: black;
 }
 
@@ -27,13 +33,13 @@
 }
 
 .facet-filters__label {
-    display: block;
-    color: rgba(var(--color-foreground), .85);
-    font-size: 14px;
-    margin: 0 20px 0 0;
-    font-weight: 400;
-    width: max-content;
-    font-family: var(--font-body-family);
+  display: block;
+  color: rgba(var(--color-foreground), .85);
+  font-size: 2.2rem;
+  margin: 0 20px 0 0;
+  font-weight: 600;
+  width: max-content;
+  font-family: var(--font-body-family);
 }
 
 .facet-filters__field {
@@ -53,8 +59,9 @@
   color: rgba(var(--color-foreground), 1);
 }
 
-.collection-filters-wrapper summary span{
-  font-size: 14px;
+.collection-filters-wrapper summary span {
+  font-size: 2.2rem;
+  font-weight: 600;
 }
 
 .facets__label:hover,
@@ -66,14 +73,15 @@
   background-color: transparent;
   border: 0;
   border-radius: 0;
-  font-size: 14px;
+  font-size: 2.2rem;
   height: auto;
   margin: 0;
   padding-left: 0;
   padding-right: 17px;
   cursor: pointer;
-  color: rgba(var(--color-foreground),.75);
-  max-width: 130px;
+  color: rgba(var(--color-foreground), .75);
+  max-width: 225px;
+  font-weight: 600;
 }
 
 .facet-filters__sort:focus {
@@ -84,7 +92,7 @@
 
 .reset-button {
   text-transform: capitalize;
-  color: rgba(var(--color-foreground),.75);
+  color: rgba(var(--color-foreground), .75);
   margin-left: 10px;
 }
 
@@ -108,14 +116,14 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  min-width: 80px;
+  min-width: 122px;
   min-height: 25px;
   position: relative;
 }
 
 .results-count {
   width: max-content;
-  font-size: 14px;
+  font-size: 2rem;
 }
 
 .active-filter-group__item-wrapper {
@@ -178,7 +186,7 @@
   position: absolute;
 }
 
-.product-grid-wrapper{
+.product-grid-wrapper {
   margin-top: 13px;
 }
 
@@ -199,6 +207,10 @@
   z-index: 2;
 }
 
+.product-grid {
+  gap: 16px;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -206,18 +218,38 @@
 }
 
 @media screen and (max-width: 750px) {
+  .collection-hero__title {
+    margin: 20px 0px 0px 0px;
+  }
+
+  .mobile-filters-drawer {
+    width: 100%;
+    border: 1px solid #DDD7D7;
+    width: 100%;
+    max-width: 139px;
+    height: 40px;
+    padding: 10px 5px 10px 5px;
+  }
+
   .product-grid {
-    gap: 5px;
     row-gap: var(--grid-mobile-horizontal-spacing);
     column-gap: var(--grid-mobile-vertical-spacing);
+    gap: 20px;
   }
+
+  .collection-hero__title {
+    font-size: 2.4rem;
+  }
+
+  .drawer__facet-button-trigger {}
 
   .sorting-wrapper {
     margin-bottom: 0px;
+    align-items: center;
   }
 
-  .results-count{
-    font-size: 14px;
+  .results-count {
+    font-size: 1.6rem;
   }
 
   .filter-type-horizontal .active-filter-group__item-wrapper {
@@ -231,57 +263,57 @@
 }
 
 /* START - Filters checkbox styles for all filter types */
-  .facet-checkbox {
-    padding: 10px 20px 10px 0;
-    flex-grow: 1;
-    position: relative;
-    font-size: 14px;
-    display: flex;
-    align-items: flex-start;
-    word-break: break-word;
-    cursor: pointer;
-    line-height: 1;
-  }
+.facet-checkbox {
+  padding: 10px 20px 10px 0;
+  flex-grow: 1;
+  position: relative;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  word-break: break-word;
+  cursor: pointer;
+  line-height: 1;
+}
 
-  .facet-checkbox:hover {
-    color: rgba(var(--color-foreground), 1);
-    text-decoration: underline;
-  }
+.facet-checkbox:hover {
+  color: rgba(var(--color-foreground), 1);
+  text-decoration: underline;
+}
 
-  .facet-checkbox input[type='checkbox'] {
-    margin-right: 12px;
-    position: absolute;
-    opacity: 0;
-    width: 16px;
-    height: 16px;
-    top: 7px;
-    left: -4px;
-  }
+.facet-checkbox input[type='checkbox'] {
+  margin-right: 12px;
+  position: absolute;
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  top: 7px;
+  left: -4px;
+}
 
-  .facet-checkbox > svg,
-  .facet-checkbox > .svg-wrapper {
-    background-color: rgb(var(--color-background));
-    margin-right: 12px;
-    flex-shrink: 0;
-  }
+.facet-checkbox>svg,
+.facet-checkbox>.svg-wrapper {
+  background-color: rgb(var(--color-background));
+  margin-right: 12px;
+  flex-shrink: 0;
+}
 
-  .facet-checkbox .svg-wrapper {
-    visibility: hidden;
-    position: absolute;
-    left: 3px;
-    z-index: 5;
-    top: 14px;
-    width: 11px;
-    height: 7px;
-  }
+.facet-checkbox .svg-wrapper {
+  visibility: hidden;
+  position: absolute;
+  left: 3px;
+  z-index: 5;
+  top: 14px;
+  width: 11px;
+  height: 7px;
+}
 
-  .facet-checkbox > input[type='checkbox']:checked ~ .svg-wrapper > .icon-checkmark {
-    visibility: visible;
-  }
+.facet-checkbox>input[type='checkbox']:checked~.svg-wrapper>.icon-checkmark {
+  visibility: visible;
+}
 
-  .facet-checkbox:has(input:disabled) {
-    opacity: 0.4;
-    pointer-events: none;
-  }
+.facet-checkbox:has(input:disabled) {
+  opacity: 0.4;
+  pointer-events: none;
+}
 
 /* END - Filters checkbox styles for all filter types */
