@@ -28,7 +28,7 @@ alwaysApply: true
 ```
 
 ### Section JavaScript
-When adding JavaScript to sections, use custom elements:
+JavaScript for sections is optional. Inline scripts inside a section are allowed for small amounts of logic. As a guideline, keep inline scripts to roughly 100 lines or fewer. If the script exceeds ~100 lines or becomes complex, move it into `assets/section-[section-name].js`. When adding JavaScript to sections, use custom elements:
 
 **File naming:** `section-[section-name].js`
 - `section-featured-collections.js`
@@ -124,9 +124,10 @@ if (!customElements.get('product-card')) {
 
 ## Key Rules Summary
 1. **Sections:** No `main-` prefix for new sections
-2. **JavaScript:** Always use custom elements
+2. **JavaScript:** Use custom elements when JS is needed (JS files are optional)
 3. **Naming:** Consistent prefixes (`section-` or `component-`)
-4. **File Types:** Match naming across `.liquid`, `.js`, and `.css` files# Architecture Standards
+4. **File Types:** When present, match naming across `.liquid`, `.js`, and `.css` files (JS/CSS optional)
+# Architecture Standards
 
 ## Section Naming and Structure
 
@@ -152,7 +153,7 @@ if (!customElements.get('product-card')) {
 ```
 
 ### Section JavaScript
-When adding JavaScript to sections, use custom elements:
+JavaScript for sections is optional. Inline scripts inside a section are allowed for small amounts of logic. As a guideline, keep inline scripts to roughly 100 lines or fewer. If the script exceeds ~100 lines or becomes complex, move it into `assets/section-[section-name].js`. When adding JavaScript to sections, use custom elements:
 
 **File naming:** `section-[section-name].js`
 - `section-featured-collections.js`
