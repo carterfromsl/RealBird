@@ -97,7 +97,7 @@
     >
       <button type="button" x-on:click="open = !open" class="filter-button">
         {{ f.label | escape }}
-        {{ 'icon-caret.svg' | inline_asset_content }}
+        {{ 'svg/icon-caret.svg' | inline_asset_content }}
       </button>
       <div
         x-cloak
@@ -144,9 +144,9 @@
                       disabled
                     {% endif -%}
                   >
-                  {{- 'icon-square.svg' | inline_asset_content -}}
+                  {{- 'svg/icon-square.svg' | inline_asset_content -}}
                   <div class="svg-wrapper">
-                    {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                    {{- 'svg/icon-checkmark.svg' | inline_asset_content -}}
                   </div>
                   {{- v.label }} ({{ v.count }})</label
                 >

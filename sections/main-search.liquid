@@ -1,10 +1,10 @@
 {% comment %} COMPONENT STYLES {% endcomment %}
-{{ 'component-product-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
-{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
-{{ 'section-main-search.css' | asset_url | stylesheet_tag }}
+{{ 'css/component-product-price.css' | asset_url | stylesheet_tag }}
+{{ 'css/component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'css/component-card.css' | asset_url | stylesheet_tag }}
+{{ 'css/component-pagination.css' | asset_url | stylesheet_tag }}
+{{ 'css/section-main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'css/section-main-search.css' | asset_url | stylesheet_tag }}
 
 {% comment %} DYNAMIC STYLES {% endcomment %}
 {%- style -%}
@@ -194,7 +194,7 @@
                             class="filter-close"
                             data-render-section-url="{{ f.url_to_remove }}"
                           >
-                            {{- 'icon-close.svg' | inline_asset_content -}}
+                            {{- 'svg/icon-close.svg' | inline_asset_content -}}
                           </div>
                         </div>
                       {% else %}
@@ -205,7 +205,7 @@
                               class="filter-close"
                               data-render-section-url="{{ v.url_to_remove }}"
                             >
-                              {{- 'icon-close.svg' | inline_asset_content -}}
+                              {{- 'svg/icon-close.svg' | inline_asset_content -}}
                             </div>
                           </div>
                         {% endfor %}
@@ -290,9 +290,9 @@
   {%- endif -%}
 </div>
 
-<script src="{{ 'component-collection-info.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'component-product-card.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'component-filters-price-range.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js/component-collection-info.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js/component-product-card.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js/component-filters-price-range.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

@@ -1,7 +1,7 @@
-{{ 'customer.css' | asset_url | stylesheet_tag }}
+{{ 'css/customer.css' | asset_url | stylesheet_tag }}
 
-<script src="{{ 'shopify.js' | asset_url }}" defer></script>
-<script src="{{ 'customer.js' | asset_url }}" defer></script>
+<script src="{{ 'js/shopify.js' | asset_url }}" defer></script>
+<script src="{{ 'js/customer.js' | asset_url }}" defer></script>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -113,7 +113,7 @@
                 {{ all_country_option_tags }}
               </select>
               <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
+                {{- 'svg/icon-caret.svg' | inline_asset_content -}}
               </span>
             </div>
           </div>
@@ -127,7 +127,7 @@
                 autocomplete="address-level1"
               ></select>
               <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
+                {{- 'svg/icon-caret.svg' | inline_asset_content -}}
               </span>
             </div>
           </div>
@@ -276,7 +276,7 @@
                     {{ all_country_option_tags }}
                   </select>
                   <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                    {{- 'svg/icon-caret.svg' | inline_asset_content -}}
                   </span>
                 </div>
               </div>
@@ -292,7 +292,7 @@
                     autocomplete="address-level1"
                   ></select>
                   <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                    {{- 'svg/icon-caret.svg' | inline_asset_content -}}
                   </span>
                 </div>
               </div>
@@ -343,7 +343,7 @@
               <li>
                 <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
                   <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                    {{- 'svg/icon-caret.svg' | inline_asset_content -}}
                   </span>
                 </a>
               </li>
@@ -371,7 +371,7 @@
               <li>
                 <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
                   <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
+                    {{- 'svg/icon-caret.svg' | inline_asset_content -}}
                   </span>
                 </a>
               </li>

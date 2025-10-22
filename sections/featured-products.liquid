@@ -1,9 +1,9 @@
 {% comment %} /sections/featured-products.liquid {% endcomment %}
 
-{{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
-{{ 'section-featured-products.css' | asset_url | stylesheet_tag }}
-<script src="{{ "swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
-<script src="{{ 'component-featured-product-slider.js' | asset_url }}" defer="defer"></script>
+{{ 'css/swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
+{{ 'css/section-featured-products.css' | asset_url | stylesheet_tag }}
+<script src="{{ "js/swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+<script src="{{ 'js/component-featured-product-slider.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign heading = section.settings.heading

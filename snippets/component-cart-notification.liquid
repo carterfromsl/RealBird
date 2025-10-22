@@ -142,7 +142,7 @@
   >
     <div class="cart-notification__header">
       <h2 class="cart-notification__heading">
-        {{- 'icon-checkmark.svg' | inline_asset_content -}}
+        {{- 'svg/icon-checkmark.svg' | inline_asset_content -}}
         {{ 'general.cart.item_added' | t }}
       </h2>
       <button
@@ -150,7 +150,7 @@
         class="cart-notification__close"
         aria-label="{{ 'accessibility.close' | t }}"
       >
-        {{- 'icon-close.svg' | inline_asset_content -}}
+        {{- 'svg/icon-close.svg' | inline_asset_content -}}
       </button>
     </div>
     <div id="cart-notification-product" class="cart-notification-product"></div>
@@ -172,4 +172,4 @@
     </div>
   </div>
 </cart-notification>
-<script src="{{ 'component-cart-notification.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js/component-cart-notification.js' | asset_url }}" defer="defer"></script>

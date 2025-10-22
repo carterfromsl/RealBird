@@ -1,6 +1,6 @@
-{{ 'section-main-article.css' | asset_url | stylesheet_tag }}
-{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
-{{ 'component-product-share-button.css' | asset_url | stylesheet_tag }}
+{{ 'css/section-main-article.css' | asset_url | stylesheet_tag }}
+{{ 'css/component-pagination.css' | asset_url | stylesheet_tag }}
+{{ 'css/component-product-share-button.css' | asset_url | stylesheet_tag }}
 
 <style>
   {% for block in section.blocks %}
@@ -112,7 +112,7 @@
     <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
       <span class="icon-wrap">
         <span class="svg-wrapper">
-          {{- 'icon-arrow.svg' | inline_asset_content -}}
+          {{- 'svg/icon-arrow.svg' | inline_asset_content -}}
         </span>
       </span>
       {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
@@ -168,7 +168,7 @@
             <div class="form__message" role="alert">
               <h3 class="form-status caption-large text-body" tabindex="-1" autofocus>
                 <span class="svg-wrapper">
-                  {{- 'icon-error.svg' | inline_asset_content -}}
+                  {{- 'svg/icon-error.svg' | inline_asset_content -}}
                 </span>
                 {{ 'templates.contact.form.error_heading' | t }}
               </h3>
@@ -193,7 +193,7 @@
             <div class="form-status-list form__message" role="status">
               <h3 class="form-status" tabindex="-1" autofocus>
                 <span class="svg-wrapper">
-                  {{- 'icon-success.svg' | inline_asset_content -}}
+                  {{- 'svg/icon-success.svg' | inline_asset_content -}}
                 </span>
                 {{ post_message | t }}
               </h3>
@@ -230,7 +230,7 @@
                   <small id="CommentForm-author-error">
                     <span class="form__message">
                       <span class="svg-wrapper">
-                        {{- 'icon-error.svg' | inline_asset_content -}}
+                        {{- 'svg/icon-error.svg' | inline_asset_content -}}
                       </span>
                       {{- 'blogs.article.name' | t }}
                       {{ form.errors.messages.author }}.</span
@@ -264,7 +264,7 @@
                   <small id="CommentForm-email-error">
                     <span class="form__message">
                       <span class="svg-wrapper">
-                        {{- 'icon-error.svg' | inline_asset_content -}}
+                        {{- 'svg/icon-error.svg' | inline_asset_content -}}
                       </span>
                       {{- 'blogs.article.email' | t }}
                       {{ form.errors.messages.email }}.</span
@@ -296,7 +296,7 @@
               <small id="CommentForm-body-error">
                 <span class="form__message">
                   <span class="svg-wrapper">
-                    {{- 'icon-error.svg' | inline_asset_content -}}
+                    {{- 'svg/icon-error.svg' | inline_asset_content -}}
                   </span>
                   {{- 'blogs.article.message' | t }}
                   {{ form.errors.messages.body }}.</span
@@ -314,7 +314,7 @@
   {%- endif -%}
 </article>
 
-<script src="{{ "component-product-share-button.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+<script src="{{ "js/component-product-share-button.js" | asset_url }}" defer="defer" id="swiper-script"></script>
 
 <script type="application/ld+json">
   {{ article | structured_data }}

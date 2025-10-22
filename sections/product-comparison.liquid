@@ -4,7 +4,7 @@
   Displays a side-by-side comparison of product features based on provided blocks.
 {% endcomment %}
 
-{{ 'section-product-comparison.css' | asset_url | stylesheet_tag }}
+{{ 'css/section-product-comparison.css' | asset_url | stylesheet_tag }}
 
 <product-comparison-section>
   <div class="product-comparison__container page-width">
@@ -46,9 +46,9 @@
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_1 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_1 %}
-                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                  {{ 'svg/icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
-                  {{ 'icon-close.svg' | inline_asset_content }}
+                  {{ 'svg/icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
               <span class="product-comparison__feature-label">{{ block.settings.feature_1_label | default: 'Feature 1' }}</span>
@@ -60,9 +60,9 @@
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_2 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_2 %}
-                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                  {{ 'svg/icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
-                  {{ 'icon-close.svg' | inline_asset_content }}
+                  {{ 'svg/icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
               <span class="product-comparison__feature-label">{{ block.settings.feature_2_label | default: 'Feature 2' }}</span>
@@ -74,9 +74,9 @@
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_3 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_3 %}
-                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                  {{ 'svg/icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
-                  {{ 'icon-close.svg' | inline_asset_content }}
+                  {{ 'svg/icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
               <span class="product-comparison__feature-label">{{ block.settings.feature_3_label | default: 'Feature 3' }}</span>
@@ -89,9 +89,9 @@
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_4 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_4 %}
-                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                  {{ 'svg/icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
-                  {{ 'icon-close.svg' | inline_asset_content }}
+                  {{ 'svg/icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
               <span class="product-comparison__feature-label">{{ block.settings.feature_4_label | default: 'Additional Feature 1' }}</span>
@@ -103,9 +103,9 @@
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_5 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_5 %}
-                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                  {{ 'svg/icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
-                  {{ 'icon-close.svg' | inline_asset_content }}
+                  {{ 'svg/icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
               <span class="product-comparison__feature-label">{{ block.settings.feature_5_label | default: 'Additional Feature 2' }}</span>
@@ -117,9 +117,9 @@
             <div class="product-comparison__feature product-comparison__feature--bool {% if block.settings.feature_6 == false %}product-comparison__feature--no{% endif %}">
               <span class="product-comparison__feature-icon">
                 {% if block.settings.feature_6 %}
-                  {{ 'icon-checkmark.svg' | inline_asset_content }}
+                  {{ 'svg/icon-checkmark.svg' | inline_asset_content }}
                 {% else %}
-                  {{ 'icon-close.svg' | inline_asset_content }}
+                  {{ 'svg/icon-close.svg' | inline_asset_content }}
                 {% endif %}
               </span>
               <span class="product-comparison__feature-label">{{ block.settings.feature_6_label | default: 'Additional Feature 3' }}</span>
@@ -138,7 +138,7 @@
       <button type="button" class="product-comparison__view-more-button">
         <span class="product-comparison__view-more-text">View More</span>
         <span class="product-comparison__view-less-text">View Less</span>
-        {{ 'icon-chevron-down.svg' | inline_asset_content }}
+        {{ 'svg/icon-chevron-down.svg' | inline_asset_content }}
       </button>
     </div>
   </div>

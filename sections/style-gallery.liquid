@@ -6,10 +6,10 @@
   - Each gallery image is a block
 {%- endcomment -%}
 
-{{ 'section-style-gallery.css' | asset_url | stylesheet_tag }}
-{{ 'swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'swiper7.4.1.min.js' | asset_url }}" defer="defer" id="swiper-script"></script>
-<script src="{{ 'component-style-gallery-slider.js' | asset_url }}" defer="defer"></script>
+{{ 'css/section-style-gallery.css' | asset_url | stylesheet_tag }}
+{{ 'css/swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'js/swiper7.4.1.min.js' | asset_url }}" defer="defer" id="swiper-script"></script>
+<script src="{{ 'js/component-style-gallery-slider.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign section_id = 'style-gallery-' | append: section.id
@@ -37,7 +37,7 @@
           {%- for block in section.blocks -%}
             <div class="style-gallery__card swiper-slide">
               {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 600 }}" alt="Gallery Image" class="style-gallery__img" loading="lazy">
+                <img src="{{ block.settings.image | image_url: width: 600 }}" width="" height="" alt="Gallery Image" class="style-gallery__img" loading="lazy">
               {%- else -%}
                 <div class="style-gallery__img style-gallery__img--placeholder"></div>
               {%- endif -%}

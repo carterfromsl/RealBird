@@ -5,7 +5,7 @@
   assign testimonials_to_show = section.blocks.size
 -%}
 
-{{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+{{ 'css/section-testimonials.css' | asset_url | stylesheet_tag }}
 
 {%- if testimonials_to_show > 0 -%}
   <div id="{{ section_id }}" class="testimonials-section page-width">
