@@ -269,7 +269,7 @@
 >
   <button type="button" @click="open = !open" class="drawer__facet-button-trigger">
     <div class="svg-wrapper">
-      {{ 'svg/icon-filter.svg' | inline_asset_content }}
+      {{ 'icon-filter.svg' | inline_asset_content }}
     </div>
     <div class="desktop-facet-text-wrapper small-hide">
       {%- if enable_filtering -%}
@@ -326,7 +326,7 @@
         </div>
         <div class="drawer-close-icon" @click="open = !open">
           <div class="svg-wrapper">
-            {{ 'svg/icon-close.svg' | inline_asset_content }}
+            {{ 'icon-close.svg' | inline_asset_content }}
           </div>
         </div>
       </div>
@@ -343,7 +343,7 @@
                 <span>{{ f.label }}</span>
                 <span class="mobile-facets__arrow">
                   <div class="svg-wrapper">
-                    {{ 'svg/icon-arrow.svg' | inline_asset_content }}
+                    {{ 'icon-arrow.svg' | inline_asset_content }}
                   </div>
                 </span>
               </div>
@@ -354,7 +354,7 @@
                   @click.stop="openFilter = null"
                 >
                   <div class="svg-wrapper">
-                    {{ 'svg/icon-arrow.svg' | inline_asset_content }}
+                    {{ 'icon-arrow.svg' | inline_asset_content }}
                   </div>
                   <span>{{ f.label }}</span>
                 </button>
@@ -378,9 +378,9 @@
                             disabled
                           {% endif -%}
                         >
-                        {{- 'svg/icon-square.svg' | inline_asset_content -}}
+                        {{- 'icon-square.svg' | inline_asset_content -}}
                         <div class="svg-wrapper">
-                          {{- 'svg/icon-checkmark.svg' | inline_asset_content -}}
+                          {{- 'icon-checkmark.svg' | inline_asset_content -}}
                         </div>
                         {{- v.label }} ({{ v.count }})
                       </label>

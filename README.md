@@ -86,7 +86,7 @@ File: `sections/header.liquid`
 ```liquid
 <div id="header-actions_search" 
   @click="searchOpen = !searchOpen; $nextTick(() => { if (searchOpen) $refs.searchInput.focus() })">
-  {{ 'svg/icon-search.svg' | inline_asset_content }}
+  {{ 'icon-search.svg' | inline_asset_content }}
 </div>
 ```
 
@@ -357,7 +357,7 @@ onClickHandler = (event) => {
 >
   <span>{{ f.label }}: {{ v.label }}</span>
   <div class="filter-close">
-    {{- 'svg/icon-close.svg' | inline_asset_content -}}
+    {{- 'icon-close.svg' | inline_asset_content -}}
   </div>
 </div>
 
@@ -407,7 +407,7 @@ File: `snippets/component-filters-drawer.liquid`
 >
   <button type="button" @click="open = !open" class="drawer__facet-button-trigger">
     <div class="svg-wrapper">
-      {{ 'svg/icon-filter.svg' | inline_asset_content }}
+      {{ 'icon-filter.svg' | inline_asset_content }}
     </div>
   </button>
   <div class="drawer__facets-wrapper" x-data="{ openFilter: $persist(true).as('openFilter') }">
@@ -429,7 +429,7 @@ File: `snippets/component-filters-sidebar.liquid`
   >
     <summary>
       <span>{{ f.label }}</span>
-      {{ 'svg/icon-caret.svg' | inline_asset_content }}
+      {{ 'icon-caret.svg' | inline_asset_content }}
     </summary>
     <div
       class="facets__display-vertical"
@@ -450,7 +450,7 @@ File: `snippets/component-filters-horizontal.liquid`
 >
   <button type="button" x-on:click="open = !open" class="filter-button">
     {{ f.label }}
-    {{ 'svg/icon-caret.svg' | inline_asset_content }}
+    {{ 'icon-caret.svg' | inline_asset_content }}
   </button>
   <div
     x-cloak
@@ -536,7 +536,7 @@ File: `sections/main-cart-items.liquid`
     data-ajax-cart-quantity-minus
     href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | minus: 1 }}"
   >
-    {{- 'svg/icon-minus.svg' | inline_asset_content -}}
+    {{- 'icon-minus.svg' | inline_asset_content -}}
   </a>
 
   <input
@@ -551,7 +551,7 @@ File: `sections/main-cart-items.liquid`
     data-ajax-cart-quantity-plus
     href="{{ routes.cart_change_url }}?line={{ line_item_index }}&quantity={{ line_item.quantity | plus: 1 }}"
   >
-    {{- 'svg/icon-plus.svg' | inline_asset_content -}}
+    {{- 'icon-plus.svg' | inline_asset_content -}}
   </a>
 </ajax-cart-quantity>
 ```
@@ -594,7 +594,7 @@ File: `sections/main-cart-items.liquid`
 ```liquid
 <div class="cart-item__errors">
   <div data-ajax-cart-errors="{{ line_item.key }}"></div>
-  {{- 'svg/icon-info.svg' | inline_asset_content -}}
+  {{- 'icon-info.svg' | inline_asset_content -}}
 </div>
 ```
 

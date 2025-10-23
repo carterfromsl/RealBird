@@ -162,7 +162,7 @@
               >
                 {{ 'products.product.choose_options' | t }}
                 <div class="loading__spinner hidden">
-                  {{ 'svg/icon-loader.svg' | inline_asset_content }}
+                  {{ 'icon-loader.svg' | inline_asset_content }}
                 </div>
               </button>
             </modal-opener>
@@ -180,7 +180,7 @@
                   class="quick-add-modal__toggle"
                   aria-label="{{ 'accessibility.close' | t }}"
                 >
-                  {{- 'svg/icon-close.svg' | inline_asset_content -}}
+                  {{- 'icon-close.svg' | inline_asset_content -}}
                 </button>
                 <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
               </div>
@@ -226,7 +226,7 @@
                     {{ 'products.product.sold_out' | t }}
                   </span>
                   <div class="loading__spinner hidden">
-                    {{ 'svg/icon-loader.svg' | inline_asset_content }}
+                    {{ 'icon-loader.svg' | inline_asset_content }}
                   </div>
                 </button>
               {%- endform -%}

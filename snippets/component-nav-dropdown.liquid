@@ -42,7 +42,7 @@
           class="menu-toggle"
         >
           {{- link.title | escape -}}
-          {{- 'svg/icon-caret.svg' | inline_asset_content -}}
+          {{- 'icon-caret.svg' | inline_asset_content -}}
         </button>
         <ul
           x-show="menuOpen"
@@ -70,7 +70,7 @@
                   class="menu-toggle"
                 >
                   {{- childlink.title | escape -}}
-                  {{- 'svg/icon-caret.svg' | inline_asset_content -}}
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
                 </button>
                 <ul
                   x-show="activeSubMenu === '{{ childlink.title | escape }}'"

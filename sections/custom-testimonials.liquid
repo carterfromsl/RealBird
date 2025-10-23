@@ -5,10 +5,10 @@
   - Each testimonial is a block
 {%- endcomment -%}
 
-{{ 'css/section-custom-testimonials.css' | asset_url | stylesheet_tag }}
-{{ 'css/swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'js/swiper7.4.1.min.js' | asset_url }}" defer="defer" id="swiper-script"></script>
-<script src="{{ 'js/component-custom-testimonials-slider.js' | asset_url }}" defer="defer"></script>
+{{ 'cs_section-custom-testimonials.css' | asset_url | stylesheet_tag }}
+{{ 'cs_swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'js_swiper7.4.1.min.js' | asset_url }}" defer="defer" id="swiper-script"></script>
+<script src="{{ 'js_component-custom-testimonials-slider.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign section_id = 'custom-testimonials-' | append: section.id

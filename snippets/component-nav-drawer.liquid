@@ -86,8 +86,8 @@
     @click="drawerOpen = !drawerOpen"
     :class="{ 'drawer-open': drawerOpen }"
   >
-    {{- 'svg/icon-menu.svg' | inline_asset_content -}}
-    {{- 'svg/icon-close.svg' | inline_asset_content -}}
+    {{- 'icon-menu.svg' | inline_asset_content -}}
+    {{- 'icon-close.svg' | inline_asset_content -}}
   </button>
   <div id="menu-drawer" class="color-{{ section.settings.menu_color_scheme }} gradient" :class="{ 'drawer-open': drawerOpen }">
     {% render 'component-nav-dropdown', nav_style: 'drawer' %}
@@ -104,7 +104,7 @@
 
       {% if shop.customer_accounts_enabled and section.settings.enable_customer_avatar %}
         <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" rel="nofollow">
-          {{ 'svg/icon-account.svg' | inline_asset_content }}
+          {{ 'icon-account.svg' | inline_asset_content }}
         </a>
       {% endif %}
     </div>

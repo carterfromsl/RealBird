@@ -1,10 +1,10 @@
 {% comment %} COMPONENT STYLES {% endcomment %}
-{{ 'css/component-product-price.css' | asset_url | stylesheet_tag }}
-{{ 'css/component-product-card.css' | asset_url | stylesheet_tag }}
-{{ 'css/component-card.css' | asset_url | stylesheet_tag }}
-{{ 'css/component-pagination.css' | asset_url | stylesheet_tag }}
-{{ 'css/section-main-collection.css' | asset_url | stylesheet_tag }}
-{{ 'css/section-main-search.css' | asset_url | stylesheet_tag }}
+{{ 'cs_component-product-price.css' | asset_url | stylesheet_tag }}
+{{ 'cs_component-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'cs_component-card.css' | asset_url | stylesheet_tag }}
+{{ 'cs_component-pagination.css' | asset_url | stylesheet_tag }}
+{{ 'cs_section-main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'cs_section-main-search.css' | asset_url | stylesheet_tag }}
 
 {% comment %} DYNAMIC STYLES {% endcomment %}
 {%- style -%}
@@ -194,7 +194,7 @@
                             class="filter-close"
                             data-render-section-url="{{ f.url_to_remove }}"
                           >
-                            {{- 'svg/icon-close.svg' | inline_asset_content -}}
+                            {{- 'icon-close.svg' | inline_asset_content -}}
                           </div>
                         </div>
                       {% else %}
@@ -205,7 +205,7 @@
                               class="filter-close"
                               data-render-section-url="{{ v.url_to_remove }}"
                             >
-                              {{- 'svg/icon-close.svg' | inline_asset_content -}}
+                              {{- 'icon-close.svg' | inline_asset_content -}}
                             </div>
                           </div>
                         {% endfor %}
@@ -290,9 +290,9 @@
   {%- endif -%}
 </div>
 
-<script src="{{ 'js/component-collection-info.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'js/component-product-card.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'js/component-filters-price-range.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js_component-collection-info.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js_component-product-card.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'js_component-filters-price-range.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

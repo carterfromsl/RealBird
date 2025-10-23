@@ -3,11 +3,11 @@
   data-section="{{ section.id }}"
   class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
 >
-  {{ 'css/swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
-  {{ 'css/component-product-price.css' | asset_url | stylesheet_tag }}
-  {{ 'css/section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'cs_swiper7.4.1.min.css' | asset_url | stylesheet_tag }}
+  {{ 'cs_component-product-price.css' | asset_url | stylesheet_tag }}
+  {{ 'cs_section-main-product.css' | asset_url | stylesheet_tag }}
   {%- if section.settings.image_zoom != 'none' -%}
-    {{ 'css/component-product-media-modal.css' | asset_url | stylesheet_tag }}
+    {{ 'cs_component-product-media-modal.css' | asset_url | stylesheet_tag }}
   {%- endif -%}
 
   {%- style -%}
@@ -270,7 +270,7 @@
                           Add to cart
                         {% endif %}
                         <span class="loading__spinner hidden">
-                          {{ 'svg/icon-loader.svg' | inline_asset_content }}
+                          {{ 'icon-loader.svg' | inline_asset_content }}
                         </span>
                       </button>
                     </div>
@@ -297,7 +297,7 @@
                         {{ block.settings.heading | default: block.settings.page.title | escape }}
                       </h2>
                     </div>
-                    {{- 'svg/icon-caret.svg' | inline_asset_content -}}
+                    {{- 'icon-caret.svg' | inline_asset_content -}}
                   </summary>
                   <div class="accordion__content">
                     {{ block.settings.content }}
@@ -315,7 +315,7 @@
                   {%- if selected_variant.inventory_quantity > 0 -%}
                     {%- if selected_variant.inventory_quantity <= block.settings.inventory_threshold -%}
                       <span class="svg-wrapper" style="color: rgb(238, 148, 65)">
-                        {{- 'svg/icon-inventory-status.svg' | inline_asset_content -}}
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
                       </span>
                       {%- if block.settings.show_inventory_quantity -%}
                         {{- 'products.product.inventory_low_stock_show_count' | t: quantity: selected_variant.inventory_quantity -}}
@@ -324,7 +324,7 @@
                       {%- endif -%}
                     {%- else -%}
                       <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
-                        {{- 'svg/icon-inventory-status.svg' | inline_asset_content -}}
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
                       </span>
                       {%- if block.settings.show_inventory_quantity -%}
                         {{- 'products.product.inventory_in_stock_show_count' | t: quantity: selected_variant.inventory_quantity -}}
@@ -335,12 +335,12 @@
                   {%- else -%}
                     {%- if selected_variant.inventory_policy == 'continue' -%}
                       <span class="svg-wrapper" style="color: rgb(62, 214, 96)">
-                        {{- 'svg/icon-inventory-status.svg' | inline_asset_content -}}
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
                       </span>
                       {{- 'products.product.inventory_out_of_stock_continue_selling' | t -}}
                     {%- else -%}
                       <span class="svg-wrapper" style="color: rgb(200, 200, 200)">
-                        {{- 'svg/icon-inventory-status.svg' | inline_asset_content -}}
+                        {{- 'icon-inventory-status.svg' | inline_asset_content -}}
                       </span>
                       {{- 'products.product.inventory_out_of_stock' | t -}}
                     {%- endif -%}
@@ -349,14 +349,14 @@
               </p>
             {%- when 'share' -%}
               {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
-              {{ 'css/component-product-share-button.css' | asset_url | stylesheet_tag }}
+              {{ 'cs_component-product-share-button.css' | asset_url | stylesheet_tag }}
               {% render 'component-product-share-button', block: block, share_link: share_url %}
-              <script src="{{ 'js/component-product-share-button.js' | asset_url }}" defer="defer"></script>
+              <script src="{{ 'js_component-product-share-button.js' | asset_url }}" defer="defer"></script>
             {%- when 'subscription' -%}
               <div class="product__subscription">
                 {%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
                 {% if product.selling_plan_groups.size > 0 %}
-                  <script src="{{ 'js/component-selling-plans.js' | asset_url }}" defer></script>
+                  <script src="{{ 'js_component-selling-plans.js' | asset_url }}" defer></script>
                   <selling-plans-widget data-section-id="{{ section.id }}">
                     {% for variant in product.variants %}
                       {% liquid
@@ -477,16 +477,16 @@
     {% render 'component-product-media-modal', variant_images: variant_images %}
   {%- endif -%}
 
-  <script src="{{ 'js/component-product-info.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ "js/swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
-  <script src="{{ 'js/component-modal-opener.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'js_component-product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ "js_swiper7.4.1.min.js" | asset_url }}" defer="defer" id="swiper-script"></script>
+  <script src="{{ 'js_component-modal-opener.js' | asset_url }}" defer="defer"></script>
 
   {%- if section.settings.image_zoom != 'none' -%}
-    <script src="{{ 'js/component-product-media-modal.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'js_component-product-media-modal.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
   {%- if section.settings.image_zoom == 'hover' -%}
-    <script src="{{ 'js/component-product-media-magnify.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'js_component-product-media-magnify.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 </product-info>
 
