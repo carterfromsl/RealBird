@@ -13,16 +13,17 @@
       "type": "hero-banner",
       "settings": {
         "background_type": "image",
+        "image_background": "shopify://shop_images/birds-banner.png",
         "video_background_url": "",
         "overlay_color": "#d9d9d9",
-        "overlay_opacity": 30,
+        "overlay_opacity": 0,
         "content_alignment": "center",
         "vertical_alignment": "center",
         "text_color": "#000000",
         "stars_text": "",
-        "heading": "Main Banner Title Here",
-        "subheading": "Sub Header Here",
-        "button_text": "Shop Now",
+        "heading": "",
+        "subheading": "",
+        "button_text": "",
         "button_link": "shopify://collections/cam-plans",
         "button_color": "#000000",
         "button_text_color": "#ffffff",
@@ -36,29 +37,28 @@
         "block_1": {
           "type": "collection_card",
           "settings": {
-            "collection": "",
+            "collection": "t-shirts",
             "custom_title": ""
           }
         },
         "block_2": {
           "type": "collection_card",
           "settings": {
-            "collection": "",
+            "collection": "headwear",
             "custom_title": ""
           }
         },
         "block_3": {
           "type": "collection_card",
           "settings": {
-            "collection": "",
+            "collection": "accessories",
             "custom_title": ""
           }
         },
         "block_4": {
           "type": "collection_card",
-          "disabled": true,
           "settings": {
-            "collection": "",
+            "collection": "fleece",
             "custom_title": ""
           }
         },
@@ -66,7 +66,7 @@
           "type": "collection_card",
           "disabled": true,
           "settings": {
-            "collection": "",
+            "collection": "debut-collection",
             "custom_title": ""
           }
         }
@@ -79,7 +79,7 @@
         "block_5"
       ],
       "settings": {
-        "heading": "EXPLORE OUR CATEGORIES",
+        "heading": "Featured Collections",
         "subheading": "",
         "heading_alignment": "center",
         "style": "style2",
@@ -93,37 +93,37 @@
         "block_1": {
           "type": "product_card",
           "settings": {
-            "product": ""
+            "product": "bird-drones-of-north-america-ivory-t-shirt"
           }
         },
         "block_2": {
           "type": "product_card",
           "settings": {
-            "product": ""
+            "product": "trench-coat-army-hoodie"
           }
         },
         "product_card_bpd4Xd": {
           "type": "product_card",
           "settings": {
-            "product": ""
+            "product": "spread-the-feathered-gospel-poster"
           }
         },
         "product_card_tP6QmJ": {
           "type": "product_card",
           "settings": {
-            "product": ""
+            "product": "sticker-pack-3"
           }
         },
         "product_card_RUFfmj": {
           "type": "product_card",
           "settings": {
-            "product": ""
+            "product": "if-it-flies-blue-hoodie"
           }
         },
         "product_card_QizrFh": {
           "type": "product_card",
           "settings": {
-            "product": ""
+            "product": "rainbow-gray-hat"
           }
         }
       },
@@ -139,7 +139,7 @@
         "heading": "Best Sellers",
         "subheading": "",
         "view_all_text": "View All",
-        "view_all_url": "shopify://products/acb-top-in-chipped-brick",
+        "view_all_url": "shopify://collections",
         "heading_alignment": "center",
         "show_view_all_as_button": true,
         "button_background_color": "#2e2e2e",
@@ -154,8 +154,6 @@
       "type": "sales-banner",
       "name": "Sales Banner",
       "settings": {
-        "background_image": "shopify://shop_images/Image_of_Glutathione_Plus_Lozenge_1.png",
-        "background_image_mobile": "shopify://shop_images/Frame_1261153144.png",
         "title": "This store is exclusive to Carvana<br> employees &amp; select customers",
         "subtitle": "Please log in to access your account.",
         "button_text": "Login to your account",
@@ -182,7 +180,6 @@
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
             "author": "NAME",
             "stars": 5,
-            "quote_icon_img": "shopify://shop_images/quotation-mark_32371_1.png",
             "quote_icon_img_width": 27
           }
         },
@@ -193,7 +190,6 @@
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
             "author": "NAME",
             "stars": 5,
-            "quote_icon_img": "shopify://shop_images/quotation-mark_32371_1.png",
             "quote_icon_img_width": 27
           }
         },
@@ -204,7 +200,6 @@
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
             "author": "NAME",
             "stars": 5,
-            "quote_icon_img": "shopify://shop_images/quotation-mark_32371_1.png",
             "quote_icon_img_width": 27
           }
         },
@@ -215,7 +210,6 @@
             "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
             "author": "NAME",
             "stars": 5,
-            "quote_icon_img": "shopify://shop_images/quotation-mark_32371_1.png",
             "quote_icon_img_width": 27
           }
         }
@@ -278,7 +272,6 @@
         "icon_text_7yeU4h": {
           "type": "icon_text",
           "settings": {
-            "icon_image": "shopify://shop_images/worldwide_15808138_2_6ffd423c-be08-47d7-9504-560026b77612.png",
             "icon_svg": "",
             "icon_color": "#000000",
             "title": "FREE SHIPPING",
@@ -290,7 +283,6 @@
         "icon_text_4wWPPL": {
           "type": "icon_text",
           "settings": {
-            "icon_image": "shopify://shop_images/package_5272184_1_24242416-331e-4a54-8468-69b9e9a53663.png",
             "icon_svg": "",
             "icon_color": "#000000",
             "title": "28 DAY FREE RETURNS",
@@ -302,7 +294,6 @@
         "icon_text_nGXTQV": {
           "type": "icon_text",
           "settings": {
-            "icon_image": "shopify://shop_images/credit-card_492927_1_15362030-2954-4b51-9a80-17564898b217.png",
             "icon_svg": "",
             "icon_color": "#000000",
             "title": "PAYMENT OPTIONS",
@@ -314,7 +305,6 @@
         "icon_text_XmRJK4": {
           "type": "icon_text",
           "settings": {
-            "icon_image": "shopify://shop_images/question_10821051_1_0212845e-9b9e-48b4-9718-c5085516d232.png",
             "icon_svg": "",
             "icon_color": "#000000",
             "title": "HERE FOR YOU",
