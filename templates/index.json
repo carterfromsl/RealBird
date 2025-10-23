@@ -150,87 +150,6 @@
         "stars_color": "#000000"
       }
     },
-    "exclusive_section_NfqBik": {
-      "type": "sales-banner",
-      "name": "Sales Banner",
-      "settings": {
-        "title": "This store is exclusive to Carvana<br> employees &amp; select customers",
-        "subtitle": "Please log in to access your account.",
-        "button_text": "Login to your account",
-        "title_mobile": "This store is exclusive to Carvana employees &amp; select customers",
-        "subtitle_mobile": "Please log in to access your account.",
-        "button_text_mobile": "Login to your account",
-        "title_color": "#183558",
-        "title_color_mobile": "#183558",
-        "subtitle_color": "#183558",
-        "subtitle_color_mobile": "#183558",
-        "button_color": "#ffffff",
-        "button_color_mobile": "#ffffff",
-        "button_bg_color": "#00aed9",
-        "button_bg_color_mobile": "#00aed9"
-      }
-    },
-    "custom_testimonials_7UWRGN": {
-      "type": "custom-testimonials",
-      "blocks": {
-        "testimonial_9g4YBd": {
-          "type": "testimonial",
-          "settings": {
-            "title": "Review Title",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
-            "author": "NAME",
-            "stars": 5,
-            "quote_icon_img_width": 27
-          }
-        },
-        "testimonial_e6iktR": {
-          "type": "testimonial",
-          "settings": {
-            "title": "Review Title",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
-            "author": "NAME",
-            "stars": 5,
-            "quote_icon_img_width": 27
-          }
-        },
-        "testimonial_tT4WHg": {
-          "type": "testimonial",
-          "settings": {
-            "title": "Review Title",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
-            "author": "NAME",
-            "stars": 5,
-            "quote_icon_img_width": 27
-          }
-        },
-        "testimonial_Jbbhk3": {
-          "type": "testimonial",
-          "settings": {
-            "title": "Review Title",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere feugiat sapien, nec laoreet justo facilisis et.",
-            "author": "NAME",
-            "stars": 5,
-            "quote_icon_img_width": 27
-          }
-        }
-      },
-      "block_order": [
-        "testimonial_9g4YBd",
-        "testimonial_e6iktR",
-        "testimonial_tT4WHg",
-        "testimonial_Jbbhk3"
-      ],
-      "name": "Custom Testimonials",
-      "settings": {
-        "heading": "WHAT OTHER ARE SAYING",
-        "heading_color": "#000000",
-        "heading_align": "center",
-        "content_align": "left",
-        "bg_color": "#ffffff",
-        "padding_top": 15,
-        "padding_bottom": 30
-      }
-    },
     "exclusie_faq_g9G4yC": {
       "type": "faq",
       "blocks": {
@@ -309,7 +228,7 @@
             "icon_color": "#000000",
             "title": "HERE FOR YOU",
             "title_color": "#000000",
-            "subtitle": "customerservice@dummy.com(000) 000-0000",
+            "subtitle": "customerservice@dummy.com",
             "subtitle_color": "#4d4d4d"
           }
         }
@@ -322,57 +241,6 @@
       ],
       "name": "Exclusie Icons With Text",
       "settings": {}
-    },
-    "style_gallery_gki89j": {
-      "type": "style-gallery",
-      "blocks": {
-        "gallery_image_NNFrNQ": {
-          "type": "gallery_image",
-          "settings": {}
-        },
-        "gallery_image_3B7CP4": {
-          "type": "gallery_image",
-          "settings": {}
-        },
-        "gallery_image_CBqAhC": {
-          "type": "gallery_image",
-          "settings": {}
-        },
-        "gallery_image_9mDYYB": {
-          "type": "gallery_image",
-          "settings": {}
-        },
-        "gallery_image_QTqtcB": {
-          "type": "gallery_image",
-          "settings": {}
-        },
-        "gallery_image_xMiH67": {
-          "type": "gallery_image",
-          "settings": {}
-        },
-        "gallery_image_KTznrj": {
-          "type": "gallery_image",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "gallery_image_NNFrNQ",
-        "gallery_image_3B7CP4",
-        "gallery_image_CBqAhC",
-        "gallery_image_9mDYYB",
-        "gallery_image_QTqtcB",
-        "gallery_image_xMiH67",
-        "gallery_image_KTznrj"
-      ],
-      "name": "Style Gallery",
-      "settings": {
-        "heading": "STYLE GALLERY",
-        "heading_color": "#000000",
-        "heading_align": "center",
-        "bg_color": "#ffffff",
-        "padding_top": 100,
-        "padding_bottom": 0
-      }
     },
     "newsletter_signup_GGiDB7": {
       "type": "newsletter-signup",
@@ -400,11 +268,8 @@
     "hero_banner_1",
     "featured_collections_example",
     "featured_products_example",
-    "exclusive_section_NfqBik",
-    "custom_testimonials_7UWRGN",
     "exclusie_faq_g9G4yC",
     "exclusie_icons_with_text_K6q6tD",
-    "style_gallery_gki89j",
     "newsletter_signup_GGiDB7"
   ]
 }
