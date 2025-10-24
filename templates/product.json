@@ -30,15 +30,10 @@
         },
         "text_CmhREB": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "body"
-          }
-        },
-        "sku_m7MALE": {
-          "type": "sku",
-          "settings": {
-            "text_style": "uppercase"
           }
         },
         "inventory_aTTemW": {
@@ -60,10 +55,10 @@
           "type": "quantity_selector",
           "settings": {}
         },
-        "monogram_block": {
-          "type": "monogram",
+        "sku_m7MALE": {
+          "type": "sku",
           "settings": {
-            "button_text": "Add Monogram"
+            "text_style": "uppercase"
           }
         },
         "subscription_AbipnR": {
@@ -92,16 +87,22 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
           }
+        },
+        "monogram_block": {
+          "type": "monogram",
+          "settings": {
+            "button_text": "Add Monogram"
+          }
         }
       },
       "block_order": [
         "title_bpmXVj",
         "price_4XTzqR",
         "text_CmhREB",
-        "sku_m7MALE",
         "inventory_aTTemW",
         "variant_picker_NWh8q7",
         "quantity_selector_cwaLFj",
+        "sku_m7MALE",
         "subscription_AbipnR",
         "share_ybFkAW",
         "description_RxGjaP",
