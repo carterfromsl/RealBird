@@ -356,17 +356,6 @@
     "page": {
       "title": "Page title"
     },
-     "main-product": {
-      "blocks": {
-        "monogram": {
-          "settings": {
-            "button_text": {
-              "label": "Add Monogram",
-            }
-          }
-        }
-      }
-    },
     "quick_order_list": {
       "product_total": "Product subtotal",
       "view_cart": "View cart",
