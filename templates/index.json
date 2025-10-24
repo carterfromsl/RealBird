@@ -9,26 +9,53 @@
  */
 {
   "sections": {
-    "hero_banner_1": {
-      "type": "hero-banner",
+    "image_banner_YXV9Ci": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_3TxGae": {
+          "type": "heading",
+          "settings": {
+            "heading": "Image banner",
+            "heading_size": "h1"
+          }
+        },
+        "text_KDtw4t": {
+          "type": "text",
+          "settings": {
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
+          }
+        },
+        "buttons_wwikGP": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_3TxGae",
+        "text_KDtw4t",
+        "buttons_wwikGP"
+      ],
+      "name": "t:sections.image-banner.presets.name",
       "settings": {
-        "background_type": "image",
-        "image_background": "shopify://shop_images/birds-banner.png",
-        "video_background_url": "",
-        "overlay_color": "#d9d9d9",
-        "overlay_opacity": 0,
-        "content_alignment": "center",
-        "vertical_alignment": "center",
-        "text_color": "#000000",
-        "stars_text": "",
-        "heading": "",
-        "subheading": "",
-        "button_text": "",
-        "button_link": "shopify://collections/cam-plans",
-        "button_color": "#000000",
-        "button_text_color": "#ffffff",
-        "show_endorsement": false,
-        "endorsement_name": ""
+        "image": "shopify://shop_images/birds-banner.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "ambient",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
       }
     },
     "featured_collections_example": {
@@ -265,7 +292,7 @@
     }
   },
   "order": [
-    "hero_banner_1",
+    "image_banner_YXV9Ci",
     "featured_collections_example",
     "featured_products_example",
     "exclusie_faq_g9G4yC",
