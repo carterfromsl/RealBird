@@ -12,6 +12,12 @@
     "main-product": {
       "type": "main-product",
       "blocks": {
+        "share_ybFkAW": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
         "title_bpmXVj": {
           "type": "title",
           "settings": {
@@ -67,12 +73,6 @@
             "supporting_text_title": "Purchase options"
           }
         },
-        "share_ybFkAW": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
-        },
         "description_RxGjaP": {
           "type": "description",
           "settings": {
@@ -87,15 +87,10 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
           }
-        },
-        "monogram_block": {
-          "type": "monogram",
-          "settings": {
-            "button_text": "Add Monogram"
-          }
         }
       },
       "block_order": [
+        "share_ybFkAW",
         "title_bpmXVj",
         "price_4XTzqR",
         "text_CmhREB",
@@ -104,10 +99,8 @@
         "quantity_selector_cwaLFj",
         "sku_m7MALE",
         "subscription_AbipnR",
-        "share_ybFkAW",
         "description_RxGjaP",
-        "buy_buttons_JPDYXc",
-        "monogram_block"
+        "buy_buttons_JPDYXc"
       ],
       "settings": {
         "enable_sticky_info": true,
